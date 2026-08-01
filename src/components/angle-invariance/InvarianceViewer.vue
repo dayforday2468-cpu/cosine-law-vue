@@ -31,12 +31,7 @@ const props = defineProps({
 // 고정 기하 정보
 // --------------------------------------
 
-const {
-  A: baseA,
-  OExtended,
-  BExtended,
-  CExtended,
-} = props.geometry
+const { A: baseA, OExtended, BExtended, CExtended } = props.geometry
 
 // --------------------------------------
 // 고정 방향벡터
@@ -47,34 +42,18 @@ const {
  * 각각 Extended 점을 향하는 직선 위에서 움직인다.
  */
 
-const directionAO = OExtended
-  .clone()
-  .sub(baseA)
-  .normalize()
+const directionAO = OExtended.clone().sub(baseA).normalize()
 
-const directionAB = BExtended
-  .clone()
-  .sub(baseA)
-  .normalize()
+const directionAB = BExtended.clone().sub(baseA).normalize()
 
-const directionAC = CExtended
-  .clone()
-  .sub(baseA)
-  .normalize()
+const directionAC = CExtended.clone().sub(baseA).normalize()
 
 // --------------------------------------
 // Three.js Viewer
 // --------------------------------------
 
-const {
-  viewer,
-  getModel,
-  initializeThree,
-  resizeRenderer,
-  observeResize,
-  animate,
-  disposeThree,
-} = useThreeViewer()
+const { viewer, getModel, initializeThree, resizeRenderer, observeResize, animate, disposeThree } =
+  useThreeViewer()
 
 // --------------------------------------
 // 현재 점 좌표 계산
@@ -88,26 +67,11 @@ function calculateCurrentPoints() {
    * 고정된 방향으로 현재 길이만큼 이동한다.
    */
 
-  const O = A
-    .clone()
-    .addScaledVector(
-      directionAO,
-      props.lengths.AO,
-    )
+  const O = A.clone().addScaledVector(directionAO, props.lengths.AO)
 
-  const B = A
-    .clone()
-    .addScaledVector(
-      directionAB,
-      props.lengths.AB,
-    )
+  const B = A.clone().addScaledVector(directionAB, props.lengths.AB)
 
-  const C = A
-    .clone()
-    .addScaledVector(
-      directionAC,
-      props.lengths.AC,
-    )
+  const C = A.clone().addScaledVector(directionAC, props.lengths.AC)
 
   return {
     O,
@@ -149,33 +113,16 @@ function updateModel() {
 
   clearModel()
 
-  const {
-    O,
-    A,
-    B,
-    C,
-  } = calculateCurrentPoints()
+  const { O, A, B, C } = calculateCurrentPoints()
 
   // --------------------------------------
   // 확장된 면
   // --------------------------------------
 
   model.add(
-    createFace(
-      A,
-      OExtended,
-      BExtended,
-      0x60a5fa,
-      0.08,
-    ),
+    createFace(A, OExtended, BExtended, 0x60a5fa, 0.08),
 
-    createFace(
-      A,
-      OExtended,
-      CExtended,
-      0x34d399,
-      0.08,
-    ),
+    createFace(A, OExtended, CExtended, 0x34d399, 0.08),
   )
 
   // --------------------------------------
@@ -183,21 +130,9 @@ function updateModel() {
   // --------------------------------------
 
   model.add(
-    createFace(
-      A,
-      O,
-      B,
-      0x60a5fa,
-      0.24,
-    ),
+    createFace(A, O, B, 0x60a5fa, 0.24),
 
-    createFace(
-      A,
-      O,
-      C,
-      0x34d399,
-      0.24,
-    ),
+    createFace(A, O, C, 0x34d399, 0.24),
   )
 
   // --------------------------------------
@@ -205,23 +140,11 @@ function updateModel() {
   // --------------------------------------
 
   model.add(
-    createLine(
-      A,
-      O,
-      0x111827,
-    ),
+    createLine(A, O, 0x111827),
 
-    createLine(
-      A,
-      B,
-      0x2563eb,
-    ),
+    createLine(A, B, 0x2563eb),
 
-    createLine(
-      A,
-      C,
-      0x059669,
-    ),
+    createLine(A, C, 0x059669),
   )
 
   // --------------------------------------
@@ -229,26 +152,11 @@ function updateModel() {
   // --------------------------------------
 
   model.add(
-    createLine(
-      O,
-      OExtended,
-      0x64748b,
-      0.65,
-    ),
+    createLine(O, OExtended, 0x64748b, 0.65),
 
-    createLine(
-      B,
-      BExtended,
-      0x60a5fa,
-      0.65,
-    ),
+    createLine(B, BExtended, 0x60a5fa, 0.65),
 
-    createLine(
-      C,
-      CExtended,
-      0x34d399,
-      0.65,
-    ),
+    createLine(C, CExtended, 0x34d399, 0.65),
   )
 
   // --------------------------------------
@@ -256,25 +164,13 @@ function updateModel() {
   // --------------------------------------
 
   model.add(
-    createPoint(
-      O,
-      0xef4444,
-    ),
+    createPoint(O, 0xef4444),
 
-    createPoint(
-      A,
-      0x111827,
-    ),
+    createPoint(A, 0x111827),
 
-    createPoint(
-      B,
-      0x2563eb,
-    ),
+    createPoint(B, 0x2563eb),
 
-    createPoint(
-      C,
-      0x10b981,
-    ),
+    createPoint(C, 0x10b981),
   )
 
   // --------------------------------------
@@ -282,64 +178,25 @@ function updateModel() {
   // --------------------------------------
 
   model.add(
-    createLabel(
-      'O',
-      O
-        .clone()
-        .addScaledVector(
-          directionAO,
-          0.13,
-        ),
-      {
-        textColor: '#0f172a',
-        scale: 0.35,
-      },
-    ),
+    createLabel('O', O.clone().addScaledVector(directionAO, 0.13), {
+      textColor: '#0f172a',
+      scale: 0.35,
+    }),
 
-    createLabel(
-      'A',
-      A
-        .clone()
-        .add(
-          new THREE.Vector3(
-            0.12,
-            0.08,
-            0.08,
-          ),
-        ),
-      {
-        textColor: '#0f172a',
-        scale: 0.35,
-      },
-    ),
+    createLabel('A', A.clone().add(new THREE.Vector3(0.12, 0.08, 0.08)), {
+      textColor: '#0f172a',
+      scale: 0.35,
+    }),
 
-    createLabel(
-      'B',
-      B
-        .clone()
-        .addScaledVector(
-          directionAB,
-          0.13,
-        ),
-      {
-        textColor: '#0f172a',
-        scale: 0.35,
-      },
-    ),
+    createLabel('B', B.clone().addScaledVector(directionAB, 0.13), {
+      textColor: '#0f172a',
+      scale: 0.35,
+    }),
 
-    createLabel(
-      'C',
-      C
-        .clone()
-        .addScaledVector(
-          directionAC,
-          0.13,
-        ),
-      {
-        textColor: '#0f172a',
-        scale: 0.35,
-      },
-    ),
+    createLabel('C', C.clone().addScaledVector(directionAC, 0.13), {
+      textColor: '#0f172a',
+      scale: 0.35,
+    }),
   )
 
   // --------------------------------------
@@ -357,46 +214,22 @@ function updateModel() {
      * ∠BExtended OExtended CExtended
      * 는 두 평면 AOB, AOC의 이면각이다.
      */
-    createAngleArc(
-      OExtended,
-      BExtended,
-      CExtended,
-      0.34,
-      0x7c3aed,
-    ),
+    createAngleArc(OExtended, BExtended, CExtended, 0.34, 0x7c3aed),
 
     /*
      * θ₂ = ∠OAB
      */
-    createAngleArc(
-      A,
-      O,
-      B,
-      0.23,
-      0x2563eb,
-    ),
+    createAngleArc(A, O, B, 0.23, 0x2563eb),
 
     /*
      * θ₃ = ∠OAC
      */
-    createAngleArc(
-      A,
-      O,
-      C,
-      0.34,
-      0x059669,
-    ),
+    createAngleArc(A, O, C, 0.34, 0x059669),
 
     /*
      * 결과 각 ∠CAB
      */
-    createAngleArc(
-      A,
-      C,
-      B,
-      0.46,
-      0xd97706,
-    ),
+    createAngleArc(A, C, B, 0.46, 0xd97706),
   )
 
   // --------------------------------------
@@ -404,61 +237,25 @@ function updateModel() {
   // --------------------------------------
 
   model.add(
-    createLabel(
-      'θ₁',
-      getAngleLabelPosition(
-        OExtended,
-        BExtended,
-        CExtended,
-        0.5,
-      ),
-      {
-        textColor: '#7c3aed',
-        scale: 0.2,
-      },
-    ),
+    createLabel('θ₁', getAngleLabelPosition(OExtended, BExtended, CExtended, 0.5), {
+      textColor: '#7c3aed',
+      scale: 0.2,
+    }),
 
-    createLabel(
-      'θ₂',
-      getAngleLabelPosition(
-        A,
-        O,
-        B,
-        0.29,
-      ),
-      {
-        textColor: '#2563eb',
-        scale: 0.18,
-      },
-    ),
+    createLabel('θ₂', getAngleLabelPosition(A, O, B, 0.29), {
+      textColor: '#2563eb',
+      scale: 0.18,
+    }),
 
-    createLabel(
-      'θ₃',
-      getAngleLabelPosition(
-        A,
-        O,
-        C,
-        0.4,
-      ),
-      {
-        textColor: '#059669',
-        scale: 0.18,
-      },
-    ),
+    createLabel('θ₃', getAngleLabelPosition(A, O, C, 0.4), {
+      textColor: '#059669',
+      scale: 0.18,
+    }),
 
-    createLabel(
-      '∠CAB',
-      getAngleLabelPosition(
-        A,
-        C,
-        B,
-        0.57,
-      ),
-      {
-        textColor: '#d97706',
-        scale: 0.18,
-      },
-    ),
+    createLabel('∠CAB', getAngleLabelPosition(A, C, B, 0.57), {
+      textColor: '#d97706',
+      scale: 0.18,
+    }),
   )
 }
 
@@ -467,11 +264,7 @@ function updateModel() {
 // --------------------------------------
 
 watch(
-  () => [
-    props.lengths.AO,
-    props.lengths.AB,
-    props.lengths.AC,
-  ],
+  () => [props.lengths.AO, props.lengths.AB, props.lengths.AC],
   () => {
     updateModel()
   },
@@ -495,13 +288,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section
-    id="invariance-viewer"
-    ref="viewer"
-  >
-    <p class="invariance-guide">
-      드래그: 회전 · 휠: 확대/축소
-    </p>
+  <section id="invariance-viewer" ref="viewer">
+    <p class="invariance-guide">드래그: 회전 · 휠: 확대/축소</p>
   </section>
 </template>
 
@@ -529,9 +317,7 @@ onBeforeUnmount(() => {
   height: auto;
 
   margin: 0;
-  padding:
-    clamp(5px, 0.7vw, 8px)
-    clamp(8px, 1vw, 12px);
+  padding: clamp(5px, 0.7vw, 8px) clamp(8px, 1vw, 12px);
 
   border: 1px solid #dbe3ee;
   border-radius: 8px;

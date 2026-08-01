@@ -65,9 +65,7 @@ defineProps({
     </div>
 
     <section class="invariance-result">
-      <p class="result-title">
-        ✓ 각도 불변!
-      </p>
+      <p class="result-title">✓ 각도 불변!</p>
 
       <p class="result-description">
         선분의 길이는 변하지만<br />

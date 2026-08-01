@@ -3,10 +3,7 @@ import { ref } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import {
-  createLabel,
-  disposeObject,
-} from '../utils/threeGeometry.js'
+import { createLabel, disposeObject } from '../utils/threeGeometry.js'
 
 export function useThreeViewer() {
   // --------------------------------------
@@ -60,18 +57,9 @@ export function useThreeViewer() {
 
     // Camera
 
-    camera = new THREE.PerspectiveCamera(
-      45,
-      width / height,
-      0.1,
-      100,
-    )
+    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
 
-    camera.position.set(
-      3.35,
-      3.1,
-      4.55,
-    )
+    camera.position.set(3.35, 3.1, 4.55)
 
     // Renderer
 
@@ -79,37 +67,19 @@ export function useThreeViewer() {
       antialias: true,
     })
 
-    renderer.setPixelRatio(
-      Math.min(
-        window.devicePixelRatio,
-        2,
-      ),
-    )
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    renderer.setSize(
-      width,
-      height,
-      false,
-    )
+    renderer.setSize(width, height, false)
 
-    viewerElement.prepend(
-      renderer.domElement,
-    )
+    viewerElement.prepend(renderer.domElement)
 
     // OrbitControls
 
-    orbitControls = new OrbitControls(
-      camera,
-      renderer.domElement,
-    )
+    orbitControls = new OrbitControls(camera, renderer.domElement)
 
     orbitControls.enableDamping = true
 
-    orbitControls.target.set(
-      0,
-      0,
-      0,
-    )
+    orbitControls.target.set(0, 0, 0)
 
     orbitControls.minDistance = 2
     orbitControls.maxDistance = 12
@@ -118,100 +88,50 @@ export function useThreeViewer() {
 
     // 조명
 
-    const ambientLight =
-      new THREE.AmbientLight(
-        0xffffff,
-        1.8,
-      )
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8)
 
-    scene.add(
-      ambientLight,
-    )
+    scene.add(ambientLight)
 
-    const directionalLight =
-      new THREE.DirectionalLight(
-        0xffffff,
-        2,
-      )
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 2)
 
-    directionalLight.position.set(
-      5,
-      5,
-      5,
-    )
+    directionalLight.position.set(5, 5, 5)
 
-    scene.add(
-      directionalLight,
-    )
+    scene.add(directionalLight)
 
     // 좌표축
 
-    const axesHelper =
-      new THREE.AxesHelper(
-        2.5,
-      )
+    const axesHelper = new THREE.AxesHelper(2.5)
 
-    scene.add(
-      axesHelper,
-    )
+    scene.add(axesHelper)
 
     // 좌표축 라벨
 
-    const axisLabels =
-      new THREE.Group()
+    const axisLabels = new THREE.Group()
 
     axisLabels.add(
-      createLabel(
-        'x',
-        new THREE.Vector3(
-          2.7,
-          0,
-          0,
-        ),
-        {
-          textColor: '#ef4444',
-          scale: 0.32,
-        },
-      ),
+      createLabel('x', new THREE.Vector3(2.7, 0, 0), {
+        textColor: '#ef4444',
+        scale: 0.32,
+      }),
 
-      createLabel(
-        'y',
-        new THREE.Vector3(
-          0,
-          2.7,
-          0,
-        ),
-        {
-          textColor: '#16a34a',
-          scale: 0.32,
-        },
-      ),
+      createLabel('y', new THREE.Vector3(0, 2.7, 0), {
+        textColor: '#16a34a',
+        scale: 0.32,
+      }),
 
-      createLabel(
-        'z',
-        new THREE.Vector3(
-          0,
-          0,
-          2.7,
-        ),
-        {
-          textColor: '#2563eb',
-          scale: 0.32,
-        },
-      ),
+      createLabel('z', new THREE.Vector3(0, 0, 2.7), {
+        textColor: '#2563eb',
+        scale: 0.32,
+      }),
     )
 
-    scene.add(
-      axisLabels,
-    )
+    scene.add(axisLabels)
 
     // 실제 도형 그룹
 
     model = new THREE.Group()
 
-    scene.add(
-      model,
-    )
+    scene.add(model)
   }
 
   // --------------------------------------
@@ -221,19 +141,13 @@ export function useThreeViewer() {
   function resizeRenderer() {
     const viewerElement = viewer.value
 
-    if (
-      !viewerElement ||
-      !camera ||
-      !renderer
-    ) {
+    if (!viewerElement || !camera || !renderer) {
       return
     }
 
-    const width =
-      viewerElement.clientWidth
+    const width = viewerElement.clientWidth
 
-    const height =
-      viewerElement.clientHeight
+    const height = viewerElement.clientHeight
 
     if (width === 0 || height === 0) {
       return
@@ -246,11 +160,7 @@ export function useThreeViewer() {
     camera.aspect = width / height
     camera.updateProjectionMatrix()
 
-    renderer.setSize(
-      width,
-      height,
-      false,
-    )
+    renderer.setSize(width, height, false)
   }
 
   // --------------------------------------
@@ -266,9 +176,7 @@ export function useThreeViewer() {
       resizeRenderer()
     })
 
-    resizeObserver.observe(
-      viewer.value,
-    )
+    resizeObserver.observe(viewer.value)
   }
 
   // --------------------------------------
@@ -276,20 +184,12 @@ export function useThreeViewer() {
   // --------------------------------------
 
   function animate() {
-    animationFrameId =
-      requestAnimationFrame(animate)
+    animationFrameId = requestAnimationFrame(animate)
 
     orbitControls?.update()
 
-    if (
-      renderer &&
-      scene &&
-      camera
-    ) {
-      renderer.render(
-        scene,
-        camera,
-      )
+    if (renderer && scene && camera) {
+      renderer.render(scene, camera)
     }
   }
 
@@ -299,9 +199,7 @@ export function useThreeViewer() {
 
   function disposeThree() {
     if (animationFrameId !== null) {
-      cancelAnimationFrame(
-        animationFrameId,
-      )
+      cancelAnimationFrame(animationFrameId)
     }
 
     resizeObserver?.disconnect()

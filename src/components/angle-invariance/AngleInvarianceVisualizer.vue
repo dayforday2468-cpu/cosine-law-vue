@@ -4,15 +4,9 @@ import { ref } from 'vue'
 import InvarianceViewer from './InvarianceViewer.vue'
 import LengthControls from './LengthControls.vue'
 
-import { invarianceGeometry } from '../../utils/invarianceGeometry.js'
+import { invarianceGeometry } from './invarianceGeometry.js'
 
-const {
-  A,
-  OExtended,
-  BExtended,
-  CExtended,
-  maxLengths,
-} = invarianceGeometry
+const { A, OExtended, BExtended, CExtended, maxLengths } = invarianceGeometry
 
 const lengths = ref({
   AO: maxLengths.AO / 2,
@@ -31,11 +25,11 @@ const geometry = {
 <template>
   <main class="invariance-app">
     <section class="invariance-viewer">
-      <InvarianceViewer :lengths="lengths" :geometry="geometry"/>
+      <InvarianceViewer :lengths="lengths" :geometry="geometry" />
     </section>
 
     <aside class="invariance-controls">
-      <LengthControls v-model:lengths="lengths" :max-lengths="maxLengths"/>
+      <LengthControls v-model:lengths="lengths" :max-lengths="maxLengths" />
     </aside>
   </main>
 </template>

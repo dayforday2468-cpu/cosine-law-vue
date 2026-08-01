@@ -23,7 +23,6 @@ const angles = reactive({
   </main>
 </template>
 <style scoped>
-
 .cosine-law-app {
   display: grid;
 
@@ -44,9 +43,7 @@ const angles = reactive({
   overflow-x: hidden;
   overflow-y: auto;
 
-  padding:
-    clamp(12px, 2vw, 28px)
-    clamp(8px, 1.6vw, 22px);
+  padding: clamp(12px, 2vw, 28px) clamp(8px, 1.6vw, 22px);
 
   border-left: 1px solid #dbe3ee;
 

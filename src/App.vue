@@ -5,5 +5,5 @@ import AngleInvarianceVisualizer from './components/angle-invariance/AngleInvari
 
 <template>
   <CosineLawVisualizer />
-  <AngleInvarianceVisualizer/>
+  <AngleInvarianceVisualizer />
 </template>

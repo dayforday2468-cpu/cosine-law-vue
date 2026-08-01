@@ -15,13 +15,7 @@ const angles = defineModel('angles', {
         <output>{{ angles.theta1 }}°</output>
       </label>
 
-      <input
-        id="theta1"
-        v-model.number="angles.theta1"
-        type="range"
-        min="10"
-        max="170"
-      />
+      <input id="theta1" v-model.number="angles.theta1" type="range" min="10" max="170" />
     </div>
 
     <div class="angle-control">
@@ -30,13 +24,7 @@ const angles = defineModel('angles', {
         <output>{{ angles.theta2 }}°</output>
       </label>
 
-      <input
-        id="theta2"
-        v-model.number="angles.theta2"
-        type="range"
-        min="10"
-        max="80"
-      />
+      <input id="theta2" v-model.number="angles.theta2" type="range" min="10" max="80" />
     </div>
 
     <div class="angle-control">
@@ -45,13 +33,7 @@ const angles = defineModel('angles', {
         <output>{{ angles.theta3 }}°</output>
       </label>
 
-      <input
-        id="theta3"
-        v-model.number="angles.theta3"
-        type="range"
-        min="10"
-        max="80"
-      />
+      <input id="theta3" v-model.number="angles.theta3" type="range" min="10" max="80" />
     </div>
   </section>
 </template>
