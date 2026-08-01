@@ -4,7 +4,7 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-import { calculateGeometry } from '../utils/geometry.js'
+import { calculateGeometry } from '../../utils/geometry.js'
 
 const props = defineProps({
   angles: {
@@ -618,7 +618,59 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section id="viewer" ref="viewer">
-    <p class="guide">드래그: 회전 · 휠: 확대/축소</p>
+  <section
+    ref="viewer"
+    class="cosine-law-viewer"
+  >
+    <p class="cosine-law-guide">
+      드래그: 회전 · 휠: 확대/축소
+    </p>
   </section>
 </template>
+
+<style scoped>
+.cosine-law-viewer {
+  position: relative;
+
+  min-width: 0;
+  min-height: 0;
+
+  overflow: hidden;
+
+  background: #ffffff;
+}
+
+.cosine-law-viewer :deep(canvas) {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+}
+
+.cosine-law-guide {
+  position: absolute;
+  z-index: 10;
+  bottom: clamp(10px, 1.5vw, 20px);
+  left: clamp(10px, 1.5vw, 20px);
+
+  width: auto;
+  height: auto;
+
+  margin: 0;
+  padding:
+    clamp(5px, 0.7vw, 8px)
+    clamp(8px, 1vw, 12px);
+
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+
+  background: rgb(255 255 255 / 90%);
+  color: #475569;
+
+  font-size: clamp(10px, 1vw, 14px);
+  line-height: 1.4;
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+</style>
