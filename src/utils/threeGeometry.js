@@ -19,6 +19,21 @@ export function createPoint(position, color, radius = 0.065) {
 }
 
 // --------------------------------------
+// 구 생성
+// --------------------------------------
+export function createSphere(radius, color, opacity = 1, segments = 64) {
+  const geometry = new THREE.SphereGeometry(radius, segments, segments)
+
+  const material = new THREE.MeshStandardMaterial({
+    color,
+    transparent: opacity < 1,
+    opacity,
+  })
+
+  return new THREE.Mesh(geometry, material)
+}
+
+// --------------------------------------
 // 선 생성
 // --------------------------------------
 
