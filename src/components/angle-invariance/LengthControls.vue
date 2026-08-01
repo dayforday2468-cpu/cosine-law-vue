@@ -3,6 +3,13 @@ const lengths = defineModel('lengths', {
   type: Object,
   required: true,
 })
+
+defineProps({
+  maxLengths: {
+    type: Object,
+    required: true,
+  },
+})
 </script>
 
 <template>
@@ -20,7 +27,7 @@ const lengths = defineModel('lengths', {
         v-model.number="lengths.AO"
         type="range"
         min="0.5"
-        max="2.5"
+        :max="maxLengths.AO"
         step="0.01"
       />
     </div>
@@ -36,7 +43,7 @@ const lengths = defineModel('lengths', {
         v-model.number="lengths.AB"
         type="range"
         min="0.5"
-        max="2.5"
+        :max="maxLengths.AB"
         step="0.01"
       />
     </div>
@@ -52,7 +59,7 @@ const lengths = defineModel('lengths', {
         v-model.number="lengths.AC"
         type="range"
         min="0.5"
-        max="2.5"
+        :max="maxLengths.AC"
         step="0.01"
       />
     </div>

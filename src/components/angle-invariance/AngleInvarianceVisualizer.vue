@@ -1,24 +1,41 @@
 <script setup>
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
 import InvarianceViewer from './InvarianceViewer.vue'
 import LengthControls from './LengthControls.vue'
 
-const lengths = reactive({
-  AO: 1.0,
-  AB: 1.4,
-  AC: 1.3,
+import { invarianceGeometry } from '../../utils/invarianceGeometry.js'
+
+const {
+  A,
+  OExtended,
+  BExtended,
+  CExtended,
+  maxLengths,
+} = invarianceGeometry
+
+const lengths = ref({
+  AO: maxLengths.AO / 2,
+  AB: maxLengths.AB / 2,
+  AC: maxLengths.AC / 2,
 })
+
+const geometry = {
+  A,
+  OExtended,
+  BExtended,
+  CExtended,
+}
 </script>
 
 <template>
   <main class="invariance-app">
     <section class="invariance-viewer">
-      <InvarianceViewer :lengths="lengths"/>
+      <InvarianceViewer :lengths="lengths" :geometry="geometry"/>
     </section>
 
     <aside class="invariance-controls">
-      <LengthControls v-model:lengths="lengths"/>
+      <LengthControls v-model:lengths="lengths" :max-lengths="maxLengths"/>
     </aside>
   </main>
 </template>
