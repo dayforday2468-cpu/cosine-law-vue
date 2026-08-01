@@ -4,6 +4,16 @@ import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
+import {
+  createPoint,
+  createLine,
+  createFace,
+  createLabel,
+  createAngleArc,
+  getAngleLabelPosition,
+  disposeObject,
+} from '../../utils/threeGeometry.js'
+
 const props = defineProps({
   lengths: {
     type: Object,
@@ -87,331 +97,6 @@ const directionAC = baseC
   .clone()
   .sub(baseA)
   .normalize()
-
-// --------------------------------------
-// 점 생성
-// --------------------------------------
-
-function createPoint(position, color) {
-  const geometry = new THREE.SphereGeometry(0.065, 12, 12)
-
-  const material = new THREE.MeshStandardMaterial({
-    color,
-  })
-
-  const point = new THREE.Mesh(geometry, material)
-
-  point.position.copy(position)
-
-  return point
-}
-
-// --------------------------------------
-// 선 생성
-// --------------------------------------
-
-function createLine(start, end, color, opacity = 1) {
-  const geometry = new THREE.BufferGeometry().setFromPoints([
-    start,
-    end,
-  ])
-
-  const material = new THREE.LineBasicMaterial({
-    color,
-    transparent: opacity < 1,
-    opacity,
-  })
-
-  return new THREE.Line(geometry, material)
-}
-
-// --------------------------------------
-// 삼각형 면 생성
-// --------------------------------------
-
-function createFace(a, b, c, color, opacity) {
-  const geometry = new THREE.BufferGeometry()
-
-  const vertices = new Float32Array([
-    a.x,
-    a.y,
-    a.z,
-
-    b.x,
-    b.y,
-    b.z,
-
-    c.x,
-    c.y,
-    c.z,
-  ])
-
-  geometry.setAttribute(
-    'position',
-    new THREE.BufferAttribute(vertices, 3),
-  )
-
-  geometry.computeVertexNormals()
-
-  const material = new THREE.MeshStandardMaterial({
-    color,
-    transparent: true,
-    opacity,
-    side: THREE.DoubleSide,
-    depthWrite: false,
-  })
-
-  return new THREE.Mesh(geometry, material)
-}
-
-// --------------------------------------
-// 문자 라벨 생성
-// --------------------------------------
-
-function createLabel(
-  text,
-  position,
-  color = '#111827',
-  size = 0.28,
-) {
-  const canvas = document.createElement('canvas')
-
-  const context = canvas.getContext('2d')
-
-  if (!context) {
-    throw new Error('Canvas 2D context를 생성할 수 없습니다.')
-  }
-
-  const fontSize = 56
-  const horizontalPadding = 28
-
-  context.font = `bold ${fontSize}px Arial`
-
-  const textWidth = Math.ceil(
-    context.measureText(text).width,
-  )
-
-  canvas.width = Math.max(
-    128,
-    textWidth + horizontalPadding * 2,
-  )
-
-  canvas.height = 128
-
-  /*
-   * canvas 크기를 변경하면 context 설정이
-   * 초기화되므로 다시 지정한다.
-   */
-  context.clearRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height,
-  )
-
-  context.fillStyle = color
-  context.font = `bold ${fontSize}px Arial`
-  context.textAlign = 'center'
-  context.textBaseline = 'middle'
-
-  context.fillText(
-    text,
-    canvas.width / 2,
-    canvas.height / 2,
-  )
-
-  const texture = new THREE.CanvasTexture(canvas)
-
-  texture.needsUpdate = true
-
-  const material = new THREE.SpriteMaterial({
-    map: texture,
-    transparent: true,
-
-    /*
-     * 다른 면 뒤에서도
-     * 라벨이 보이도록 한다.
-     */
-    depthTest: false,
-  })
-
-  const label = new THREE.Sprite(material)
-
-  const aspectRatio =
-    canvas.width / canvas.height
-
-  label.position.copy(position)
-
-  label.scale.set(
-    size * aspectRatio,
-    size,
-    1,
-  )
-
-  label.renderOrder = 20
-
-  return label
-}
-
-// --------------------------------------
-// 평면각 원호 생성
-// --------------------------------------
-
-function createAngleArc(
-  vertex,
-  point1,
-  point2,
-  radius,
-  color,
-  segments = 64,
-) {
-  const direction1 = point1
-    .clone()
-    .sub(vertex)
-    .normalize()
-
-  const direction2 = point2
-    .clone()
-    .sub(vertex)
-    .normalize()
-
-  const dot = THREE.MathUtils.clamp(
-    direction1.dot(direction2),
-    -1,
-    1,
-  )
-
-  const angle = Math.acos(dot)
-
-  const points = []
-
-  if (angle < 1e-7) {
-    points.push(
-      vertex
-        .clone()
-        .add(
-          direction1
-            .clone()
-            .multiplyScalar(radius),
-        ),
-    )
-  } else {
-    let axis = new THREE.Vector3().crossVectors(
-      direction1,
-      direction2,
-    )
-
-    /*
-     * 두 벡터가 반대 방향이면 외적이 0이 된다.
-     * 이 경우 임의의 수직축을 만든다.
-     */
-    if (axis.lengthSq() < 1e-10) {
-      axis = new THREE.Vector3(1, 0, 0)
-        .cross(direction1)
-
-      if (axis.lengthSq() < 1e-10) {
-        axis = new THREE.Vector3(0, 1, 0)
-          .cross(direction1)
-      }
-    }
-
-    axis.normalize()
-
-    for (
-      let index = 0;
-      index <= segments;
-      index += 1
-    ) {
-      const ratio = index / segments
-
-      const direction = direction1
-        .clone()
-        .applyAxisAngle(
-          axis,
-          angle * ratio,
-        )
-        .normalize()
-
-      const point = vertex
-        .clone()
-        .add(
-          direction.multiplyScalar(radius),
-        )
-
-      points.push(point)
-    }
-  }
-
-  const geometry =
-    new THREE.BufferGeometry().setFromPoints(points)
-
-  const material = new THREE.LineBasicMaterial({
-    color,
-    transparent: true,
-    opacity: 0.95,
-
-    /*
-     * 삼각형 면에 가려지지 않도록 한다.
-     */
-    depthTest: false,
-  })
-
-  const arc = new THREE.Line(
-    geometry,
-    material,
-  )
-
-  arc.renderOrder = 15
-
-  return arc
-}
-
-// --------------------------------------
-// 평면각 라벨 위치 계산
-// --------------------------------------
-
-function getAngleLabelPosition(
-  vertex,
-  point1,
-  point2,
-  radius,
-) {
-  const direction1 = point1
-    .clone()
-    .sub(vertex)
-    .normalize()
-
-  const direction2 = point2
-    .clone()
-    .sub(vertex)
-    .normalize()
-
-  /*
-   * 두 단위벡터의 합은
-   * 두 방향 사이의 이등분선 방향이다.
-   */
-  let bisector = direction1
-    .clone()
-    .add(direction2)
-
-  if (bisector.lengthSq() < 1e-10) {
-    bisector = new THREE.Vector3(1, 0, 0)
-      .cross(direction1)
-
-    if (bisector.lengthSq() < 1e-10) {
-      bisector = new THREE.Vector3(0, 1, 0)
-        .cross(direction1)
-    }
-  }
-
-  return vertex
-    .clone()
-    .add(
-      bisector
-        .normalize()
-        .multiplyScalar(radius),
-    )
-}
 
 // --------------------------------------
 // 이면각 정보 계산
@@ -654,26 +339,6 @@ function calculateCurrentPoints() {
 }
 
 // --------------------------------------
-// 객체 메모리 정리
-// --------------------------------------
-
-function disposeObject(object) {
-  object.geometry?.dispose()
-
-  if (Array.isArray(object.material)) {
-    object.material.forEach((material) => {
-      material.map?.dispose()
-      material.dispose()
-    })
-
-    return
-  }
-
-  object.material?.map?.dispose()
-  object.material?.dispose()
-}
-
-// --------------------------------------
 // 기존 모델 제거
 // --------------------------------------
 
@@ -897,55 +562,70 @@ function updateModel() {
     ),
   )
 
-  // --------------------------------------
-  // 꼭짓점 이름
-  // --------------------------------------
+// --------------------------------------
+// 꼭짓점 이름
+// --------------------------------------
 
-  model.add(
-    createLabel(
-      'O',
-      O
-        .clone()
-        .addScaledVector(
-          directionAO,
-          0.13,
+model.add(
+  createLabel(
+    'O',
+    O
+      .clone()
+      .addScaledVector(
+        directionAO,
+        0.13,
+      ),
+    {
+      textColor: '#0f172a',
+      scale: 0.35,
+    },
+  ),
+
+  createLabel(
+    'A',
+    A
+      .clone()
+      .add(
+        new THREE.Vector3(
+          0.12,
+          0.08,
+          0.08,
         ),
-    ),
+      ),
+    {
+      textColor: '#0f172a',
+      scale: 0.35,
+    },
+  ),
 
-    createLabel(
-      'A',
-      A
-        .clone()
-        .add(
-          new THREE.Vector3(
-            0.12,
-            0.08,
-            0.08,
-          ),
-        ),
-    ),
+  createLabel(
+    'B',
+    B
+      .clone()
+      .addScaledVector(
+        directionAB,
+        0.13,
+      ),
+    {
+      textColor: '#0f172a',
+      scale: 0.35,
+    },
+  ),
 
-    createLabel(
-      'B',
-      B
-        .clone()
-        .addScaledVector(
-          directionAB,
-          0.13,
-        ),
-    ),
-
-    createLabel(
-      'C',
-      C
-        .clone()
-        .addScaledVector(
-          directionAC,
-          0.13,
-        ),
-    ),
-  )
-
+  createLabel(
+    'C',
+    C
+      .clone()
+      .addScaledVector(
+        directionAC,
+        0.13,
+      ),
+    {
+      textColor: '#0f172a',
+      scale: 0.35,
+    },
+  ),
+)
   // --------------------------------------
   // 각도 원호
   // --------------------------------------
@@ -1016,8 +696,10 @@ function updateModel() {
         dihedralCenterDistance,
         0.29,
       ),
-      '#7c3aed',
-      0.2,
+      {
+        textColor: '#7c3aed',
+        scale: 0.2,
+      },
     ),
 
     createLabel(
@@ -1028,8 +710,10 @@ function updateModel() {
         B,
         0.29,
       ),
-      '#2563eb',
-      0.18,
+      {
+        textColor: '#2563eb',
+        scale: 0.18,
+      },
     ),
 
     createLabel(
@@ -1040,8 +724,10 @@ function updateModel() {
         C,
         0.4,
       ),
-      '#059669',
-      0.18,
+      {
+        textColor: '#059669',
+        scale: 0.18,
+      },
     ),
 
     createLabel(
@@ -1052,8 +738,10 @@ function updateModel() {
         B,
         0.57,
       ),
-      '#d97706',
-      0.18,
+      {
+        textColor: '#d97706',
+        scale: 0.18,
+      },
     ),
   )
 }
