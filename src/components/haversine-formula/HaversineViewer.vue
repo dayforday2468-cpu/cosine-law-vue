@@ -19,11 +19,7 @@ import {
   getAngleLabelPosition,
 } from '../../utils/threeGeometry.js'
 
-import {
-  EARTH_RADIUS,
-  calculateGreatCirclePoints,
-  latLonToVector3,
-} from './haversineGeometry.js'
+import { EARTH_RADIUS, calculateGreatCirclePoints, latLonToVector3 } from './haversineGeometry.js'
 
 const props = defineProps({
   latitude1: {
@@ -51,8 +47,16 @@ const props = defineProps({
 // Three.js Viewer
 // --------------------------------------
 
-const { viewer, isResizing,getModel, initializeThree, resizeRenderer, observeResize, animate, disposeThree } =
-  useThreeViewer()
+const {
+  viewer,
+  isResizing,
+  getModel,
+  initializeThree,
+  resizeRenderer,
+  observeResize,
+  animate,
+  disposeThree,
+} = useThreeViewer()
 
 // --------------------------------------
 // 현재 기하 상태 계산
@@ -141,16 +145,8 @@ function updateModel() {
 
   clearModel()
 
-  const {
-    O,
-    N,
-    P1,
-    P2,
-    northExtended,
-    P1Extended,
-    P2Extended,
-    greatCirclePoints,
-  } = calculateCurrentGeometry()
+  const { O, N, P1, P2, northExtended, P1Extended, P2Extended, greatCirclePoints } =
+    calculateCurrentGeometry()
 
   // --------------------------------------
   // 지구
@@ -201,10 +197,7 @@ function updateModel() {
   // 90° - 위도
   // --------------------------------------
 
-  model.add(
-    createAngleArc(O, N, P1, 0.5, 0x2563eb),
-    createAngleArc(O, N, P2, 0.62, 0x10b981),
-  )
+  model.add(createAngleArc(O, N, P1, 0.5, 0x2563eb), createAngleArc(O, N, P2, 0.62, 0x10b981))
 
   // --------------------------------------
   // 점
@@ -250,23 +243,15 @@ function updateModel() {
       scale: 0.24,
     }),
 
-    createLabel(
-      '90° - φ₁',
-      getAngleLabelPosition(O, N, P1, 0.62),
-      {
-        textColor: '#2563eb',
-        scale: 0.23,
-      },
-    ),
+    createLabel('90° - φ₁', getAngleLabelPosition(O, N, P1, 0.62), {
+      textColor: '#2563eb',
+      scale: 0.23,
+    }),
 
-    createLabel(
-      '90° - φ₂',
-      getAngleLabelPosition(O, N, P2, 0.76),
-      {
-        textColor: '#059669',
-        scale: 0.23,
-      },
-    ),
+    createLabel('90° - φ₂', getAngleLabelPosition(O, N, P2, 0.76), {
+      textColor: '#059669',
+      scale: 0.23,
+    }),
   )
 }
 

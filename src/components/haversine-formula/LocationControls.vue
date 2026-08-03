@@ -50,9 +50,7 @@ const props = defineProps({
 
 const haversineAngleDegrees = computed(() => (props.haversineAngle * 180) / Math.PI)
 
-const sphericalCosineAngleDegrees = computed(
-  () => (props.sphericalCosineAngle * 180) / Math.PI,
-)
+const sphericalCosineAngleDegrees = computed(() => (props.sphericalCosineAngle * 180) / Math.PI)
 
 const FINE_STEP = 0.01
 
@@ -92,14 +90,7 @@ function adjustCoordinate(value, amount, min, max) {
         </div>
       </label>
 
-      <input
-        id="latitude-1"
-        v-model.number="latitude1"
-        type="range"
-        min="-90"
-        max="90"
-        step="1"
-      />
+      <input id="latitude-1" v-model.number="latitude1" type="range" min="-90" max="90" step="1" />
     </div>
 
     <div class="control-group">
@@ -160,14 +151,7 @@ function adjustCoordinate(value, amount, min, max) {
         </div>
       </label>
 
-      <input
-        id="latitude-2"
-        v-model.number="latitude2"
-        type="range"
-        min="-90"
-        max="90"
-        step="1"
-      />
+      <input id="latitude-2" v-model.number="latitude2" type="range" min="-90" max="90" step="1" />
     </div>
 
     <div class="control-group">

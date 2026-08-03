@@ -29,12 +29,7 @@ const longitude2 = ref(139.6503)
 // --------------------------------------
 
 const haversineAngle = computed(() =>
-  calculateHaversineAngle(
-    latitude1.value,
-    longitude1.value,
-    latitude2.value,
-    longitude2.value,
-  ),
+  calculateHaversineAngle(latitude1.value, longitude1.value, latitude2.value, longitude2.value),
 )
 
 const sphericalCosineAngle = computed(() =>
@@ -51,12 +46,7 @@ const sphericalCosineAngle = computed(() =>
 // --------------------------------------
 
 const haversineDistance = computed(() =>
-  calculateHaversineDistance(
-    latitude1.value,
-    longitude1.value,
-    latitude2.value,
-    longitude2.value,
-  ),
+  calculateHaversineDistance(latitude1.value, longitude1.value, latitude2.value, longitude2.value),
 )
 
 const sphericalCosineDistance = computed(() =>

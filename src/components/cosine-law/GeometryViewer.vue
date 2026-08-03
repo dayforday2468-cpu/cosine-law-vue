@@ -31,8 +31,16 @@ const props = defineProps({
 // Three.js Viewer
 // --------------------------------------
 
-const { viewer, isResizing, getModel, initializeThree, resizeRenderer, observeResize, animate, disposeThree } =
-  useThreeViewer()
+const {
+  viewer,
+  isResizing,
+  getModel,
+  initializeThree,
+  resizeRenderer,
+  observeResize,
+  animate,
+  disposeThree,
+} = useThreeViewer()
 
 // --------------------------------------
 // 기존 모델 제거

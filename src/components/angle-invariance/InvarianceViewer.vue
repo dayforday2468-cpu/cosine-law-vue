@@ -18,7 +18,6 @@ import {
   disposeObject,
 } from '../../utils/threeGeometry.js'
 
-
 const props = defineProps({
   lengths: {
     type: Object,
@@ -56,8 +55,16 @@ const directionAC = CExtended.clone().sub(baseA).normalize()
 // Three.js Viewer
 // --------------------------------------
 
-const { viewer, isResizing, getModel, initializeThree, resizeRenderer, observeResize, animate, disposeThree } =
-  useThreeViewer()
+const {
+  viewer,
+  isResizing,
+  getModel,
+  initializeThree,
+  resizeRenderer,
+  observeResize,
+  animate,
+  disposeThree,
+} = useThreeViewer()
 
 // --------------------------------------
 // 현재 점 좌표 계산
