@@ -3,6 +3,10 @@ import { onBeforeUnmount, onMounted, watch } from 'vue'
 
 import * as THREE from 'three'
 
+import ResizingLoading from '../common/ResizingLoading.vue'
+
+import { useThreeViewer } from '../../composables/useThreeViewer.js'
+
 import {
   createPoint,
   createLine,
@@ -13,7 +17,6 @@ import {
   disposeObject,
 } from '../../utils/threeGeometry.js'
 
-import { useThreeViewer } from '../../composables/useThreeViewer.js'
 
 const props = defineProps({
   lengths: {
@@ -52,7 +55,7 @@ const directionAC = CExtended.clone().sub(baseA).normalize()
 // Three.js Viewer
 // --------------------------------------
 
-const { viewer, getModel, initializeThree, resizeRenderer, observeResize, animate, disposeThree } =
+const { viewer, isResizing, getModel, initializeThree, resizeRenderer, observeResize, animate, disposeThree } =
   useThreeViewer()
 
 // --------------------------------------
@@ -289,6 +292,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section id="invariance-viewer" ref="viewer">
+    <ResizingLoading :visible="isResizing" message="화면 크기를 조정하고 있습니다." />
     <p class="invariance-guide">드래그: 회전 · 휠: 확대/축소</p>
   </section>
 </template>

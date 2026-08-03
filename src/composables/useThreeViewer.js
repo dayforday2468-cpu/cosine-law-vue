@@ -13,6 +13,14 @@ export function useThreeViewer() {
   const viewer = ref(null)
 
   // --------------------------------------
+  // Resize 상태
+  // --------------------------------------
+
+  const isResizing = ref(false)
+
+  const RESIZE_DEBOUNCE_DELAY = 200
+
+  // --------------------------------------
   // Three.js 상태
   // --------------------------------------
 
@@ -21,8 +29,12 @@ export function useThreeViewer() {
   let renderer = null
   let orbitControls = null
   let resizeObserver = null
+  let resizeTimerId = null
   let animationFrameId = null
   let model = null
+
+  let previousWidth = 0
+  let previousHeight = 0
 
   // --------------------------------------
   // Model 접근
@@ -49,6 +61,9 @@ export function useThreeViewer() {
     if (width === 0 || height === 0) {
       return
     }
+
+    previousWidth = width
+    previousHeight = height
 
     // Scene
 
@@ -161,6 +176,9 @@ export function useThreeViewer() {
     camera.updateProjectionMatrix()
 
     renderer.setSize(width, height, false)
+
+    previousWidth = width
+    previousHeight = height
   }
 
   // --------------------------------------
@@ -168,15 +186,47 @@ export function useThreeViewer() {
   // --------------------------------------
 
   function observeResize() {
-    if (!viewer.value) {
+    const viewerElement = viewer.value
+
+    if (!viewerElement) {
       return
     }
 
     resizeObserver = new ResizeObserver(() => {
-      resizeRenderer()
+      const width = viewerElement.clientWidth
+      const height = viewerElement.clientHeight
+
+      if (width === 0 || height === 0) {
+        return
+      }
+
+      /*
+       * ResizeObserver는 observe 직후에도 한 번 실행될 수 있다.
+       * 실제 크기가 바뀌지 않았다면 resize 처리를 시작하지 않는다.
+       */
+      if (width === previousWidth && height === previousHeight) {
+        return
+      }
+
+      isResizing.value = true
+
+      /*
+       * 이전 타이머가 남아 있다면 취소한다.
+       * resize가 계속 발생할 때마다 대기 시간을 다시 시작한다.
+       */
+      if (resizeTimerId !== null) {
+        clearTimeout(resizeTimerId)
+      }
+
+      resizeTimerId = window.setTimeout(() => {
+        resizeRenderer()
+
+        isResizing.value = false
+        resizeTimerId = null
+      }, RESIZE_DEBOUNCE_DELAY)
     })
 
-    resizeObserver.observe(viewer.value)
+    resizeObserver.observe(viewerElement)
   }
 
   // --------------------------------------
@@ -202,6 +252,10 @@ export function useThreeViewer() {
       cancelAnimationFrame(animationFrameId)
     }
 
+    if (resizeTimerId !== null) {
+      clearTimeout(resizeTimerId)
+    }
+
     resizeObserver?.disconnect()
     orbitControls?.dispose()
 
@@ -212,13 +266,19 @@ export function useThreeViewer() {
     renderer?.dispose()
     renderer?.domElement.remove()
 
+    isResizing.value = false
+
     scene = null
     camera = null
     renderer = null
     orbitControls = null
     resizeObserver = null
+    resizeTimerId = null
     animationFrameId = null
     model = null
+
+    previousWidth = 0
+    previousHeight = 0
   }
 
   // --------------------------------------
@@ -227,6 +287,7 @@ export function useThreeViewer() {
 
   return {
     viewer,
+    isResizing,
     getModel,
     initializeThree,
     resizeRenderer,
