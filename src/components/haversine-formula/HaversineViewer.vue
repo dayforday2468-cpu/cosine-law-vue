@@ -4,6 +4,7 @@ import { onBeforeUnmount, onMounted, watch } from 'vue'
 import * as THREE from 'three'
 
 import ResizingLoading from '../common/ResizingLoading.vue'
+import ViewerGuide from '../common/ViewerGuide.vue'
 
 import { useThreeViewer } from '../../composables/useThreeViewer.js'
 
@@ -300,7 +301,7 @@ onBeforeUnmount(() => {
 <template>
   <section ref="viewer" class="haversine-viewer">
     <ResizingLoading :visible="isResizing" message="화면 크기를 조정하고 있습니다." />
-    <p class="haversine-guide">드래그: 회전 · 휠: 확대/축소</p>
+    <ViewerGuide>드래그: 회전 · 휠: 확대/축소</ViewerGuide>
   </section>
 </template>
 
@@ -308,35 +309,18 @@ onBeforeUnmount(() => {
 .haversine-viewer {
   position: relative;
 
-  width: 100%;
-  height: 100%;
-
   min-width: 0;
   min-height: 0;
 
   overflow: hidden;
+
+  background: #ffffff;
 }
 
-.haversine-guide {
-  position: absolute;
-  z-index: 10;
+.haversine-viewer :deep(canvas) {
+  display: block;
 
-  bottom: clamp(10px, 1.5vw, 20px);
-  left: clamp(10px, 1.5vw, 20px);
-
-  margin: 0;
-  padding: clamp(5px, 0.7vw, 8px) clamp(8px, 1vw, 12px);
-
-  border: 1px solid #dbe3ee;
-  border-radius: 8px;
-
-  background: rgb(255 255 255 / 90%);
-  color: #475569;
-
-  font-size: clamp(10px, 1vw, 14px);
-  line-height: 1.4;
-  white-space: nowrap;
-
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
 }
 </style>

@@ -74,7 +74,7 @@ export function useThreeViewer() {
 
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
 
-    camera.position.set(3.35, 3.1, 4.55)
+    camera.position.set(3.7, 3.4, 5.0)
 
     // Renderer
 

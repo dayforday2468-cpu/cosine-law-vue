@@ -1,6 +1,9 @@
 <script setup>
 import { computed, ref } from 'vue'
 
+import VisualizerLayout from '../common/VisualizerLayout.vue'
+import ControlSidebar from '../common/ControlSidebar.vue'
+
 import HaversineViewer from './HaversineViewer.vue'
 import LocationControls from './LocationControls.vue'
 
@@ -75,17 +78,15 @@ const distanceDifference = computed(() =>
 </script>
 
 <template>
-  <main class="haversine-app">
-    <section class="haversine-viewer">
-      <HaversineViewer
-        :latitude1="latitude1"
-        :longitude1="longitude1"
-        :latitude2="latitude2"
-        :longitude2="longitude2"
-      />
-    </section>
+  <VisualizerLayout>
+    <HaversineViewer
+      :latitude1="latitude1"
+      :longitude1="longitude1"
+      :latitude2="latitude2"
+      :longitude2="longitude2"
+    />
 
-    <aside class="haversine-controls">
+    <ControlSidebar>
       <LocationControls
         v-model:latitude1="latitude1"
         v-model:longitude1="longitude1"
@@ -97,46 +98,6 @@ const distanceDifference = computed(() =>
         :spherical-cosine-distance="sphericalCosineDistance"
         :distance-difference="distanceDifference"
       />
-    </aside>
-  </main>
+    </ControlSidebar>
+  </VisualizerLayout>
 </template>
-
-<style scoped>
-.haversine-app {
-  display: grid;
-  grid-template-columns:
-    minmax(0, 3fr)
-    minmax(260px, 1fr);
-
-  width: 100%;
-  height: 100vh;
-}
-
-.haversine-viewer {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 0;
-  min-height: 0;
-
-  overflow: hidden;
-
-  background: #f8fafc;
-}
-
-.haversine-controls {
-  min-width: 0;
-  min-height: 0;
-
-  padding: 28px;
-
-  overflow-y: auto;
-
-  border-left: 1px solid #e2e8f0;
-
-  background: #ffffff;
-}
-</style>

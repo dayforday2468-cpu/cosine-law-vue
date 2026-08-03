@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 
+import VisualizerLayout from '../common/VisualizerLayout.vue'
+import ControlSidebar from '../common/ControlSidebar.vue'
+
 import InvarianceViewer from './InvarianceViewer.vue'
 import LengthControls from './LengthControls.vue'
 
@@ -23,53 +26,11 @@ const geometry = {
 </script>
 
 <template>
-  <main class="invariance-app">
-    <section class="invariance-viewer">
-      <InvarianceViewer :lengths="lengths" :geometry="geometry" />
-    </section>
+  <VisualizerLayout>
+    <InvarianceViewer :lengths="lengths" :geometry="geometry" />
 
-    <aside class="invariance-controls">
+    <ControlSidebar>
       <LengthControls v-model:lengths="lengths" :max-lengths="maxLengths" />
-    </aside>
-  </main>
+    </ControlSidebar>
+  </VisualizerLayout>
 </template>
-
-<style scoped>
-.invariance-app {
-  display: grid;
-  grid-template-columns:
-    minmax(0, 3fr)
-    minmax(260px, 1fr);
-
-  width: 100%;
-  height: 100vh;
-}
-
-.invariance-viewer {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 0;
-  min-height: 0;
-
-  overflow: hidden;
-
-  background: #f8fafc;
-}
-
-.invariance-controls {
-  min-width: 0;
-  min-height: 0;
-
-  padding: 28px;
-
-  overflow-y: auto;
-
-  border-left: 1px solid #e2e8f0;
-
-  background: #ffffff;
-}
-</style>
