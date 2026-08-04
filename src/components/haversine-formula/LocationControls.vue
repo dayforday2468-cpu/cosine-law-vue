@@ -1,6 +1,13 @@
 <script setup>
 import { computed } from 'vue'
 
+import {
+  calculateHaversineAngle,
+  calculateHaversineDistance,
+  calculateSphericalCosineAngle,
+  calculateSphericalCosineDistance,
+} from './haversineGeometry.js'
+
 const latitude1 = defineModel('latitude1', {
   type: Number,
   required: true,
@@ -21,36 +28,51 @@ const longitude2 = defineModel('longitude2', {
   required: true,
 })
 
-const props = defineProps({
-  haversineAngle: {
-    type: Number,
-    required: true,
-  },
+// --------------------------------------
+// 중심각
+// --------------------------------------
 
-  sphericalCosineAngle: {
-    type: Number,
-    required: true,
-  },
+const haversineAngle = computed(() =>
+  calculateHaversineAngle(latitude1.value, longitude1.value, latitude2.value, longitude2.value),
+)
 
-  haversineDistance: {
-    type: Number,
-    required: true,
-  },
+const sphericalCosineAngle = computed(() =>
+  calculateSphericalCosineAngle(
+    latitude1.value,
+    longitude1.value,
+    latitude2.value,
+    longitude2.value,
+  ),
+)
 
-  sphericalCosineDistance: {
-    type: Number,
-    required: true,
-  },
+// --------------------------------------
+// 대권거리
+// --------------------------------------
 
-  distanceDifference: {
-    type: Number,
-    required: true,
-  },
-})
+const haversineDistance = computed(() =>
+  calculateHaversineDistance(latitude1.value, longitude1.value, latitude2.value, longitude2.value),
+)
 
-const haversineAngleDegrees = computed(() => (props.haversineAngle * 180) / Math.PI)
+const sphericalCosineDistance = computed(() =>
+  calculateSphericalCosineDistance(
+    latitude1.value,
+    longitude1.value,
+    latitude2.value,
+    longitude2.value,
+  ),
+)
 
-const sphericalCosineAngleDegrees = computed(() => (props.sphericalCosineAngle * 180) / Math.PI)
+// --------------------------------------
+// 두 계산 결과의 차이
+// --------------------------------------
+
+const distanceDifference = computed(() =>
+  Math.abs(haversineDistance.value - sphericalCosineDistance.value),
+)
+
+const haversineAngleDegrees = computed(() => (haversineAngle.value * 180) / Math.PI)
+
+const sphericalCosineAngleDegrees = computed(() => (sphericalCosineAngle.value * 180) / Math.PI)
 
 const FINE_STEP = 0.01
 
