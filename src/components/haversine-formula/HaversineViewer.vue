@@ -19,7 +19,7 @@ import {
   getAngleLabelPosition,
 } from '../../utils/threeGeometry.js'
 
-import { EARTH_RADIUS, latLonToVector3, calculateHaversineGeometry } from './haversineGeometry.js'
+import { EARTH_RADIUS, calculateHaversineGeometry } from './haversineGeometry.js'
 
 const props = defineProps({
   latitude1: {
@@ -90,7 +90,7 @@ function updateModel() {
 
   clearModel()
 
-  const { O, N, P1, P2, northExtended, P1Extended, P2Extended } = calculateHaversineGeometry(
+  const { O, N, P1, P2, northExtended, P1Extended, P2Extended, Q1, Q2 } = calculateHaversineGeometry(
     props.latitude1,
     props.longitude1,
     props.latitude2,
@@ -133,13 +133,13 @@ function updateModel() {
   // P1-P2 대권호
   // --------------------------------------
 
-  model.add(createAngleArc(new THREE.Vector3(0, 0, 0), P1, P2, EARTH_RADIUS, 0xf59e0b))
+  model.add(createAngleArc(O, P1, P2, EARTH_RADIUS, 0xf59e0b))
 
   // --------------------------------------
-  // 중심각 θ
+  // 경도 차 Δλ
   // --------------------------------------
 
-  model.add(createAngleArc(O, P1, P2, 0.34, 0x7c3aed))
+  model.add(createAngleArc(O, Q1, Q2, EARTH_RADIUS, 0x7c3aed))
 
   // --------------------------------------
   // 북극 방향과 P1/P2 방향 사이의 각
@@ -187,11 +187,10 @@ function updateModel() {
       scale: 0.32,
     }),
 
-    createLabel('θ', getAngleLabelPosition(O, P1, P2, 0.47), {
+    createLabel('Δλ', getAngleLabelPosition(O, Q1, Q2, 0.47), {
       textColor: '#7c3aed',
       scale: 0.24,
     }),
-
     createLabel('90° - φ₁', getAngleLabelPosition(O, N, P1, 0.62), {
       textColor: '#2563eb',
       scale: 0.23,

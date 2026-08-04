@@ -36,6 +36,9 @@ export function calculateHaversineGeometry(latitude1, longitude1, latitude2, lon
   const P1 = latLonToVector3(latitude1, longitude1, EARTH_RADIUS)
   const P2 = latLonToVector3(latitude2, longitude2, EARTH_RADIUS)
 
+  const Q1 = latLonToVector3(0, longitude1, EARTH_RADIUS)
+  const Q2 = latLonToVector3(0, longitude2, EARTH_RADIUS)
+
   const rayLength = 1.6
 
   const northDirection = new THREE.Vector3(0, 1, 0)
@@ -54,6 +57,9 @@ export function calculateHaversineGeometry(latitude1, longitude1, latitude2, lon
     northExtended,
     P1Extended,
     P2Extended,
+
+    Q1,
+    Q2,
   }
 }
 

@@ -15,7 +15,7 @@ import DistanceVerification from './DistanceVerification.vue'
 const latitude1 = ref(0)
 const longitude1 = ref(0)
 
-const latitude2 = ref(0)
+const latitude2 = ref(30)
 const longitude2 = ref(90)
 </script>
 
