@@ -1,13 +1,4 @@
 <script setup>
-import { computed } from 'vue'
-
-import {
-  calculateHaversineAngle,
-  calculateHaversineDistance,
-  calculateSphericalCosineAngle,
-  calculateSphericalCosineDistance,
-} from './haversineGeometry.js'
-
 const latitude1 = defineModel('latitude1', {
   type: Number,
   required: true,
@@ -27,52 +18,6 @@ const longitude2 = defineModel('longitude2', {
   type: Number,
   required: true,
 })
-
-// --------------------------------------
-// 중심각
-// --------------------------------------
-
-const haversineAngle = computed(() =>
-  calculateHaversineAngle(latitude1.value, longitude1.value, latitude2.value, longitude2.value),
-)
-
-const sphericalCosineAngle = computed(() =>
-  calculateSphericalCosineAngle(
-    latitude1.value,
-    longitude1.value,
-    latitude2.value,
-    longitude2.value,
-  ),
-)
-
-// --------------------------------------
-// 대권거리
-// --------------------------------------
-
-const haversineDistance = computed(() =>
-  calculateHaversineDistance(latitude1.value, longitude1.value, latitude2.value, longitude2.value),
-)
-
-const sphericalCosineDistance = computed(() =>
-  calculateSphericalCosineDistance(
-    latitude1.value,
-    longitude1.value,
-    latitude2.value,
-    longitude2.value,
-  ),
-)
-
-// --------------------------------------
-// 두 계산 결과의 차이
-// --------------------------------------
-
-const distanceDifference = computed(() =>
-  Math.abs(haversineDistance.value - sphericalCosineDistance.value),
-)
-
-const haversineAngleDegrees = computed(() => (haversineAngle.value * 180) / Math.PI)
-
-const sphericalCosineAngleDegrees = computed(() => (sphericalCosineAngle.value * 180) / Math.PI)
 
 const FINE_STEP = 0.01
 
@@ -208,38 +153,8 @@ function adjustCoordinate(value, amount, min, max) {
         step="1"
       />
     </div>
-
-    <section class="distance-result">
-      <p class="result-title">대권거리 계산</p>
-
-      <div class="result-row">
-        <span>Haversine 중심각</span>
-        <strong>{{ haversineAngleDegrees.toFixed(4) }}°</strong>
-      </div>
-
-      <div class="result-row">
-        <span>구면 코사인 중심각</span>
-        <strong>{{ sphericalCosineAngleDegrees.toFixed(4) }}°</strong>
-      </div>
-
-      <div class="result-row">
-        <span>Haversine 거리</span>
-        <strong>{{ haversineDistance.toFixed(12) }} km</strong>
-      </div>
-
-      <div class="result-row">
-        <span>구면 코사인 거리</span>
-        <strong>{{ sphericalCosineDistance.toFixed(12) }} km</strong>
-      </div>
-
-      <div class="result-row difference">
-        <span>거리 차이</span>
-        <strong>{{ distanceDifference.toFixed(12) }} km</strong>
-      </div>
-    </section>
   </section>
 </template>
-
 <style scoped>
 .location-controls h2 {
   margin: 0 0 18px;
@@ -283,53 +198,6 @@ function adjustCoordinate(value, amount, min, max) {
   width: 100%;
 
   cursor: pointer;
-}
-
-.distance-result {
-  margin-top: 22px;
-  padding: 14px 14px;
-
-  border: 2px solid #2563eb;
-  border-radius: 12px;
-
-  background: #eff6ff;
-}
-
-.result-title {
-  margin: 0 0 12px;
-
-  color: #1d4ed8;
-  font-size: 20px;
-  font-weight: 800;
-  text-align: center;
-}
-
-.result-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-
-  margin-bottom: 6px;
-
-  color: #334155;
-  font-size: 13px;
-}
-
-.result-row strong {
-  color: #1e3a8a;
-
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-  white-space: nowrap;
-}
-
-.result-row.difference {
-  margin-top: 10px;
-  margin-bottom: 0;
-  padding-top: 10px;
-
-  border-top: 1px solid #bfdbfe;
 }
 
 .value-control {

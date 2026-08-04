@@ -6,6 +6,7 @@ import ControlSidebar from '../common/ControlSidebar.vue'
 
 import HaversineViewer from './HaversineViewer.vue'
 import LocationControls from './LocationControls.vue'
+import DistanceVerification from './DistanceVerification.vue'
 
 // --------------------------------------
 // 두 지점의 위도 / 경도
@@ -33,6 +34,12 @@ const longitude2 = ref(139.6503)
         v-model:longitude1="longitude1"
         v-model:latitude2="latitude2"
         v-model:longitude2="longitude2"
+      />
+      <DistanceVerification
+        :latitude1="latitude1"
+        :longitude1="longitude1"
+        :latitude2="latitude2"
+        :longitude2="longitude2"
       />
     </ControlSidebar>
   </VisualizerLayout>
