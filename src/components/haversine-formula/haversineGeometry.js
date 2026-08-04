@@ -29,6 +29,34 @@ export function latLonToVector3(latitude, longitude, radius = EARTH_RADIUS) {
   )
 }
 
+export function calculateHaversineGeometry(latitude1, longitude1, latitude2, longitude2) {
+  const O = new THREE.Vector3(0, 0, 0)
+  const N = new THREE.Vector3(0, EARTH_RADIUS, 0)
+
+  const P1 = latLonToVector3(latitude1, longitude1, EARTH_RADIUS)
+  const P2 = latLonToVector3(latitude2, longitude2, EARTH_RADIUS)
+
+  const rayLength = 1.6
+
+  const northDirection = new THREE.Vector3(0, 1, 0)
+  const direction1 = P1.clone().normalize()
+  const direction2 = P2.clone().normalize()
+
+  const northExtended = northDirection.clone().multiplyScalar(rayLength)
+  const P1Extended = direction1.clone().multiplyScalar(rayLength)
+  const P2Extended = direction2.clone().multiplyScalar(rayLength)
+
+  return {
+    O,
+    N,
+    P1,
+    P2,
+    northExtended,
+    P1Extended,
+    P2Extended,
+  }
+}
+
 /**
  * 구면 코사인 법칙을 이용해 두 지점 사이의 중심각을 계산한다.
  *

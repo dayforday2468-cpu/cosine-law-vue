@@ -19,7 +19,7 @@ import {
   getAngleLabelPosition,
 } from '../../utils/threeGeometry.js'
 
-import { EARTH_RADIUS, latLonToVector3 } from './haversineGeometry.js'
+import { EARTH_RADIUS, latLonToVector3, calculateHaversineGeometry } from './haversineGeometry.js'
 
 const props = defineProps({
   latitude1: {
@@ -59,42 +59,6 @@ const {
 } = useThreeViewer()
 
 // --------------------------------------
-// 현재 기하 상태 계산
-// --------------------------------------
-
-function calculateCurrentGeometry() {
-  const O = new THREE.Vector3(0, 0, 0)
-
-  const N = new THREE.Vector3(0, EARTH_RADIUS, 0)
-
-  const P1 = latLonToVector3(props.latitude1, props.longitude1, EARTH_RADIUS)
-
-  const P2 = latLonToVector3(props.latitude2, props.longitude2, EARTH_RADIUS)
-
-  const rayLength = 1.6
-
-  const northDirection = new THREE.Vector3(0, 1, 0)
-  const direction1 = P1.clone().normalize()
-  const direction2 = P2.clone().normalize()
-
-  const northExtended = northDirection.clone().multiplyScalar(rayLength)
-  const P1Extended = direction1.clone().multiplyScalar(rayLength)
-  const P2Extended = direction2.clone().multiplyScalar(rayLength)
-
-
-  return {
-    O,
-    N,
-    P1,
-    P2,
-
-    northExtended,
-    P1Extended,
-    P2Extended,
-  }
-}
-
-// --------------------------------------
 // 기존 모델 제거
 // --------------------------------------
 
@@ -126,8 +90,12 @@ function updateModel() {
 
   clearModel()
 
-  const { O, N, P1, P2, northExtended, P1Extended, P2Extended } =
-    calculateCurrentGeometry()
+  const { O, N, P1, P2, northExtended, P1Extended, P2Extended } = calculateHaversineGeometry(
+    props.latitude1,
+    props.longitude1,
+    props.latitude2,
+    props.longitude2,
+  )
 
   // --------------------------------------
   // 지구
@@ -165,12 +133,7 @@ function updateModel() {
   // P1-P2 대권호
   // --------------------------------------
 
-  model.add(createAngleArc(
-    new THREE.Vector3(0, 0, 0),
-    P1,
-    P2,
-    EARTH_RADIUS,   
-    0xf59e0b))
+  model.add(createAngleArc(new THREE.Vector3(0, 0, 0), P1, P2, EARTH_RADIUS, 0xf59e0b))
 
   // --------------------------------------
   // 중심각 θ
