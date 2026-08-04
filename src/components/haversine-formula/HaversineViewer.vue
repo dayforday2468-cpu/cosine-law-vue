@@ -19,7 +19,7 @@ import {
   getAngleLabelPosition,
 } from '../../utils/threeGeometry.js'
 
-import { EARTH_RADIUS, calculateGreatCirclePoints, latLonToVector3 } from './haversineGeometry.js'
+import { EARTH_RADIUS, latLonToVector3 } from './haversineGeometry.js'
 
 const props = defineProps({
   latitude1: {
@@ -81,7 +81,6 @@ function calculateCurrentGeometry() {
   const P1Extended = direction1.clone().multiplyScalar(rayLength)
   const P2Extended = direction2.clone().multiplyScalar(rayLength)
 
-  const greatCirclePoints = calculateGreatCirclePoints(P1, P2, EARTH_RADIUS * 1.01)
 
   return {
     O,
@@ -92,8 +91,6 @@ function calculateCurrentGeometry() {
     northExtended,
     P1Extended,
     P2Extended,
-
-    greatCirclePoints,
   }
 }
 
@@ -117,22 +114,6 @@ function clearModel() {
 }
 
 // --------------------------------------
-// 대권호 선 생성
-// --------------------------------------
-
-function createGreatCircleLine(points, color, opacity = 1) {
-  const geometry = new THREE.BufferGeometry().setFromPoints(points)
-
-  const material = new THREE.LineBasicMaterial({
-    color,
-    transparent: opacity < 1,
-    opacity,
-  })
-
-  return new THREE.Line(geometry, material)
-}
-
-// --------------------------------------
 // 도형 업데이트
 // --------------------------------------
 
@@ -145,7 +126,7 @@ function updateModel() {
 
   clearModel()
 
-  const { O, N, P1, P2, northExtended, P1Extended, P2Extended, greatCirclePoints } =
+  const { O, N, P1, P2, northExtended, P1Extended, P2Extended } =
     calculateCurrentGeometry()
 
   // --------------------------------------
@@ -184,7 +165,12 @@ function updateModel() {
   // P1-P2 대권호
   // --------------------------------------
 
-  model.add(createGreatCircleLine(greatCirclePoints, 0xf59e0b))
+  model.add(createAngleArc(
+    new THREE.Vector3(0, 0, 0),
+    P1,
+    P2,
+    EARTH_RADIUS,   
+    0xf59e0b))
 
   // --------------------------------------
   // 중심각 θ
