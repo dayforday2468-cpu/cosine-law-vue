@@ -55,27 +55,9 @@ const {
   resizeRenderer,
   observeResize,
   animate,
+  clearModel,
   disposeThree,
 } = useThreeViewer()
-
-// --------------------------------------
-// 기존 모델 제거
-// --------------------------------------
-
-function clearModel() {
-  const model = getModel()
-
-  if (!model) {
-    return
-  }
-
-  while (model.children.length > 0) {
-    const object = model.children[0]
-
-    model.remove(object)
-    disposeObject(object)
-  }
-}
 
 // --------------------------------------
 // 도형 업데이트
@@ -90,12 +72,8 @@ function updateModel() {
 
   clearModel()
 
-  const { O, N, P1, P2, northExtended, P1Extended, P2Extended, Q1, Q2 } = calculateHaversineGeometry(
-    props.latitude1,
-    props.longitude1,
-    props.latitude2,
-    props.longitude2,
-  )
+  const { O, N, P1, P2, northExtended, P1Extended, P2Extended, Q1, Q2 } =
+    calculateHaversineGeometry(props.latitude1, props.longitude1, props.latitude2, props.longitude2)
 
   // --------------------------------------
   // 지구

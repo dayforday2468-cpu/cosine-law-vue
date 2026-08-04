@@ -39,27 +39,9 @@ const {
   resizeRenderer,
   observeResize,
   animate,
+  clearModel,
   disposeThree,
 } = useThreeViewer()
-
-// --------------------------------------
-// 기존 모델 제거
-// --------------------------------------
-
-function clearModel() {
-  const model = getModel()
-
-  if (!model) {
-    return
-  }
-
-  while (model.children.length > 0) {
-    const object = model.children[0]
-
-    model.remove(object)
-    disposeObject(object)
-  }
-}
 
 // --------------------------------------
 // 도형 업데이트
