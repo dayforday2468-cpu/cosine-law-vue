@@ -12,11 +12,11 @@ import DistanceVerification from './DistanceVerification.vue'
 // 두 지점의 위도 / 경도
 // --------------------------------------
 
-const latitude1 = ref(37.5665)
-const longitude1 = ref(126.978)
+const latitude1 = ref(0)
+const longitude1 = ref(0)
 
-const latitude2 = ref(35.6762)
-const longitude2 = ref(139.6503)
+const latitude2 = ref(0)
+const longitude2 = ref(90)
 </script>
 
 <template>

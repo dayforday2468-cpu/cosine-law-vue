@@ -36,7 +36,7 @@ function adjustCoordinate(value, amount, min, max) {
 
     <div class="control-group">
       <label for="latitude-1">
-        <span>위도</span>
+        <span>위도(φ₁)</span>
 
         <div class="value-control">
           <button
@@ -62,7 +62,7 @@ function adjustCoordinate(value, amount, min, max) {
 
     <div class="control-group">
       <label for="longitude-1">
-        <span>경도</span>
+        <span>경도(λ₁)</span>
 
         <div class="value-control">
           <button
@@ -97,7 +97,7 @@ function adjustCoordinate(value, amount, min, max) {
 
     <div class="control-group">
       <label for="latitude-2">
-        <span>위도</span>
+        <span>위도(φ₂)</span>
 
         <div class="value-control">
           <button
@@ -123,7 +123,7 @@ function adjustCoordinate(value, amount, min, max) {
 
     <div class="control-group">
       <label for="longitude-2">
-        <span>경도</span>
+        <span>경도(λ₂)</span>
 
         <div class="value-control">
           <button
