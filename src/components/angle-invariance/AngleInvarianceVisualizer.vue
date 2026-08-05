@@ -29,7 +29,7 @@ const geometry = {
   <VisualizerLayout>
     <InvarianceViewer :lengths="lengths" :geometry="geometry" />
 
-    <ControlSidebar>
+    <ControlSidebar title="선분 길이 조절">
       <LengthControls v-model:lengths="lengths" :max-lengths="maxLengths" />
     </ControlSidebar>
   </VisualizerLayout>

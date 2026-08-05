@@ -7,8 +7,6 @@ const angles = defineModel('angles', {
 
 <template>
   <section class="angle-controls">
-    <h1>각도 조절</h1>
-
     <div class="angle-control">
       <label for="theta1">
         <span>θ₁ = ∠BOC(이면각)</span>
@@ -42,14 +40,6 @@ const angles = defineModel('angles', {
 .angle-controls {
   min-width: 0;
   max-width: 100%;
-}
-
-.angle-controls h1 {
-  margin: 0 0 clamp(18px, 2.4vw, 32px);
-
-  color: #0f172a;
-
-  font-size: clamp(14px, 1.5vw, 20px);
 }
 
 .angle-control {

@@ -1,5 +1,16 @@
+<script setup>
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+})
+</script>
+
 <template>
   <aside class="control-sidebar">
+    <h2>{{ title }}</h2>
+
     <slot />
   </aside>
 </template>
@@ -17,5 +28,12 @@
   border-left: 1px solid #e2e8f0;
 
   background: #ffffff;
+}
+
+.control-sidebar h2 {
+  margin: 0 0 28px;
+
+  color: #0f172a;
+  font-size: 24px;
 }
 </style>

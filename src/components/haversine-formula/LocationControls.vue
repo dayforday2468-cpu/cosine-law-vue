@@ -30,8 +30,6 @@ function adjustCoordinate(value, amount, min, max) {
 
 <template>
   <section class="location-controls">
-    <h2>두 지점 설정</h2>
-
     <h3>P₁</h3>
 
     <div class="control-group">
@@ -156,13 +154,6 @@ function adjustCoordinate(value, amount, min, max) {
   </section>
 </template>
 <style scoped>
-.location-controls h2 {
-  margin: 0 0 18px;
-
-  color: #0f172a;
-  font-size: 22px;
-}
-
 .location-controls h3 {
   margin: 0 0 10px;
 

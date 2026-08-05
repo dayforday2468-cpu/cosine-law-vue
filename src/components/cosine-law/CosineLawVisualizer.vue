@@ -19,7 +19,7 @@ const angles = reactive({
   <VisualizerLayout>
     <GeometryViewer :angles="angles" />
 
-    <ControlSidebar>
+    <ControlSidebar title="각도 조절">
       <AngleControls v-model:angles="angles" />
       <FormulaVerification :angles="angles" />
     </ControlSidebar>

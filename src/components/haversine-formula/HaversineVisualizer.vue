@@ -28,7 +28,7 @@ const longitude2 = ref(90)
       :longitude2="longitude2"
     />
 
-    <ControlSidebar>
+    <ControlSidebar title="위도 / 경도 조절">
       <LocationControls
         v-model:latitude1="latitude1"
         v-model:longitude1="longitude1"

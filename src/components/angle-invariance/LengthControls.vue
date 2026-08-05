@@ -16,8 +16,6 @@ defineProps({
 
 <template>
   <section class="length-controls">
-    <h2>선분 길이 조절</h2>
-
     <div class="control-group">
       <label for="length-ao">
         <span>AO</span>
@@ -76,13 +74,6 @@ defineProps({
 </template>
 
 <style scoped>
-.length-controls h2 {
-  margin: 0 0 28px;
-
-  color: #0f172a;
-  font-size: 24px;
-}
-
 .control-group {
   margin-bottom: 28px;
 }
