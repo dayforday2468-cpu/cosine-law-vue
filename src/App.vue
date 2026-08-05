@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import {
   CosineLawVisualizer,
   AngleInvarianceVisualizer,
@@ -10,4 +10,12 @@ import {
   <CosineLawVisualizer />
   <AngleInvarianceVisualizer />
   <HaversineVisualizer />
+</template> -->
+
+<script setup>
+import TestArticleView from '@/views/TestView.vue'
+</script>
+
+<template>
+  <TestArticleView />
 </template>

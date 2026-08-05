@@ -31,7 +31,7 @@ defineProps({
 }
 
 .control-sidebar h2 {
-  margin: 0 0 28px;
+  margin: 0 0 7px;
 
   color: #0f172a;
   font-size: 24px;
