@@ -11,7 +11,7 @@ import GeometryViewer from './GeometryViewer.vue'
 const angles = reactive({
   theta1: 90,
   theta2: 45,
-  theta3: 50,
+  theta3: 30,
 })
 </script>
 
