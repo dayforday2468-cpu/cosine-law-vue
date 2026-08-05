@@ -15,7 +15,6 @@ import {
   createLine,
   createPoint,
   createSphere,
-  disposeObject,
   getAngleLabelPosition,
 } from '../../utils/threeGeometry.js'
 

@@ -1,4 +1,6 @@
 <script setup>
+import VerificationCard from '@/components/common/VerificationCard.vue'
+
 const lengths = defineModel('lengths', {
   type: Object,
   required: true,
@@ -64,14 +66,12 @@ defineProps({
       />
     </div>
 
-    <section class="invariance-result">
-      <p class="result-title">✓ 각도 불변!</p>
-
+    <VerificationCard title="✓ 각도 불변!">
       <p class="result-description">
         선분의 길이는 변하지만<br />
         표시된 각도의 크기는 변하지 않습니다.
       </p>
-    </section>
+    </VerificationCard>
   </section>
 </template>
 
@@ -113,30 +113,12 @@ defineProps({
   cursor: pointer;
 }
 
-.invariance-result {
-  margin-top: 42px;
-  padding: 22px 18px;
-
-  border: 2px solid #22c55e;
-  border-radius: 14px;
-
-  text-align: center;
-
-  background: #f0fdf4;
-}
-
-.result-title {
-  margin: 0 0 12px;
-
-  color: #15803d;
-  font-size: 26px;
-  font-weight: 800;
-}
-
 .result-description {
   margin: 0;
 
-  color: #166534;
+  color: #334155;
+  font-size: 13px;
   line-height: 1.6;
+  text-align: center;
 }
 </style>

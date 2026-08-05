@@ -1,10 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 
+import VerificationCard from '@/components/common/VerificationCard.vue'
+
 import {
-  calculateHaversineAngle,
   calculateHaversineDistance,
-  calculateSphericalCosineAngle,
   calculateSphericalCosineDistance,
 } from './haversineGeometry.js'
 
@@ -27,19 +27,6 @@ const props = defineProps({
   },
 })
 
-const haversineAngle = computed(() =>
-  calculateHaversineAngle(props.latitude1, props.longitude1, props.latitude2, props.longitude2),
-)
-
-const sphericalCosineAngle = computed(() =>
-  calculateSphericalCosineAngle(
-    props.latitude1,
-    props.longitude1,
-    props.latitude2,
-    props.longitude2,
-  ),
-)
-
 const haversineDistance = computed(() =>
   calculateHaversineDistance(props.latitude1, props.longitude1, props.latitude2, props.longitude2),
 )
@@ -56,29 +43,18 @@ const sphericalCosineDistance = computed(() =>
 const distanceDifference = computed(() =>
   Math.abs(haversineDistance.value - sphericalCosineDistance.value),
 )
-
-const haversineAngleDegrees = computed(() => (haversineAngle.value * 180) / Math.PI)
-
-const sphericalCosineAngleDegrees = computed(() => (sphericalCosineAngle.value * 180) / Math.PI)
 </script>
 
 <template>
-  <section class="distance-result">
-    <p class="result-title">대권거리 계산</p>
-
-    <div class="result-row">
-      <span>Haversine 중심각</span>
-      <strong>{{ haversineAngleDegrees.toFixed(4) }}°</strong>
-    </div>
-
-    <div class="result-row">
-      <span>구면 코사인 중심각</span>
-      <strong>{{ sphericalCosineAngleDegrees.toFixed(4) }}°</strong>
-    </div>
-
+  <VerificationCard title="대권거리 계산">
     <div class="result-row">
       <span>Haversine 거리</span>
       <strong>{{ haversineDistance.toFixed(12) }} km</strong>
+    </div>
+
+    <div class="formula">
+      d = R · 2atan2(√a, √(1-a))<br />
+      a = sin²(Δφ/2) + cosφ₁cosφ₂sin²(Δλ/2)
     </div>
 
     <div class="result-row">
@@ -86,31 +62,35 @@ const sphericalCosineAngleDegrees = computed(() => (sphericalCosineAngle.value *
       <strong>{{ sphericalCosineDistance.toFixed(12) }} km</strong>
     </div>
 
+    <div class="formula">d = R · acos(sinφ₁sinφ₂ + cosφ₁cosφ₂cosΔλ)</div>
+
     <div class="result-row difference">
       <span>거리 차이</span>
       <strong>{{ distanceDifference.toFixed(12) }} km</strong>
     </div>
-  </section>
+  </VerificationCard>
 </template>
 
 <style scoped>
-.distance-result {
-  margin-top: 22px;
-  padding: 14px;
+.formula {
+  max-width: 100%;
 
-  border: 2px solid #2563eb;
-  border-radius: 12px;
+  margin-bottom: 14px;
+  padding: clamp(6px, 1vw, 12px);
 
-  background: #eff6ff;
-}
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
 
-.result-title {
-  margin: 0 0 12px;
+  background: #ffffff;
+  color: #334155;
 
-  color: #1d4ed8;
-  font-size: 20px;
-  font-weight: 800;
+  font-family: 'Times New Roman', serif;
+
+  font-size: clamp(9px, 1.1vw, 15px);
+  line-height: 1.6;
   text-align: center;
+
+  overflow-wrap: anywhere;
 }
 
 .result-row {
