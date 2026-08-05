@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 
-import VisualizerLayout from '@/components/common/VisualizerLayout.vue'
-import ControlSidebar from '@/components/common/ControlSidebar.vue'
+import VisualizerLayout from '../common/VisualizerLayout.vue'
+import ControlSidebar from '../common/ControlSidebar.vue'
 
 import HaversineViewer from './HaversineViewer.vue'
 import LocationControls from './LocationControls.vue'
