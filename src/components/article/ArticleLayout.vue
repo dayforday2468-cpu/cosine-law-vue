@@ -26,6 +26,12 @@
   font-size: 16px;
   line-height: 1.8;
 }
+.article-text {
+  width: 100%;
+  max-width: 760px;
+
+  margin: 0 auto;
+}
 
 @media (max-width: 768px) {
   .article-layout {
