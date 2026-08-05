@@ -3,10 +3,10 @@ import { onBeforeUnmount, onMounted, watch } from 'vue'
 
 import * as THREE from 'three'
 
-import ResizingLoading from '../common/ResizingLoading.vue'
-import ViewerGuide from '../common/ViewerGuide.vue'
+import ResizingLoading from '@/components/common/ResizingLoading.vue'
+import ViewerGuide from '@/components/common/ViewerGuide.vue'
 
-import { useThreeViewer } from '../../composables/useThreeViewer.js'
+import { useThreeViewer } from '@/composables/useThreeViewer.js'
 
 import {
   createAngleArc,
@@ -16,7 +16,7 @@ import {
   createPoint,
   createSphere,
   getAngleLabelPosition,
-} from '../../utils/threeGeometry.js'
+} from '@/utils/threeGeometry.js'
 
 import { EARTH_RADIUS, calculateHaversineGeometry } from './haversineGeometry.js'
 

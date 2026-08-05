@@ -1,7 +1,7 @@
 <script setup>
-import CosineLawVisualizer from './components/cosine-law/CosineLawVisualizer.vue'
-import AngleInvarianceVisualizer from './components/angle-invariance/AngleInvarianceVisualizer.vue'
-import HaversineVisualizer from './components/haversine-formula/HaversineVisualizer.vue'
+import CosineLawVisualizer from './components/visualizations/cosine-law/CosineLawVisualizer.vue'
+import AngleInvarianceVisualizer from './components/visualizations/angle-invariance/AngleInvarianceVisualizer.vue'
+import HaversineVisualizer from './components/visualizations/haversine-formula/HaversineVisualizer.vue'
 </script>
 
 <template>
