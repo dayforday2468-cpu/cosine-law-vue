@@ -1,3 +1,16 @@
+<script setup>
+import { provide, ref } from 'vue'
+
+const figureCount = ref(0)
+
+function getNextFigureNumber() {
+  figureCount.value += 1
+  return figureCount.value
+}
+
+provide('getNextFigureNumber', getNextFigureNumber)
+</script>
+
 <template>
   <main class="article-layout">
     <article class="article-content">

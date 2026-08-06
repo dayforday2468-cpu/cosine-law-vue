@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-const theta1 = THREE.MathUtils.degToRad(90)
+const theta1 = THREE.MathUtils.degToRad(120)
 const theta2 = THREE.MathUtils.degToRad(45)
 const theta3 = THREE.MathUtils.degToRad(30)
 
