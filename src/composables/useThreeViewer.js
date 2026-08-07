@@ -5,7 +5,15 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 import { createLabel, disposeObject } from '../utils/threeGeometry.js'
 
-export function useThreeViewer() {
+export function useThreeViewer(dimension = '3d') {
+  // --------------------------------------
+  // Dimension 검증
+  // --------------------------------------
+
+  if (dimension !== '2d' && dimension !== '3d') {
+    throw new Error(`지원하지 않는 dimension입니다: ${dimension}`)
+  }
+
   // --------------------------------------
   // Viewer DOM
   // --------------------------------------
@@ -19,6 +27,20 @@ export function useThreeViewer() {
   const isResizing = ref(false)
 
   const RESIZE_DEBOUNCE_DELAY = 200
+
+  // --------------------------------------
+  // 2D Camera 설정
+  // --------------------------------------
+
+  /*
+   * OrthographicCamera가 보여줄
+   * 세로 방향의 절반 크기.
+   *
+   * top = 3
+   * bottom = -3
+   * 이므로 세로 범위는 총 6이다.
+   */
+  const ORTHOGRAPHIC_HALF_HEIGHT = 3
 
   // --------------------------------------
   // Three.js 상태
@@ -45,61 +67,77 @@ export function useThreeViewer() {
   }
 
   // --------------------------------------
-  // Three.js 초기화
+  // Camera 생성
   // --------------------------------------
 
-  function initializeThree() {
-    const viewerElement = viewer.value
+  function createCamera(width, height) {
+    const aspect = width / height
 
-    if (!viewerElement) {
+    if (dimension === '2d') {
+      camera = new THREE.OrthographicCamera(
+        -ORTHOGRAPHIC_HALF_HEIGHT * aspect,
+        ORTHOGRAPHIC_HALF_HEIGHT * aspect,
+        ORTHOGRAPHIC_HALF_HEIGHT,
+        -ORTHOGRAPHIC_HALF_HEIGHT,
+        0.1,
+        100,
+      )
+
+      /*
+       * xy 평면을 정면으로 바라본다.
+       */
+      camera.position.set(0, 0, 10)
+      camera.lookAt(0, 0, 0)
+
       return
     }
 
-    const width = viewerElement.clientWidth
-    const height = viewerElement.clientHeight
-
-    if (width === 0 || height === 0) {
-      return
-    }
-
-    previousWidth = width
-    previousHeight = height
-
-    // Scene
-
-    scene = new THREE.Scene()
-    scene.background = new THREE.Color(0xffffff)
-
-    // Camera
-
-    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100)
+    camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 100)
 
     camera.position.set(3.7, 3.4, 5.0)
+  }
 
-    // Renderer
+  // --------------------------------------
+  // OrbitControls 생성
+  // --------------------------------------
 
-    renderer = new THREE.WebGLRenderer({
-      antialias: true,
-    })
-
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-
-    renderer.setSize(width, height, false)
-
-    viewerElement.prepend(renderer.domElement)
-
-    // OrbitControls
-
+  function createOrbitControls() {
     orbitControls = new OrbitControls(camera, renderer.domElement)
 
     orbitControls.enableDamping = true
-
     orbitControls.target.set(0, 0, 0)
 
-    orbitControls.minDistance = 2
-    orbitControls.maxDistance = 12
+    if (dimension === '2d') {
+      /*
+       * 2D에서는 화면을 회전시키지 않는다.
+       * 확대/축소만 허용한다.
+       */
+      orbitControls.enableRotate = false
+      orbitControls.enablePan = false
+      orbitControls.enableZoom = true
+
+      orbitControls.minZoom = 0.7
+      orbitControls.maxZoom = 3
+    } else {
+      orbitControls.minDistance = 2
+      orbitControls.maxDistance = 12
+    }
 
     orbitControls.update()
+  }
+
+  // --------------------------------------
+  // Scene 환경 설정
+  // --------------------------------------
+
+  function setupSceneEnvironment() {
+    /*
+     * 2D visualizer에서는
+     * 좌표축과 3D 조명이 필요하지 않다.
+     */
+    if (dimension === '2d') {
+      return
+    }
 
     // 조명
 
@@ -141,12 +179,97 @@ export function useThreeViewer() {
     )
 
     scene.add(axisLabels)
+  }
+
+  // --------------------------------------
+  // Three.js 초기화
+  // --------------------------------------
+
+  function initializeThree() {
+    const viewerElement = viewer.value
+
+    if (!viewerElement) {
+      return
+    }
+
+    const width = viewerElement.clientWidth
+    const height = viewerElement.clientHeight
+
+    if (width === 0 || height === 0) {
+      return
+    }
+
+    previousWidth = width
+    previousHeight = height
+
+    // Scene
+
+    scene = new THREE.Scene()
+    scene.background = new THREE.Color(0xffffff)
+
+    // Camera
+
+    createCamera(width, height)
+
+    // Renderer
+
+    renderer = new THREE.WebGLRenderer({
+      antialias: true,
+    })
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+    renderer.setSize(width, height, false)
+
+    viewerElement.prepend(renderer.domElement)
+
+    // OrbitControls
+
+    createOrbitControls()
+
+    // Dimension별 Scene 환경
+
+    setupSceneEnvironment()
 
     // 실제 도형 그룹
 
     model = new THREE.Group()
 
     scene.add(model)
+  }
+
+  // --------------------------------------
+  // Camera 크기 조정
+  // --------------------------------------
+
+  function resizeCamera(width, height) {
+    const aspect = width / height
+
+    if (dimension === '2d') {
+      /*
+       * 세로 방향의 표시 범위는 유지하고
+       * 화면 비율에 맞춰 가로 범위만 변경한다.
+       */
+      camera.left = -ORTHOGRAPHIC_HALF_HEIGHT * aspect
+
+      camera.right = ORTHOGRAPHIC_HALF_HEIGHT * aspect
+
+      camera.top = ORTHOGRAPHIC_HALF_HEIGHT
+
+      camera.bottom = -ORTHOGRAPHIC_HALF_HEIGHT
+
+      camera.updateProjectionMatrix()
+
+      return
+    }
+
+    /*
+     * PerspectiveCamera에서는
+     * FOV와 카메라 위치를 유지하고
+     * 화면 비율만 변경한다.
+     */
+    camera.aspect = aspect
+    camera.updateProjectionMatrix()
   }
 
   // --------------------------------------
@@ -168,12 +291,7 @@ export function useThreeViewer() {
       return
     }
 
-    /*
-     * FOV와 카메라 위치는 변경하지 않는다.
-     * 렌더링 영역의 비율만 갱신한다.
-     */
-    camera.aspect = width / height
-    camera.updateProjectionMatrix()
+    resizeCamera(width, height)
 
     renderer.setSize(width, height, false)
 
@@ -194,6 +312,7 @@ export function useThreeViewer() {
 
     resizeObserver = new ResizeObserver(() => {
       const width = viewerElement.clientWidth
+
       const height = viewerElement.clientHeight
 
       if (width === 0 || height === 0) {
@@ -201,8 +320,8 @@ export function useThreeViewer() {
       }
 
       /*
-       * ResizeObserver는 observe 직후에도 한 번 실행될 수 있다.
-       * 실제 크기가 바뀌지 않았다면 resize 처리를 시작하지 않는다.
+       * ResizeObserver는 observe 직후에도
+       * 한 번 실행될 수 있다.
        */
       if (width === previousWidth && height === previousHeight) {
         return
@@ -210,10 +329,6 @@ export function useThreeViewer() {
 
       isResizing.value = true
 
-      /*
-       * 이전 타이머가 남아 있다면 취소한다.
-       * resize가 계속 발생할 때마다 대기 시간을 다시 시작한다.
-       */
       if (resizeTimerId !== null) {
         clearTimeout(resizeTimerId)
       }

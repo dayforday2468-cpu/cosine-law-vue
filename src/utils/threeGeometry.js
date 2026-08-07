@@ -221,6 +221,68 @@ export function getAngleLabelPosition(vertex, point1, point2, radius) {
 }
 
 // --------------------------------------
+// 2D 원형 도형 생성
+// --------------------------------------
+
+function createCircularShape2D(position, radius, color, filled = false, segments = 64) {
+  if (filled) {
+    const geometry = new THREE.CircleGeometry(radius, segments)
+
+    /*
+     * 2D에서는 조명의 영향을 받을 필요가 없으므로
+     * MeshBasicMaterial을 사용한다.
+     */
+    const material = new THREE.MeshBasicMaterial({
+      color,
+      depthTest: false,
+    })
+
+    const circle = new THREE.Mesh(geometry, material)
+
+    circle.position.copy(position)
+
+    return circle
+  }
+
+  const points = []
+
+  for (let index = 0; index <= segments; index += 1) {
+    const angle = (index / segments) * Math.PI * 2
+
+    points.push(new THREE.Vector3(radius * Math.cos(angle), radius * Math.sin(angle), 0))
+  }
+
+  const geometry = new THREE.BufferGeometry().setFromPoints(points)
+
+  const material = new THREE.LineBasicMaterial({
+    color,
+    depthTest: false,
+  })
+
+  const circle = new THREE.Line(geometry, material)
+
+  circle.position.copy(position)
+
+  return circle
+}
+
+// --------------------------------------
+// 2D 원 생성
+// --------------------------------------
+
+export function createCircle2D(position, radius, color, segments = 64) {
+  return createCircularShape2D(position, radius, color, false, segments)
+}
+
+// --------------------------------------
+// 2D 점 생성
+// --------------------------------------
+
+export function createPoint2D(position, color, radius = 0.065, segments = 32) {
+  return createCircularShape2D(position, radius, color, true, segments)
+}
+
+// --------------------------------------
 // 객체 메모리 정리
 // --------------------------------------
 
