@@ -41,7 +41,7 @@ const sphericalCosineDistance = computed(() =>
 )
 
 const distanceDifference = computed(() =>
-  Math.abs(haversineDistance.value - sphericalCosineDistance.value),
+  1000*Math.abs(haversineDistance.value - sphericalCosineDistance.value),
 )
 </script>
 
@@ -65,8 +65,8 @@ const distanceDifference = computed(() =>
     <div class="formula">d = R · acos(sinφ₁sinφ₂ + cosφ₁cosφ₂cosΔλ)</div>
 
     <div class="result-row difference">
-      <span>거리 차이</span>
-      <strong>{{ distanceDifference.toFixed(12) }} km</strong>
+      <span>계산 결과 차이</span>
+      <strong>{{ distanceDifference.toFixed(9) }} m</strong>
     </div>
   </VerificationCard>
 </template>
