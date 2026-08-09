@@ -1,7 +1,10 @@
 <script setup>
-import TestArticleView from '@/views/TestView.vue'
+import { RouterView } from 'vue-router'
+
+import AppNavbar from '@/components/layout/AppNavbar.vue'
 </script>
 
 <template>
-  <TestArticleView />
+  <AppNavbar />
+  <RouterView />
 </template>
