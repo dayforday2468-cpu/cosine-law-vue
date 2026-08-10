@@ -1,0 +1,61 @@
+:root {
+  /* =========================
+     Color
+     ========================= */
+
+  --color-main: #2563eb;
+  --color-text-main: #0f172a;
+  --color-text-sub: #64748b;
+
+  --color-background: #ffffff;
+  --color-background-sub: #ecf6ff;
+  --color-border: #e2e8f0;
+
+  /* =========================
+     Font Family
+     ========================= */
+
+  --font-family-title: 'Presentation', sans-serif;
+  --font-family-content: 'Pretendard', sans-serif;
+
+  /* =========================
+     Font Size
+     ========================= */
+
+  --font-size-s: 0.875rem; /* 14px */
+  --font-size-m: 1rem; /* 16px */
+  --font-size-l: 1.5rem; /* 24px */
+
+  /* =========================
+     Font Weight
+     ========================= */
+
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 800;
+
+  /* =========================
+     Spacing
+     ========================= */
+
+  --space-s: 0.5rem; /* 8px */
+  --space-m: 1rem; /* 16px */
+  --space-l: 2rem; /* 32px */
+
+  /* =========================
+     Border Radius
+     ========================= */
+
+  --radius-s: 0.375rem; /* 6px */
+  --radius-m: 0.5rem; /* 8px */
+  --radius-l: 1rem; /* 16px */
+
+  /* Border */
+  --border-default: 1px solid var(--color-border);
+
+  /* Layout */
+  --container-width: 1120px;
+  --link-column-width: 72px;
+
+  --layout-bar-height: 72px;
+}
