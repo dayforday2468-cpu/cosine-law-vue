@@ -4,7 +4,7 @@ import { useMathRenderer } from '@/composables/useMathRenderer.js'
 defineProps({
   title: {
     type: String,
-    default: '',
+    required:true,
   },
 })
 
@@ -13,11 +13,11 @@ const { mathContainer } = useMathRenderer()
 
 <template>
   <section ref="mathContainer" class="article-callout">
-    <div v-if="title" class="callout-title">
+    <div class="callout-title article-component-title">
       {{ title }}
     </div>
 
-    <div class="callout-content">
+    <div class="article-component-content">
       <slot />
     </div>
   </section>
@@ -26,28 +26,18 @@ const { mathContainer } = useMathRenderer()
 <style scoped>
 .article-callout {
   width: 100%;
-  max-width: 760px;
+  max-width: var(--article-content-width);
 
-  margin: 32px auto;
-  padding: 24px 28px;
+  margin: var(--space-l) auto;
+  padding: var(--space-m);
 
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
+  border: var(--border-default);
+  border-radius: var(--radius-m);
 
-  background: #f8fafc;
+  background: var(--color-background-sub);
 }
 
 .callout-title {
-  margin-bottom: 18px;
-
-  color: #0f172a;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.callout-content {
-  color: #334155;
-  font-size: 16px;
-  line-height: 1.8;
+  margin-bottom: var(--space-m);
 }
 </style>

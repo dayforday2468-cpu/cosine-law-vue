@@ -6,13 +6,13 @@ import { RouterLink } from 'vue-router'
   <header class="app-navbar">
     <nav class="navbar-inner">
       <RouterLink class="brand" to="/">
-        <strong class="text-identity">김명철</strong>
-        <span class="text-description">Interactive Resume</span>
+        <strong class="site-identity">김명철</strong>
+        <span class="site-description">Interactive Resume</span>
       </RouterLink>
 
       <div class="nav-links">
-        <RouterLink class="text-link" to="/">Home</RouterLink>
-        <RouterLink class="text-link" to="/articles/spherical-cosine-law">Articles</RouterLink>
+        <RouterLink class="site-link" to="/">Home</RouterLink>
+        <RouterLink class="site-link" to="/articles/spherical-cosine-law">Articles</RouterLink>
       </div>
     </nav>
   </header>

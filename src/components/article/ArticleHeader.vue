@@ -6,11 +6,11 @@ defineProps({
   },
   description: {
     type: String,
-    default: '',
+    required: true,
   },
   date: {
     type: String,
-    default: '',
+    required: true,
   },
 })
 </script>
@@ -19,44 +19,44 @@ defineProps({
   <header class="article-header">
     <h1>{{ title }}</h1>
 
-    <p v-if="description" class="description">
-      {{ description }}
-    </p>
+    <p class="description">{{ description }}</p>
 
-    <time v-if="date" class="date">
-      {{ date }}
-    </time>
+    <time class="date">{{ date }}</time>
   </header>
 </template>
 
 <style scoped>
 .article-header {
-  margin-bottom: 48px;
-  padding-bottom: 24px;
+  margin-bottom: var(--space-l);
+  padding-bottom: var(--space-m);
 
-  border-bottom: 1px solid #cbd5e1;
+  border-bottom: var(--border-default);
 }
 
 .article-header h1 {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-m);
 
-  color: #0f172a;
-  font-family: 'YuhanKimberlyPureunsoop', sans-serif;
-  font-size: clamp(32px, 5vw, 48px);
+  color: var(--color-text-main);
+  font-family: var(--font-family-title);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
   line-height: 1.2;
 }
 
 .description {
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-s);
 
-  color: #475569;
-  font-family: 'NanumBarunGothic', sans-serif;
-  font-size: 18px;
-  line-height: 1.7;
+  color: var(--color-text-sub);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.6;
 }
 
 .date {
-  color: #94a3b8;
-  font-size: 14px;
+  color: var(--color-text-sub);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
 }
 </style>

@@ -5,11 +5,12 @@
 
   --color-main: #2563eb;
   --color-text-main: #0f172a;
+  --color-text-content: #334155;
   --color-text-sub: #64748b;
 
   --color-background: #ffffff;
-  --color-background-sub: #ecf6ff;
-  --color-border: #e2e8f0;
+  --color-background-sub: #eef7ff;
+  --color-border: #dae2ec;
 
   /* =========================
      Font Family
@@ -25,6 +26,7 @@
   --font-size-s: 0.875rem; /* 14px */
   --font-size-m: 1rem; /* 16px */
   --font-size-l: 1.5rem; /* 24px */
+  --font-size-xl: 3rem; /* 48px */
 
   /* =========================
      Font Weight
@@ -55,6 +57,7 @@
 
   /* Layout */
   --container-width: 1120px;
+  --article-content-width: 760px;
   --link-column-width: 72px;
 
   --layout-bar-height: 72px;

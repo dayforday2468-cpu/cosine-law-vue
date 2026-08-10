@@ -145,22 +145,18 @@ function updateModel() {
 
   model.add(
     createLabel('O', O.clone().add(new THREE.Vector3(0.08, 0.08, 0.08)), {
-      textColor: '#0f172a',
       scale: 0.34,
     }),
 
     createLabel('N', N.clone().add(new THREE.Vector3(0.08, 0.1, 0)), {
-      textColor: '#64748b',
       scale: 0.28,
     }),
 
     createLabel('P₁', P1.clone().addScaledVector(P1.clone().normalize(), 0.12), {
-      textColor: '#2563eb',
       scale: 0.32,
     }),
 
     createLabel('P₂', P2.clone().addScaledVector(P2.clone().normalize(), 0.12), {
-      textColor: '#059669',
       scale: 0.32,
     }),
 

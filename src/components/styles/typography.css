@@ -1,20 +1,35 @@
-.text-identity {
+.site-identity {
   color: var(--color-text-main);
   font-family: var(--font-family-title);
   font-size: var(--font-size-l);
   font-weight: var(--font-weight-bold);
 }
 
-.text-description {
+.site-description {
   color: var(--color-text-sub);
   font-family: var(--font-family-content);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-regular);
 }
 
-.text-link {
+.site-link {
   color: var(--color-text-sub);
   font-family: var(--font-family-content);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-semibold);
+}
+
+.article-component-title {
+  color: var(--color-text-main);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semibold);
+}
+
+.article-component-content {
+  color: var(--color-text-content);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.8;
 }

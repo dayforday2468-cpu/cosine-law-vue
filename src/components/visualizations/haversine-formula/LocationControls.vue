@@ -32,11 +32,9 @@ function adjustCoordinate(value, step, min, max) {
 </script>
 
 <template>
-  <h3>P₁</h3>
-
   <div class="control-group">
     <label for="latitude-1">
-      <span>위도(φ₁)</span>
+      <span>P₁ 위도(φ₁)</span>
 
       <div class="value-control">
         <button type="button" @click="latitude1 = adjustCoordinate(latitude1, -FINE_STEP, -90, 90)">
@@ -56,7 +54,7 @@ function adjustCoordinate(value, step, min, max) {
 
   <div class="control-group">
     <label for="longitude-1">
-      <span>경도(λ₁)</span>
+      <span>P₁ 경도(λ₁)</span>
 
       <div class="value-control">
         <button
@@ -87,11 +85,9 @@ function adjustCoordinate(value, step, min, max) {
     />
   </div>
 
-  <h3>P₂</h3>
-
   <div class="control-group">
     <label for="latitude-2">
-      <span>위도(φ₂)</span>
+      <span>P₂ 위도(φ₂)</span>
 
       <div class="value-control">
         <button type="button" @click="latitude2 = adjustCoordinate(latitude2, -FINE_STEP, -90, 90)">
@@ -111,7 +107,7 @@ function adjustCoordinate(value, step, min, max) {
 
   <div class="control-group">
     <label for="longitude-2">
-      <span>경도(λ₂)</span>
+      <span>P₂ 경도(λ₂)</span>
 
       <div class="value-control">
         <button
@@ -144,17 +140,6 @@ function adjustCoordinate(value, step, min, max) {
 </template>
 
 <style scoped>
-h3 {
-  margin: 0 0 12px;
-
-  color: #334155;
-  font-size: 18px;
-}
-
-h3:not(:first-child) {
-  margin-top: 24px;
-}
-
 .control-group {
   margin-bottom: 16px;
 }

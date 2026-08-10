@@ -4,7 +4,7 @@ import { inject } from 'vue'
 defineProps({
   caption: {
     type: String,
-    default: '',
+    required: true,
   },
 })
 
@@ -20,8 +20,8 @@ const figureNumber = getNextFigureNumber()
     </div>
 
     <figcaption class="figure-caption">
-      <span class="figure-number">Fig {{ figureNumber }}</span>
-      <span v-if="caption">. {{ caption }}</span>
+      <span class="figure-number">Fig {{ figureNumber }}. </span>
+      <span>{{ caption }}</span>
     </figcaption>
   </figure>
 </template>
@@ -29,7 +29,7 @@ const figureNumber = getNextFigureNumber()
 <style scoped>
 .article-figure {
   width: 100%;
-  margin: 32px auto;
+  margin: var(--space-l) auto;
 }
 
 .figure-content {
@@ -37,15 +37,16 @@ const figureNumber = getNextFigureNumber()
 }
 
 .figure-caption {
-  margin-top: 12px;
+  margin-top: var(--space-s);
 
-  color: #64748b;
-  font-size: 14px;
+  color: var(--color-text-sub);
+  font-size: var(--font-size-s);
+  font-family: var(--font-family-content);
   line-height: 1.6;
   text-align: center;
 }
 
 .figure-number {
-  font-weight: 700;
+  font-weight: var(--font-weight-semibold);
 }
 </style>

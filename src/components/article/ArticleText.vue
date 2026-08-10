@@ -5,7 +5,7 @@ const { mathContainer } = useMathRenderer()
 </script>
 
 <template>
-  <div ref="mathContainer" class="article-text">
+  <div ref="mathContainer" class="article-text article-component-content">
     <slot />
   </div>
 </template>
@@ -13,13 +13,8 @@ const { mathContainer } = useMathRenderer()
 <style scoped>
 .article-text {
   width: 100%;
-  max-width: 760px;
+  max-width: var(--article-content-width);
 
   margin: 0 auto;
-
-  color: #334155;
-  font-family: 'NanumBarunGothic', sans-serif;
-  font-size: 16px;
-  line-height: 1.8;
 }
 </style>

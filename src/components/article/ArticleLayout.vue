@@ -24,24 +24,21 @@ provide('getNextFigureNumber', getNextFigureNumber)
   width: 100%;
   min-height: 100vh;
 
-  padding: 48px 24px;
+  padding: var(--space-l) var(--space-m);
 
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 .article-content {
   width: 100%;
-  max-width: 1100px;
+  max-width: var(--container-width);
 
   margin: 0 auto;
-
-  color: #334155;
-  font-size: 16px;
-  line-height: 1.8;
 }
+
 @media (max-width: 768px) {
   .article-layout {
-    padding: 32px 16px;
+    padding: var(--space-l) var(--space-m);
   }
 }
 </style>
