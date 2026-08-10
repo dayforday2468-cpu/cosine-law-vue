@@ -40,8 +40,8 @@ const sphericalCosineDistance = computed(() =>
   ),
 )
 
-const distanceDifference = computed(() =>
-  1000*Math.abs(haversineDistance.value - sphericalCosineDistance.value),
+const distanceDifference = computed(
+  () => 1000 * Math.abs(haversineDistance.value - sphericalCosineDistance.value),
 )
 </script>
 

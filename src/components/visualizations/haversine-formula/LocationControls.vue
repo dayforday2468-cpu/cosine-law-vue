@@ -39,32 +39,19 @@ function adjustCoordinate(value, step, min, max) {
       <span>위도(φ₁)</span>
 
       <div class="value-control">
-        <button
-          type="button"
-          @click="latitude1 = adjustCoordinate(latitude1, -FINE_STEP, -90, 90)"
-        >
+        <button type="button" @click="latitude1 = adjustCoordinate(latitude1, -FINE_STEP, -90, 90)">
           −
         </button>
 
         <output>{{ latitude1.toFixed(FINE_DIGITS) }}°</output>
 
-        <button
-          type="button"
-          @click="latitude1 = adjustCoordinate(latitude1, FINE_STEP, -90, 90)"
-        >
+        <button type="button" @click="latitude1 = adjustCoordinate(latitude1, FINE_STEP, -90, 90)">
           +
         </button>
       </div>
     </label>
 
-    <input
-      id="latitude-1"
-      v-model.number="latitude1"
-      type="range"
-      min="-90"
-      max="90"
-      step="1"
-    />
+    <input id="latitude-1" v-model.number="latitude1" type="range" min="-90" max="90" step="1" />
   </div>
 
   <div class="control-group">
@@ -107,32 +94,19 @@ function adjustCoordinate(value, step, min, max) {
       <span>위도(φ₂)</span>
 
       <div class="value-control">
-        <button
-          type="button"
-          @click="latitude2 = adjustCoordinate(latitude2, -FINE_STEP, -90, 90)"
-        >
+        <button type="button" @click="latitude2 = adjustCoordinate(latitude2, -FINE_STEP, -90, 90)">
           −
         </button>
 
         <output>{{ latitude2.toFixed(FINE_DIGITS) }}°</output>
 
-        <button
-          type="button"
-          @click="latitude2 = adjustCoordinate(latitude2, FINE_STEP, -90, 90)"
-        >
+        <button type="button" @click="latitude2 = adjustCoordinate(latitude2, FINE_STEP, -90, 90)">
           +
         </button>
       </div>
     </label>
 
-    <input
-      id="latitude-2"
-      v-model.number="latitude2"
-      type="range"
-      min="-90"
-      max="90"
-      step="1"
-    />
+    <input id="latitude-2" v-model.number="latitude2" type="range" min="-90" max="90" step="1" />
   </div>
 
   <div class="control-group">
