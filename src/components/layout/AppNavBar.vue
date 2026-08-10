@@ -48,15 +48,16 @@ import { RouterLink } from 'vue-router'
 }
 
 .brand strong {
-  font-size: 18px;
-  font-weight: 800;
+  font-family: 'YuhanKimberlyPureunsoop', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .brand span {
   margin-top: 2px;
 
   color: #64748b;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
 }
 
@@ -72,7 +73,8 @@ import { RouterLink } from 'vue-router'
   padding: 24px 0;
 
   color: #64748b;
-  font-size: 15px;
+  font-family: 'NanumBarunGothic', sans-serif;
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
 

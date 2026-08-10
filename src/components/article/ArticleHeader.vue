@@ -50,6 +50,7 @@ defineProps({
   margin: 0 0 12px;
 
   color: #475569;
+  font-family: 'NanumBarunGothic', sans-serif;
   font-size: 18px;
   line-height: 1.7;
 }

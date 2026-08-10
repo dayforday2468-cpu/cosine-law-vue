@@ -37,7 +37,8 @@
 
 .footer-profile strong {
   color: #0f172a;
-  font-size: 17px;
+  font-family: 'YuhanKimberlyPureunsoop', sans-serif;
+  font-size: 20px;
   font-weight: 800;
 }
 
@@ -45,6 +46,7 @@
   margin: 8px 0 0;
 
   color: #64748b;
+  font-family: 'NanumBarunGothic', sans-serif;
   font-size: 14px;
   line-height: 1.6;
 }

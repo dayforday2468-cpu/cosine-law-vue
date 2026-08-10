@@ -18,6 +18,7 @@ const { mathContainer } = useMathRenderer()
   margin: 0 auto;
 
   color: #334155;
+  font-family: 'NanumBarunGothic', sans-serif;
   font-size: 16px;
   line-height: 1.8;
 }
