@@ -16,10 +16,10 @@ defineProps({
 
 <template>
   <section class="length-controls">
-    <div class="control-group">
-      <label for="length-ao">
+    <div class="length-control">
+      <label class="visualizer-control-label" for="length-ao">
         <span>AO</span>
-        <output>{{ lengths.AO.toFixed(2) }}</output>
+        <output class="visualizer-control-output">{{ lengths.AO.toFixed(2) }}</output>
       </label>
 
       <input
@@ -32,10 +32,10 @@ defineProps({
       />
     </div>
 
-    <div class="control-group">
-      <label for="length-ab">
+    <div class="length-control">
+      <label class="visualizer-control-label" for="length-ab">
         <span>AB</span>
-        <output>{{ lengths.AB.toFixed(2) }}</output>
+        <output class="visualizer-control-output">{{ lengths.AB.toFixed(2) }}</output>
       </label>
 
       <input
@@ -48,10 +48,10 @@ defineProps({
       />
     </div>
 
-    <div class="control-group">
-      <label for="length-ac">
+    <div class="length-control">
+      <label class="visualizer-control-label" for="length-ac">
         <span>AC</span>
-        <output>{{ lengths.AC.toFixed(2) }}</output>
+        <output class="visualizer-control-output">{{ lengths.AC.toFixed(2) }}</output>
       </label>
 
       <input
@@ -63,43 +63,59 @@ defineProps({
         step="0.01"
       />
     </div>
-
-    <VerificationCard title="✓ 각도 불변!">
-      <p class="result-description">
-        선분의 길이는 변하지만<br />
-        표시된 각도의 크기는 변하지 않습니다.
-      </p>
-    </VerificationCard>
   </section>
+  <VerificationCard title="✓ 각도 불변!">
+    <p class="result-description">
+      선분의 길이는 변하지만<br />
+      표시된 각도의 크기는 변하지 않습니다.
+    </p>
+  </VerificationCard>
 </template>
 
 <style scoped>
-.control-group {
-  margin-bottom: 28px;
+.length-controls {
+  min-width: 0;
+  max-width: 100%;
 }
 
-.control-group label {
+.length-control {
+  min-width: 0;
+  max-width: 100%;
+
+  margin-bottom: var(--space-m);
+}
+
+.length-control:last-child {
+  margin-bottom: 0;
+}
+
+.length-control label {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-s);
 
-  margin-bottom: 10px;
+  min-width: 0;
 
-  color: #334155;
-  font-size: 18px;
-  font-weight: 700;
+  margin-bottom: var(--space-s);
 }
 
-.control-group output {
-  min-width: 52px;
+.length-control label span {
+  min-width: 0;
 
-  color: #2563eb;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
+  overflow-wrap: anywhere;
 }
 
-.control-group input {
+.length-control output {
+  flex: 0 0 auto;
+}
+
+.length-control input[type='range'] {
+  display: block;
+
   width: 100%;
+  min-width: 0;
+  margin: 0;
 
   cursor: pointer;
 }
@@ -107,8 +123,10 @@ defineProps({
 .result-description {
   margin: 0;
 
-  color: #334155;
-  font-size: 13px;
+  color: var(--color-text-content);
+  font-size: var(--font-size-m);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-regular);
   line-height: 1.6;
   text-align: center;
 }

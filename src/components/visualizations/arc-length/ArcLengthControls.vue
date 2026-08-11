@@ -21,10 +21,10 @@ const distance = computed(() => {
 
 <template>
   <section class="arc-length-controls">
-    <div class="control-group">
-      <label for="arc-radius">
+    <div class="arc-length-control">
+      <label class="visualizer-control-label" for="arc-radius">
         <span>반지름 R</span>
-        <output>{{ arc.radius.toFixed(2) }}</output>
+        <output class="visualizer-control-output">{{ arc.radius.toFixed(2) }}</output>
       </label>
 
       <input
@@ -37,54 +37,70 @@ const distance = computed(() => {
       />
     </div>
 
-    <div class="control-group">
-      <label for="arc-theta">
+    <div class="arc-length-control">
+      <label class="visualizer-control-label" for="arc-theta">
         <span>중심각 θ</span>
-        <output>{{ arc.theta.toFixed(0) }}°</output>
+        <output class="visualizer-control-output">{{ arc.theta.toFixed(0) }}°</output>
       </label>
 
       <input id="arc-theta" v-model.number="arc.theta" type="range" min="10" max="180" step="1" />
     </div>
-
-    <VerificationCard title="원호의 길이">
-      <div class="formula">d = Rθ</div>
-
-      <p class="result-description">
-        R = {{ arc.radius.toFixed(2) }}, θ = {{ arc.theta.toFixed(0) }}° 일 때
-        <br />
-        d = {{ distance.toFixed(2) }}
-      </p>
-    </VerificationCard>
   </section>
+  <VerificationCard title="원호의 길이">
+    <div class="formula">d = Rθ</div>
+
+    <p class="result-description">
+      R = {{ arc.radius.toFixed(2) }}, θ = {{ arc.theta.toFixed(0) }}° 일 때
+      <br />
+      d = {{ distance.toFixed(2) }}
+    </p>
+  </VerificationCard>
 </template>
 
 <style scoped>
-.control-group {
-  margin-bottom: 28px;
+.arc-length-controls {
+  min-width: 0;
+  max-width: 100%;
 }
 
-.control-group label {
+.arc-length-control {
+  min-width: 0;
+  max-width: 100%;
+
+  margin-bottom: var(--space-m);
+}
+
+.arc-length-control:last-child {
+  margin-bottom: 0;
+}
+
+.arc-length-control label {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-s);
 
-  margin-bottom: 10px;
+  min-width: 0;
 
-  color: #334155;
-  font-size: 18px;
-  font-weight: 700;
+  margin-bottom: var(--space-s);
 }
 
-.control-group output {
-  min-width: 52px;
+.arc-length-control label span {
+  min-width: 0;
 
-  color: #2563eb;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
+  overflow-wrap: anywhere;
 }
 
-.control-group input {
+.arc-length-control output {
+  flex: 0 0 auto;
+}
+
+.arc-length-control input[type='range'] {
+  display: block;
+
   width: 100%;
+  min-width: 0;
+  margin: 0;
 
   cursor: pointer;
 }
@@ -92,18 +108,18 @@ const distance = computed(() => {
 .formula {
   max-width: 100%;
 
-  margin-bottom: 14px;
-  padding: clamp(6px, 1vw, 12px);
+  margin-bottom: var(--space-s);
+  padding: var(--space-s);
 
-  border: 1px solid #dbe3ee;
-  border-radius: 8px;
+  border: var(--border-default);
+  border-radius: var(--radius-m);
 
-  background: #ffffff;
-  color: #334155;
+  background: var(--color-background);
+  color: var(--color-text-content);
 
-  font-family: 'Times New Roman', serif;
-
-  font-size: clamp(9px, 1.1vw, 15px);
+  font-family: var(--font-family-formula);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
   line-height: 1.6;
   text-align: center;
 
@@ -113,8 +129,10 @@ const distance = computed(() => {
 .result-description {
   margin: 0;
 
-  color: #334155;
-  font-size: 13px;
+  color: var(--color-text-content);
+  font-size: var(--font-size-m);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-regular);
   line-height: 1.6;
   text-align: center;
 }

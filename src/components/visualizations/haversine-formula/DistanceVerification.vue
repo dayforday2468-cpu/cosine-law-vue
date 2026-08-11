@@ -75,18 +75,18 @@ const distanceDifference = computed(
 .formula {
   max-width: 100%;
 
-  margin-bottom: 14px;
-  padding: clamp(6px, 1vw, 12px);
+  margin-bottom: var(--space-s);
+  padding: var(--space-s);
 
-  border: 1px solid #dbe3ee;
-  border-radius: 8px;
+  border: var(--border-default);
+  border-radius: var(--radius-m);
 
-  background: #ffffff;
-  color: #334155;
+  background: var(--color-background);
+  color: var(--color-text-content);
 
-  font-family: 'Times New Roman', serif;
-
-  font-size: clamp(9px, 1.1vw, 15px);
+  font-family: var(--font-family-formula);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-regular);
   line-height: 1.6;
   text-align: center;
 
@@ -97,27 +97,27 @@ const distanceDifference = computed(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--space-s);
 
-  margin-bottom: 6px;
+  margin-bottom: var(--space-s);
 
-  color: #334155;
-  font-size: 13px;
+  color: var(--color-text-content);
+  font-size: var(--font-size-s);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-regular);
 }
 
 .result-row strong {
-  color: #1e3a8a;
-
   font-variant-numeric: tabular-nums;
   text-align: right;
   white-space: nowrap;
 }
 
 .result-row.difference {
-  margin-top: 10px;
+  margin-top: var(--space-s);
   margin-bottom: 0;
-  padding-top: 10px;
+  padding-top: var(--space-s);
 
-  border-top: 1px solid #bfdbfe;
+  border-top: var(--border-default);
 }
 </style>

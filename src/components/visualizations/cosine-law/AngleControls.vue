@@ -8,27 +8,27 @@ const angles = defineModel('angles', {
 <template>
   <section class="angle-controls">
     <div class="angle-control">
-      <label for="theta1">
+      <label class="visualizer-control-label" for="theta1">
         <span>θ₁ = ∠BOC(이면각)</span>
-        <output>{{ angles.theta1 }}°</output>
+        <output class="visualizer-control-output">{{ angles.theta1 }}°</output>
       </label>
 
       <input id="theta1" v-model.number="angles.theta1" type="range" min="10" max="170" />
     </div>
 
     <div class="angle-control">
-      <label for="theta2">
+      <label class="visualizer-control-label" for="theta2">
         <span>θ₂ = ∠OAB</span>
-        <output>{{ angles.theta2 }}°</output>
+        <output class="visualizer-control-output">{{ angles.theta2 }}°</output>
       </label>
 
       <input id="theta2" v-model.number="angles.theta2" type="range" min="10" max="80" />
     </div>
 
     <div class="angle-control">
-      <label for="theta3">
+      <label class="visualizer-control-label" for="theta3">
         <span>θ₃ = ∠OAC</span>
-        <output>{{ angles.theta3 }}°</output>
+        <output class="visualizer-control-output">{{ angles.theta3 }}°</output>
       </label>
 
       <input id="theta3" v-model.number="angles.theta3" type="range" min="10" max="80" />
@@ -46,7 +46,7 @@ const angles = defineModel('angles', {
   min-width: 0;
   max-width: 100%;
 
-  margin-bottom: clamp(16px, 2.2vw, 30px);
+  margin-bottom: var(--space-m);
 }
 
 .angle-control:last-child {
@@ -57,16 +57,11 @@ const angles = defineModel('angles', {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: var(--space-s);
 
   min-width: 0;
 
-  margin-bottom: clamp(7px, 1vw, 12px);
-
-  color: #334155;
-
-  font-size: clamp(10px, 1.1vw, 15px);
-  font-weight: 600;
+  margin-bottom: var(--space-s);
 }
 
 .angle-control label span {
@@ -77,11 +72,6 @@ const angles = defineModel('angles', {
 
 .angle-control output {
   flex: 0 0 auto;
-
-  color: #2563eb;
-
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
 }
 
 .angle-control input[type='range'] {

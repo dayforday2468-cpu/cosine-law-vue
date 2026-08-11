@@ -238,7 +238,7 @@ onBeforeUnmount(() => {
 
   overflow: hidden;
 
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 .cosine-law-viewer :deep(canvas) {

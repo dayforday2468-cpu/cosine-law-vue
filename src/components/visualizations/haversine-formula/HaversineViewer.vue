@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
 
   overflow: hidden;
 
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 .haversine-viewer :deep(canvas) {

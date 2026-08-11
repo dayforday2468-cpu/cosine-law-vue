@@ -32,152 +32,179 @@ function adjustCoordinate(value, step, min, max) {
 </script>
 
 <template>
-  <div class="control-group">
-    <label for="latitude-1">
-      <span>P₁ 위도(φ₁)</span>
+  <section class="control-groups">
+    <div class="control-group">
+      <label class="visualizer-control-label" for="latitude-1">
+        <span>P₁ 위도(φ₁)</span>
 
-      <div class="value-control">
-        <button type="button" @click="latitude1 = adjustCoordinate(latitude1, -FINE_STEP, -90, 90)">
-          −
-        </button>
+        <div class="value-control">
+          <button
+            type="button"
+            @click="latitude1 = adjustCoordinate(latitude1, -FINE_STEP, -90, 90)"
+          >
+            −
+          </button>
 
-        <output>{{ latitude1.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visualizer-control-output">{{ latitude1.toFixed(FINE_DIGITS) }}°</output>
 
-        <button type="button" @click="latitude1 = adjustCoordinate(latitude1, FINE_STEP, -90, 90)">
-          +
-        </button>
-      </div>
-    </label>
+          <button
+            type="button"
+            @click="latitude1 = adjustCoordinate(latitude1, FINE_STEP, -90, 90)"
+          >
+            +
+          </button>
+        </div>
+      </label>
 
-    <input id="latitude-1" v-model.number="latitude1" type="range" min="-90" max="90" step="1" />
-  </div>
+      <input id="latitude-1" v-model.number="latitude1" type="range" min="-90" max="90" step="1" />
+    </div>
 
-  <div class="control-group">
-    <label for="longitude-1">
-      <span>P₁ 경도(λ₁)</span>
+    <div class="control-group">
+      <label class="visualizer-control-label" for="longitude-1">
+        <span>P₁ 경도(λ₁)</span>
 
-      <div class="value-control">
-        <button
-          type="button"
-          @click="longitude1 = adjustCoordinate(longitude1, -FINE_STEP, -180, 180)"
-        >
-          −
-        </button>
+        <div class="value-control">
+          <button
+            type="button"
+            @click="longitude1 = adjustCoordinate(longitude1, -FINE_STEP, -180, 180)"
+          >
+            −
+          </button>
 
-        <output>{{ longitude1.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visualizer-control-output">{{ longitude1.toFixed(FINE_DIGITS) }}°</output>
 
-        <button
-          type="button"
-          @click="longitude1 = adjustCoordinate(longitude1, FINE_STEP, -180, 180)"
-        >
-          +
-        </button>
-      </div>
-    </label>
+          <button
+            type="button"
+            @click="longitude1 = adjustCoordinate(longitude1, FINE_STEP, -180, 180)"
+          >
+            +
+          </button>
+        </div>
+      </label>
 
-    <input
-      id="longitude-1"
-      v-model.number="longitude1"
-      type="range"
-      min="-180"
-      max="180"
-      step="1"
-    />
-  </div>
+      <input
+        id="longitude-1"
+        v-model.number="longitude1"
+        type="range"
+        min="-180"
+        max="180"
+        step="1"
+      />
+    </div>
 
-  <div class="control-group">
-    <label for="latitude-2">
-      <span>P₂ 위도(φ₂)</span>
+    <div class="control-group">
+      <label class="visualizer-control-label" for="latitude-2">
+        <span>P₂ 위도(φ₂)</span>
 
-      <div class="value-control">
-        <button type="button" @click="latitude2 = adjustCoordinate(latitude2, -FINE_STEP, -90, 90)">
-          −
-        </button>
+        <div class="value-control">
+          <button
+            type="button"
+            @click="latitude2 = adjustCoordinate(latitude2, -FINE_STEP, -90, 90)"
+          >
+            −
+          </button>
 
-        <output>{{ latitude2.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visualizer-control-output">{{ latitude2.toFixed(FINE_DIGITS) }}°</output>
 
-        <button type="button" @click="latitude2 = adjustCoordinate(latitude2, FINE_STEP, -90, 90)">
-          +
-        </button>
-      </div>
-    </label>
+          <button
+            type="button"
+            @click="latitude2 = adjustCoordinate(latitude2, FINE_STEP, -90, 90)"
+          >
+            +
+          </button>
+        </div>
+      </label>
 
-    <input id="latitude-2" v-model.number="latitude2" type="range" min="-90" max="90" step="1" />
-  </div>
+      <input id="latitude-2" v-model.number="latitude2" type="range" min="-90" max="90" step="1" />
+    </div>
 
-  <div class="control-group">
-    <label for="longitude-2">
-      <span>P₂ 경도(λ₂)</span>
+    <div class="control-group">
+      <label class="visualizer-control-label" for="longitude-2">
+        <span>P₂ 경도(λ₂)</span>
 
-      <div class="value-control">
-        <button
-          type="button"
-          @click="longitude2 = adjustCoordinate(longitude2, -FINE_STEP, -180, 180)"
-        >
-          −
-        </button>
+        <div class="value-control">
+          <button
+            type="button"
+            @click="longitude2 = adjustCoordinate(longitude2, -FINE_STEP, -180, 180)"
+          >
+            −
+          </button>
 
-        <output>{{ longitude2.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visualizer-control-output">{{ longitude2.toFixed(FINE_DIGITS) }}°</output>
 
-        <button
-          type="button"
-          @click="longitude2 = adjustCoordinate(longitude2, FINE_STEP, -180, 180)"
-        >
-          +
-        </button>
-      </div>
-    </label>
+          <button
+            type="button"
+            @click="longitude2 = adjustCoordinate(longitude2, FINE_STEP, -180, 180)"
+          >
+            +
+          </button>
+        </div>
+      </label>
 
-    <input
-      id="longitude-2"
-      v-model.number="longitude2"
-      type="range"
-      min="-180"
-      max="180"
-      step="1"
-    />
-  </div>
+      <input
+        id="longitude-2"
+        v-model.number="longitude2"
+        type="range"
+        min="-180"
+        max="180"
+        step="1"
+      />
+    </div>
+  </section>
 </template>
 
 <style scoped>
+.control-groups {
+  min-width: 0;
+  max-width: 100%;
+}
 .control-group {
-  margin-bottom: 16px;
+  min-width: 0;
+  max-width: 100%;
+
+  margin-bottom: var(--space-m);
+}
+
+.control-group:last-child {
+  margin-bottom: 0;
 }
 
 .control-group label {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-s);
 
-  margin-bottom: 6px;
+  min-width: 0;
 
-  color: #334155;
-  font-size: 16px;
-  font-weight: 700;
+  margin-bottom: var(--space-s);
 }
 
-.control-group output {
-  min-width: 64px;
+.control-group label span {
+  min-width: 0;
 
-  color: #2563eb;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
+  overflow-wrap: anywhere;
 }
 
-.control-group input {
+.control-group input[type='range'] {
+  display: block;
+
   width: 100%;
+  min-width: 0;
+  margin: 0;
 
   cursor: pointer;
 }
 
 .value-control {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-s);
 }
 
 .value-control output {
-  min-width: 68px;
+  flex: 0 0 auto;
 }
 
 .value-control button {
@@ -189,20 +216,21 @@ function adjustCoordinate(value, step, min, max) {
   height: 26px;
   padding: 0;
 
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
+  border: var(--border-default);
+  border-radius: var(--radius-s);
 
-  background: #ffffff;
-  color: #2563eb;
+  background: var(--color-background);
+  color: var(--color-main);
 
-  font-size: 18px;
-  font-weight: 700;
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-family-content);
   line-height: 1;
 
   cursor: pointer;
 }
 
 .value-control button:hover {
-  background: #eff6ff;
+  background: var(--color-main-sub);
 }
 </style>

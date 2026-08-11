@@ -33,3 +33,17 @@
   font-weight: var(--font-weight-regular);
   line-height: 1.8;
 }
+
+.visualizer-control-label {
+  color: var(--color-text-main);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-m);
+  font-weight: var(--font-weight-semibold);
+}
+
+.visualizer-control-output {
+  color: var(--color-main);
+  font-family: var(--font-family-content);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

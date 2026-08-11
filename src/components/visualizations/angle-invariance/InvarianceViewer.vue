@@ -296,7 +296,7 @@ onBeforeUnmount(() => {
 
   overflow: hidden;
 
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 #invariance-viewer :deep(canvas) {

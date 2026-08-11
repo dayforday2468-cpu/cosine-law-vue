@@ -240,7 +240,7 @@ onBeforeUnmount(() => {
 
   overflow: hidden;
 
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 #arc-length-viewer :deep(canvas) {

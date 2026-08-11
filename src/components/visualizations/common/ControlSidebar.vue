@@ -36,6 +36,6 @@ defineProps({
   color: var(--color-text-main);
   font-size: var(--font-size-l);
   font-family: var(--font-family-title);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-bold);
 }
 </style>
