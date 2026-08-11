@@ -20,20 +20,22 @@ defineProps({
   min-width: 0;
   min-height: 0;
 
-  padding: clamp(12px, 2vw, 28px);
+  padding: var(--space-m);
 
   overflow-x: hidden;
   overflow-y: auto;
 
-  border-left: 1px solid #e2e8f0;
+  border-left: var(--border-default);
 
-  background: #ffffff;
+  background: var(--color-background);
 }
 
 .control-sidebar h2 {
-  margin: 0 0 7px;
+  margin: 0 0 var(--space-s);
 
-  color: #0f172a;
-  font-size: 24px;
+  color: var(--color-text-main);
+  font-size: var(--font-size-l);
+  font-family: var(--font-family-title);
+  font-weight: var(--font-weight-semibold);
 }
 </style>

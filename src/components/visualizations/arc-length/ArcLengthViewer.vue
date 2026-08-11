@@ -244,8 +244,10 @@ onBeforeUnmount(() => {
 }
 
 #arc-length-viewer :deep(canvas) {
-  display: block;
+  position: absolute;
+  inset: 0;
 
+  display: block;
   width: 100%;
   height: 100%;
 }
