@@ -17,21 +17,21 @@ defineProps({
 
 <style scoped>
 .verification {
-  margin-top: 22px;
-  padding: 14px;
+  margin-top: var(--space-l);
+  padding: var(--space-m);
 
-  border: 2px solid #2563eb;
-  border-radius: 12px;
+  border: var(--border-emphasize);
+  border-radius: var(--radius-l);
 
-  background: #eff6ff;
+  background: var(--color-background-sub);
 }
 
 .verification h2 {
-  margin: 0 0 12px;
+  margin: 0 0 var(--space-m);
 
-  color: #1d4ed8;
-  font-size: 20px;
-  font-weight: 800;
+  color: var(--color-main);
+  font-size: var(--font-size-l);
+  font-weight: var(--font-weight-semibold);
   text-align: center;
 }
 </style>

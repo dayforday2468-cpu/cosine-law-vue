@@ -9,19 +9,21 @@
   position: absolute;
   z-index: 10;
 
-  bottom: clamp(10px, 1.5vw, 20px);
-  left: clamp(10px, 1.5vw, 20px);
+  bottom: var(--space-m);
+  left: var(--space-m);
 
   margin: 0;
-  padding: clamp(5px, 0.7vw, 8px) clamp(8px, 1vw, 12px);
+  padding: var(--space-s) var(--space-s);
 
-  border: 1px solid #dbe3ee;
-  border-radius: 8px;
+  border: var(--border-default);
+  border-radius: var(--radius-m);
 
-  background: rgb(255 255 255 / 90%);
-  color: #475569;
+  background: var(--color-background-overlay);
+  color: var(--color-text-sub);
 
-  font-size: clamp(10px, 1vw, 14px);
+  font-size: var(--font-size-s);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-regular);
   line-height: 1.4;
   white-space: nowrap;
 

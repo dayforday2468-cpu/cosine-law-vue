@@ -29,27 +29,26 @@ defineProps({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: var(--space-m);
 
-  background: rgb(248 250 252 / 94%);
-  color: #334155;
+  background: var(--color-background-overlay);
 
   pointer-events: all;
 }
 
 .resize-loading p {
-  margin: 0;
-
-  font-size: 14px;
-  font-weight: 700;
+  color: var(--color-text-sub);
+  font-size: var(--font-size-m);
+  font-family: var(--font-family-content);
+  font-weight: var(--font-weight-bold);
 }
 
 .loading-spinner {
-  width: 32px;
-  height: 32px;
+  width: var(--font-size-xl);
+  height: var(--font-size-xl);
 
-  border: 3px solid #bfdbfe;
-  border-top-color: #2563eb;
+  border: 3px solid var(--color-main-sub);
+  border-top-color: var(--color-main);
   border-radius: 50%;
 
   animation: loading-spin 0.8s linear infinite;

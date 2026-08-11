@@ -26,7 +26,7 @@ import { RouterLink } from 'vue-router'
 
   border-bottom: var(--border-default);
 
-  background: var(--color-background);
+  background: var(--color-background-overlay);
 }
 
 .navbar-inner {
