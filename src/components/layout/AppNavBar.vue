@@ -12,7 +12,7 @@ import { RouterLink } from 'vue-router'
 
       <div class="nav-links">
         <RouterLink class="site-link" to="/">Home</RouterLink>
-        <RouterLink class="site-link" to="/articles/spherical-cosine-law">Articles</RouterLink>
+        <RouterLink class="site-link" to="/articles/">Articles</RouterLink>
       </div>
     </nav>
   </header>
