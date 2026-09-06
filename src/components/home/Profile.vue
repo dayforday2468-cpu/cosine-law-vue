@@ -31,7 +31,18 @@ import { profile } from '@/data/profile.js'
 
           <ul>
             <li v-for="item in profile.experiences" :key="item.organization">
-              <strong>{{ item.organization }}</strong>
+              <a
+                v-if="item.url"
+                :href="item.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="profile-link"
+              >
+                <strong>{{ item.organization }}</strong>
+              </a>
+
+              <strong v-else>{{ item.organization }}</strong>
+
               <span>{{ item.detail }}</span>
             </li>
           </ul>
@@ -191,6 +202,20 @@ import { profile } from '@/data/profile.js'
   font-family: var(--font-family-content);
   font-size: var(--font-size-s);
   font-weight: var(--font-weight-semibold);
+}
+
+.profile-link {
+  color: var(--color-text-main);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.profile-link strong {
+  color: inherit;
+}
+
+.profile-link:hover {
+  color: var(--color-main);
 }
 
 @media (max-width: 768px) {
