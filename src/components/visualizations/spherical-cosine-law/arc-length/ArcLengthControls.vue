@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import VerificationCard from '../common/VerificationCard.vue'
+import { VerificationCard } from '@/components/visualizations/common'
 
 const arc = defineModel('arc', {
   type: Object,

@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 
-import VerificationCard from '../common/VerificationCard.vue'
+import { VerificationCard } from '@/components/visualizations/common'
 
 import {
   calculateHaversineDistance,

@@ -1,5 +1,5 @@
 <script setup>
-import VerificationCard from '../common/VerificationCard.vue'
+import { VerificationCard } from '@/components/visualizations/common'
 
 const lengths = defineModel('lengths', {
   type: Object,

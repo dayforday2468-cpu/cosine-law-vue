@@ -12,7 +12,7 @@ import {
   AngleInvarianceVisualizer,
   HaversineVisualizer,
   ArcLengthVisualizer,
-} from '@/components/visualizations'
+} from '@/components/visualizations/spherical-cosine-law'
 </script>
 
 <template>

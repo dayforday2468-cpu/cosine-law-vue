@@ -1,8 +1,10 @@
 <script setup>
 import { reactive } from 'vue'
 
-import VisualizerLayout from '../common/VisualizerLayout.vue'
-import ControlSidebar from '../common/ControlSidebar.vue'
+import {
+  VisualizerLayout,
+  ControlSidebar
+} from '@/components/visualizations/common'
 
 import AngleControls from './AngleControls.vue'
 import FormulaVerification from './FormulaVerification.vue'

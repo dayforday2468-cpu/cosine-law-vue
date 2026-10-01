@@ -3,8 +3,10 @@ import { onBeforeUnmount, onMounted, watch } from 'vue'
 
 import * as THREE from 'three'
 
-import ResizingLoading from '../common/ResizingLoading.vue'
-import ViewerGuide from '../common/ViewerGuide.vue'
+import {
+  ResizingLoading,
+  ViewerGuide
+} from '@/components/visualizations/common'
 
 import { useThreeViewer } from '@/composables/useThreeViewer.js'
 
