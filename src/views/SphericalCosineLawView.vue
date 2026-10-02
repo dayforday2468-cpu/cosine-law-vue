@@ -29,8 +29,7 @@ import {
       분함과 아쉬움이 몰려오고, 기억의 저편으로 사라졌다. 그것이 일반적인 실수의 퇴장이다. 그런데,
       인생에는 드물게 우연인지 필연인지 헷갈리는 경우가 있다. 문제 조건에 $30^{\circ}, 45^{\circ}$가
       있고, 문제의 답이 $\cos(\angle CAB)=\frac{\sqrt{6}}{4}$라면, $\cos(\angle
-      CAB)=\cos(30^{\circ})\cos(45^{\circ})$이기 때문일거라는 추측이다. 불행히도, 틀린 문제가 100점
-      만점에 10점인 쉬운 문제였으니 어이없는 생각이 나무에 못이 박히듯 떠나가질 않았다.
+      CAB)=\cos(30^{\circ})\cos(45^{\circ})$이기 때문일거라는 추측이다.
     </ArticleText>
     <ArticleFigure caption="내 추측의 단서가 된 코사인 값들">
       <ArticleText>
@@ -62,7 +61,7 @@ import {
       </ArticleText>
     </ArticleDisclosure>
     <ArticleText>
-      나는 답이 이렇게 나온게 우연인지 참을 수 없이 궁금해졌다. 그래서, 면학 시간이 시작하자마자
+      나는 답이 $\frac{\sqrt{6}}{4}$으로 나온 것이 우연인지 참을 수 없이 궁금해졌다. 그래서, 면학 시간이 시작하자마자
       일반화를 했다.
     </ArticleText>
     <ArticleCallout title="일반화된 문제">
@@ -84,9 +83,11 @@ import {
       </ArticleText>
     </ArticleDisclosure>
     <ArticleText>
-      두 각의 값을 바꿔도 비슷한 관계가 유지되는지 확인하기 위해 문제의 숫자를 변수로 바꿨다. 처음
-      발견한 패턴은 우연이 아니었다. 금부스러기로 금맥을 발견하는 것처럼 나는 이 새로운 세계을 더
-      발굴하고 싶어졌다. 그래서, 숫자를 변수로 더 바꿔보았다.
+      계산을 정리하면,
+      $$ \cos(\angle CAB)=\cos(\theta_1)\cos(\theta_2) $$
+      라는 관계를 얻는다. 처음 문제에서 보였던
+      $\cos(30^\circ)\cos(45^\circ)$의 형태가 우연이 아니라는 것을 확인한 셈이다.
+      금부스러기로 금맥을 발견하는 것처럼 나는 이 새로운 세계을 더 발굴하고 싶어졌다. 그래서, 숫자를 변수로 더 바꿔보았다.
     </ArticleText>
     <ArticleCallout title="더 일반화된 문제">
       네 점 $O, A, B, C$으로 이루어진 사면체가 있다. 점 $O$는 원점이고, 점 $B$는 $x=0$ 평면 위에, 점
@@ -163,22 +164,7 @@ import {
       공식이 각 변의 길이와 무관하다는 점을 이용하여, 지표면 상의 두 점 사이의 거리를 측정하는데
       사용할 수 있다. 둥근 지구 표면 위에서 두 점 사이를 가장 짧게 연결한 거리를 대권거리라고 한다.
       점 $A$를 지구의 중심, 점 $O$를 북극점에 놓고, 나머지 두 점 $B,C$를 거리를 구하고 싶은 지표면
-      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다. 원호의 길이($d$)는 그 원호의
-      중심각($\theta$)과 원의 반지름($R$)에 비례한다. 따라서, 대권거리는 그 중심각과 지구의 반지름을
-      이용해 구할 수 있다. $$ d=R\times\theta $$
-    </ArticleText>
-    <ArticleDisclosure title="원호 공식 시각화">
-      <ArticleFigure caption="반지름과 중심각으로 결정되는 원호의 길이">
-        <ArcLengthVisualizer />
-      </ArticleFigure>
-    </ArticleDisclosure>
-    <ArticleText>
-      앞서 구면 삼각형 코사인 법칙으로 $\cos(\angle CAB) = \cos(\theta_2)\cos(\theta_3) +
-      \sin(\theta_2)\sin(\theta_3)\cos(\theta_1)$임을 보였다. 대권거리를 구하는 문제에서는 $\angle
-      CAB=\theta$이고, $\theta$에 대해 식을 정리하여 다음을 얻는다. $$
-      \theta=\arccos(\cos(\theta_2)\cos(\theta_3) + \sin(\theta_2)\sin(\theta_3)\cos(\theta_1)) $$
-      $\theta_1$, $\theta_2$, $\theta_3$는 사면체 문제에서 쓴 변수고, 이를 대권거리 계산하는
-      문제에서 쓰는 변수로 대응시키면 다음과 같다.
+      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다. 
     </ArticleText>
     <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
       <ArticleText>
@@ -190,6 +176,20 @@ import {
         \theta & \text{두 지점 사이의 중심각} \end{array} $$
       </ArticleText>
     </ArticleFigure>
+    <ArticleText>
+      원호의 길이($d$)는 그 원호의
+      중심각($\theta$)과 원의 반지름($R$)에 비례한다. 따라서, 대권거리는 그 중심각과 지구의 반지름을
+      이용해 구할 수 있다. $$ d=R\times\theta $$
+    </ArticleText>
+    <ArticleFigure caption="반지름과 중심각으로 결정되는 원호의 길이" width="content">
+      <ArcLengthVisualizer />
+    </ArticleFigure>
+    <ArticleText>
+      앞서 구면 삼각형 코사인 법칙으로 $\cos(\angle CAB) = \cos(\theta_2)\cos(\theta_3) +
+      \sin(\theta_2)\sin(\theta_3)\cos(\theta_1)$임을 보였다. 대권거리를 구하는 문제에서는 $\angle
+      CAB=\theta$이고, $\theta$에 대해 식을 정리하여 다음을 얻는다. $$
+      \theta=\arccos(\cos(\theta_2)\cos(\theta_3) + \sin(\theta_2)\sin(\theta_3)\cos(\theta_1)) $$
+    </ArticleText>
     <ArticleText>
       보통 인터넷에 대권거리 계산을 검색하면 구면 삼각형 코사인 법칙이 나오진 않는다. 대신 하버사인
       공식이라는 나오는데, 그 이유는 컴퓨터가 계산할 떄 오차가 더 적게 나오기 때문이다.
