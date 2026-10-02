@@ -44,7 +44,7 @@ import {
       네 점 $O, A, B, C$으로 이루어진 사면체가 있다. 점 $O$는 원점이고, 점 $A, B, C$는 $x, y, z$ 축
       위에 있다. $\angle OAB=45^{\circ}, \angle OAC=30^{\circ}$일 때, $\cos(\angle CAB)$을 구해라.
     </ArticleCallout>
-    <ArticleFigure caption="틀린 문제의 사면체">
+    <ArticleFigure caption="틀린 문제의 사면체" width="content">
       <Problem1Figure />
     </ArticleFigure>
     <ArticleDisclosure title="틀린 문제 풀이">

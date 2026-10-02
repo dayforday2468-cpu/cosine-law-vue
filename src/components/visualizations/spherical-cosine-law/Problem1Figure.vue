@@ -205,6 +205,9 @@ onBeforeUnmount(() => {
 
   overflow: hidden;
 
+  border: var(--border-default);
+  border-radius: var(--radius-m);
+
   background: var(--color-background);
 }
 

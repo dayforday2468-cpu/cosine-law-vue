@@ -6,6 +6,11 @@ defineProps({
     type: String,
     required: true,
   },
+  width: {
+    type: String,
+    default: 'full',
+    validator: (value) => ['full', 'content'].includes(value),
+  },
 })
 
 const getNextFigureNumber = inject('getNextFigureNumber')
@@ -14,7 +19,10 @@ const figureNumber = getNextFigureNumber()
 </script>
 
 <template>
-  <figure class="article-figure">
+  <figure
+    class="article-figure"
+    :class="{ 'article-figure--content': width === 'content' }"
+  >
     <div class="figure-content">
       <slot />
     </div>
@@ -30,6 +38,10 @@ const figureNumber = getNextFigureNumber()
 .article-figure {
   width: 100%;
   margin: var(--space-l) auto;
+}
+
+.article-figure--content {
+  max-width: var(--article-content-width);
 }
 
 .figure-content {
