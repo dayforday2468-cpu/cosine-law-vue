@@ -496,10 +496,15 @@ function createModel() {
   figureGroup.add(initialTheta1Group)
 
   // --------------------------------------
-  // θ₁: 북극점에서 본 두 자오면 사이의 각
+  // θ₁: 적도면에서 본 두 경도의 차
   // --------------------------------------
 
-  const transverseB = directionAB
+  /*
+   * AO 방향을 북극축으로 보면,
+   * AB와 AC를 AO에 수직인 적도면에 투영한 방향은
+   * 각각 P₁, P₂의 경도 방향이 된다.
+   */
+  const equatorDirectionB = directionAB
     .clone()
     .addScaledVector(
       directionAO,
@@ -507,7 +512,7 @@ function createModel() {
     )
     .normalize()
 
-  const transverseC = directionAC
+  const equatorDirectionC = directionAC
     .clone()
     .addScaledVector(
       directionAO,
@@ -515,17 +520,14 @@ function createModel() {
     )
     .normalize()
 
-  const theta1PointB = targetO.clone().add(transverseB)
-  const theta1PointC = targetO.clone().add(transverseC)
-
   sphereTheta1ArcGroup = new THREE.Group()
 
   sphereTheta1ArcGroup.add(
     createAngleArc(
-      targetO,
-      theta1PointB,
-      theta1PointC,
-      0.28,
+      ORIGIN,
+      equatorDirectionB,
+      equatorDirectionC,
+      SPHERE_RADIUS,
       0x7c3aed,
     ),
   )
@@ -538,10 +540,10 @@ function createModel() {
     createLabel(
       'θ₁',
       getAngleLabelPosition(
-        targetO,
-        theta1PointB,
-        theta1PointC,
-        0.42,
+        ORIGIN,
+        equatorDirectionB,
+        equatorDirectionC,
+        0.47,
       ),
       {
         textColor: '#7c3aed',
@@ -688,10 +690,10 @@ function createModel() {
     createLabel(
       'Δλ',
       getAngleLabelPosition(
-        targetO,
-        theta1PointB,
-        theta1PointC,
-        0.42,
+        ORIGIN,
+        equatorDirectionB,
+        equatorDirectionC,
+        0.47,
       ),
       {
         textColor: '#7c3aed',
