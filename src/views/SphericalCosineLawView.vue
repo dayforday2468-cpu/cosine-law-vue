@@ -173,16 +173,35 @@ import {
       원호의 길이($d$)는 그 원호의
       중심각($\theta$)과 원의 반지름($R$)에 비례한다. 따라서, 대권거리는 그 중심각과 지구의 반지름을
       이용해 구할 수 있다. $$ d=R\times\theta $$
-    </ArticleText>
-    <ArticleFigure caption="반지름과 중심각으로 결정되는 원호의 길이" width="content">
-      <ArcLengthVisualizer />
-    </ArticleFigure>
-    <ArticleText>
       앞서 구면 삼각형 코사인 법칙으로 $\cos(\angle CAB) = \cos(\theta_2)\cos(\theta_3) +
       \sin(\theta_2)\sin(\theta_3)\cos(\theta_1)$임을 보였다. 대권거리를 구하는 문제에서는 $\angle
       CAB=\theta$이고, $\theta$에 대해 식을 정리하여 다음을 얻는다. $$
       \theta=\arccos(\cos(\theta_2)\cos(\theta_3) + \sin(\theta_2)\sin(\theta_3)\cos(\theta_1)) $$
     </ArticleText>
+    <ArticleFigure caption="반지름과 중심각으로 결정되는 원호의 길이" width="content">
+      <ArcLengthVisualizer />
+    </ArticleFigure>
+        <ArticleText>
+      사면체를 점 $A$를 원점으로 평행이동하고 $\overline{AO}$이 북극 방향을 보도록 돌린 뒤 세 점을 같은 구면 위에
+      올리면 다음과 같이 대권거리 문제의 구조가 된다.
+    </ArticleText>
+    <ArticleFigure caption="사면체에서 구면 위의 세 점으로" width="content">
+      <SphereNormalizationFigure />
+    </ArticleFigure>
+    <ArticleText>
+      이때 점 $A$는 지구의 중심, 점 $O$는 북극점에 대응하고, 나머지 두 점 $B,C$는 거리를 구하고 싶은
+      지표면 위의 두 점 $P_1,P_2$에 대응한다.
+    </ArticleText>
+    <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
+      <ArticleText>
+        $$ \begin{array}{c|c|c} \text{사면체 문제} & \text{대권거리 문제} & \text{의미} \\ \hline A
+        & \text{지구 중심} & \text{구의 중심} \\ O & \text{북극점} & \text{기준점} \\ B & P_1 &
+        \text{첫 번째 지점} \\ C & P_2 & \text{두 번째 지점} \\ \hline \theta_1 &
+        \Delta\lambda=\lambda_2-\lambda_1 & \text{경도 차이} \\ \theta_2 & \frac{\pi}{2}-\phi_1 &
+        P_1\text{의 여위도} \\ \theta_3 & \frac{\pi}{2}-\phi_2 & P_2\text{의 여위도} \\ \angle CAB &
+        \theta & \text{두 지점 사이의 중심각} \end{array} $$
+      </ArticleText>
+    </ArticleFigure>
     <ArticleText>
       보통 인터넷에 대권거리 계산을 검색하면 구면 삼각형 코사인 법칙이 나오진 않는다. 대신 하버사인
       공식이 나오는데, 그 이유는 컴퓨터가 계산할 때 오차가 더 적게 나오기 때문이다.
@@ -242,32 +261,6 @@ import {
         사용하더라도 마지막에는 $d=R\theta$를 이용해 대권거리를 구한다.
       </ArticleText>
     </ArticleDisclosure>
-    <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
-      <HaversineVisualizer />
-    </ArticleFigure>
-    <ArticleText>
-      앞서 확인했듯 이 공식의 각도 관계는 $\overline{AO}, \overline{AB}, \overline{AC}$의 길이와
-      무관하다. 따라서 $A$에서 바라본 방향은 그대로 유지한 채 세 선분의 길이를 같게 만들 수 있다.
-      도형을 $A$ 중심으로 옮기고 $\overline{AO}$를 북극 방향으로 놓은 뒤 세 점을 같은 구면 위에
-      올리면 다음과 같이 대권거리 문제의 구조가 된다.
-    </ArticleText>
-    <ArticleFigure caption="사면체에서 구면 위의 세 점으로" width="content">
-      <SphereNormalizationFigure />
-    </ArticleFigure>
-    <ArticleText>
-      이때 점 $A$는 지구의 중심, 점 $O$는 북극점에 대응하고, 나머지 두 점 $B,C$는 거리를 구하고 싶은
-      지표면 위의 두 점 $P_1,P_2$에 대응한다.
-    </ArticleText>
-    <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
-      <ArticleText>
-        $$ \begin{array}{c|c|c} \text{사면체 문제} & \text{대권거리 문제} & \text{의미} \\ \hline A
-        & \text{지구 중심} & \text{구의 중심} \\ O & \text{북극점} & \text{기준점} \\ B & P_1 &
-        \text{첫 번째 지점} \\ C & P_2 & \text{두 번째 지점} \\ \hline \theta_1 &
-        \Delta\lambda=\lambda_2-\lambda_1 & \text{경도 차이} \\ \theta_2 & \frac{\pi}{2}-\phi_1 &
-        P_1\text{의 여위도} \\ \theta_3 & \frac{\pi}{2}-\phi_2 & P_2\text{의 여위도} \\ \angle CAB &
-        \theta & \text{두 지점 사이의 중심각} \end{array} $$
-      </ArticleText>
-    </ArticleFigure>
     <ArticleText>
       구면 삼각형 코사인 법칙과 하버사인 공식은 수학적으로 같은 대권거리를 계산하지만, 컴퓨터로
       계산할 때는 차이가 생길 수 있다. 두 지점이 매우 가까우면 중심각 $\theta$가 작아져
@@ -276,5 +269,8 @@ import {
       $\sin^2(\theta/2)$처럼 작은 각을 직접 0에 가까운 작은 값으로 표현하기 때문에 가까운 두 지점의
       거리를 계산할 때 수치적으로 더 안정적이다.
     </ArticleText>
+    <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
+      <HaversineVisualizer />
+    </ArticleFigure>
   </ArticleLayout>
 </template>
