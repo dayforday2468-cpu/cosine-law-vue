@@ -175,7 +175,6 @@ async function searchCity() {
       </p>
     </VerificationCard>
 
-    <p class="attribution">Open-Meteo · GeoNames</p>
   </section>
 </template>
 

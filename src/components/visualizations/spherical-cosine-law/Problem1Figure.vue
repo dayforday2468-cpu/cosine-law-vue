@@ -25,11 +25,11 @@ import {
 
 const O = new THREE.Vector3(0, 0, 0)
 
-const A = new THREE.Vector3(1, 0, 0)
+const A = new THREE.Vector3(2, 0, 0)
 
-const B = new THREE.Vector3(0, 1, 0)
+const B = new THREE.Vector3(0, 2, 0)
 
-const C = new THREE.Vector3(0, 0, 0.57735)
+const C = new THREE.Vector3(0, 0, 1.15470)
 
 // --------------------------------------
 // Three.js Viewer

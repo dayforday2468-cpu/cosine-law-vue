@@ -169,20 +169,6 @@ import {
       <GreatCircleVisualizer />
     </ArticleFigure>
     <ArticleText>
-      점 $A$를 지구의 중심, 점 $O$를 북극점에 놓고, 나머지 두 점 $B,C$를 거리를 구하고 싶은 지표면
-      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다.
-    </ArticleText>
-    <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
-      <ArticleText>
-        $$ \begin{array}{c|c|c} \text{사면체 문제} & \text{대권거리 문제} & \text{의미} \\ \hline A
-        & \text{지구 중심} & \text{구의 중심} \\ O & \text{북극점} & \text{기준점} \\ B & P_1 &
-        \text{첫 번째 지점} \\ C & P_2 & \text{두 번째 지점} \\ \hline \theta_1 &
-        \Delta\lambda=\lambda_2-\lambda_1 & \text{경도 차이} \\ \theta_2 & \frac{\pi}{2}-\phi_1 &
-        P_1\text{의 여위도} \\ \theta_3 & \frac{\pi}{2}-\phi_2 & P_2\text{의 여위도} \\ \angle CAB &
-        \theta & \text{두 지점 사이의 중심각} \end{array} $$
-      </ArticleText>
-    </ArticleFigure>
-    <ArticleText>
       원호의 길이($d$)는 그 원호의
       중심각($\theta$)과 원의 반지름($R$)에 비례한다. 따라서, 대권거리는 그 중심각과 지구의 반지름을
       이용해 구할 수 있다. $$ d=R\times\theta $$
@@ -200,6 +186,25 @@ import {
       보통 인터넷에 대권거리 계산을 검색하면 구면 삼각형 코사인 법칙이 나오진 않는다. 대신 하버사인
       공식이라는 나오는데, 그 이유는 컴퓨터가 계산할 떄 오차가 더 적게 나오기 때문이다.
     </ArticleText>
+    <ArticleCallout title="Theorem. 하버사인 공식">
+      두 지점의 위도를 $\phi_1,\phi_2$, 경도 차이를
+      $\Delta\lambda=\lambda_2-\lambda_1$, 두 지점 사이의 중심각을 $\theta$라고 하면
+      다음 관계가 성립한다.
+
+      $$ \sin^2\left(\frac{\theta}{2}\right)
+      =
+      \sin^2\left(\frac{\phi_2-\phi_1}{2}\right)
+      +
+      \cos(\phi_1)\cos(\phi_2)
+      \sin^2\left(\frac{\Delta\lambda}{2}\right) $$
+
+      오른쪽 값을 $a$라고 두면,
+
+      $$ \theta =
+      2\operatorname{atan2}\left(\sqrt{a},\sqrt{1-a}\right) $$
+
+      로 중심각을 구할 수 있고, 최종적으로 $d=R\theta$를 이용해 대권거리를 계산한다.
+    </ArticleCallout>
     <ArticleDisclosure title="하버사인 공식 유도">
       <ArticleText>
         하버사인 공식은 구면 삼각형 코사인 법칙에서 간단히 유도할 수 있다. 먼저
@@ -238,6 +243,20 @@ import {
     </ArticleDisclosure>
     <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
       <HaversineVisualizer />
+    </ArticleFigure>
+    <ArticleText>
+      점 $A$를 지구의 중심, 점 $O$를 북극점에 놓고, 나머지 두 점 $B,C$를 거리를 구하고 싶은 지표면
+      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다.
+    </ArticleText>
+    <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
+      <ArticleText>
+        $$ \begin{array}{c|c|c} \text{사면체 문제} & \text{대권거리 문제} & \text{의미} \\ \hline A
+        & \text{지구 중심} & \text{구의 중심} \\ O & \text{북극점} & \text{기준점} \\ B & P_1 &
+        \text{첫 번째 지점} \\ C & P_2 & \text{두 번째 지점} \\ \hline \theta_1 &
+        \Delta\lambda=\lambda_2-\lambda_1 & \text{경도 차이} \\ \theta_2 & \frac{\pi}{2}-\phi_1 &
+        P_1\text{의 여위도} \\ \theta_3 & \frac{\pi}{2}-\phi_2 & P_2\text{의 여위도} \\ \angle CAB &
+        \theta & \text{두 지점 사이의 중심각} \end{array} $$
+      </ArticleText>
     </ArticleFigure>
     <ArticleText>
       구면 삼각형 코사인 법칙과 하버사인 공식은 수학적으로 같은 대권거리를 계산하지만, 컴퓨터로
