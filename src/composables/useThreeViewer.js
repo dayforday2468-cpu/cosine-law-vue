@@ -361,6 +361,14 @@ export function useThreeViewer(dimension = '3d', { showAxes = true } = {}) {
   }
 
   // --------------------------------------
+  // Viewer 초기 시점 복원
+  // --------------------------------------
+
+  function resetView() {
+    orbitControls?.reset()
+  }
+
+  // --------------------------------------
   // 기존 모델 제거
   // --------------------------------------
 
@@ -429,6 +437,7 @@ export function useThreeViewer(dimension = '3d', { showAxes = true } = {}) {
     resizeRenderer,
     observeResize,
     animate,
+    resetView,
     clearModel,
     disposeThree,
   }

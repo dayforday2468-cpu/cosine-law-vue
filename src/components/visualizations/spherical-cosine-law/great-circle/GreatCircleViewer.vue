@@ -46,6 +46,7 @@ const {
   resizeRenderer,
   observeResize,
   animate,
+  resetView,
   disposeThree,
 } = useThreeViewer('3d', {
   showAxes: false,
@@ -157,8 +158,6 @@ function createModel() {
 
   globe.scale.setScalar(GLOBE_SCALE)
 
-  orientGlobeToOrigin()
-
   model.add(globe)
 
   updateRoute()
@@ -168,6 +167,9 @@ function updateRoute() {
   if (!globe) {
     return
   }
+
+  resetView()
+  orientGlobeToOrigin()
 
   const points = [
     {
