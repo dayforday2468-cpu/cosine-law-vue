@@ -16,7 +16,6 @@ const destination = defineModel('destination', {
 })
 
 const query = ref('')
-const searchResults = ref([])
 const isSearching = ref(false)
 const searchError = ref('')
 
@@ -54,23 +53,17 @@ async function searchCity() {
 
   isSearching.value = true
   searchError.value = ''
-  searchResults.value = []
 
   try {
     const params = new URLSearchParams({
-      q: keyword,
-      format: 'jsonv2',
-      addressdetails: '1',
-      limit: '5',
+      name: keyword,
+      count: '1',
+      language: 'ko',
+      format: 'json',
     })
 
     const response = await fetch(
-      `https://nominatim.openstreetmap.org/search?${params.toString()}`,
-      {
-        headers: {
-          'Accept-Language': 'ko',
-        },
-      },
+      `https://geocoding-api.open-meteo.com/v1/search?${params.toString()}`,
     )
 
     if (!response.ok) {
@@ -78,50 +71,54 @@ async function searchCity() {
     }
 
     const data = await response.json()
+    const city = data.results?.[0]
 
-    searchResults.value = data
-      .filter((result) => Number.isFinite(Number(result.lat)) && Number.isFinite(Number(result.lon)))
-      .map((result) => ({
-        name:
-          result.address?.city ||
-          result.address?.town ||
-          result.address?.village ||
-          result.name ||
-          result.display_name.split(',')[0],
-        displayName: result.display_name,
-        lat: Number(result.lat),
-        lng: Number(result.lon),
-      }))
-
-    if (searchResults.value.length === 0) {
+    if (!city) {
       searchError.value = '검색 결과가 없습니다.'
+      return
     }
+
+    destination.value = {
+      name: city.name,
+      country: city.country ?? '',
+      lat: Number(city.latitude),
+      lng: Number(city.longitude),
+    }
+
+    query.value = city.name
   } catch (error) {
-    searchError.value = error instanceof Error ? error.message : '도시 검색 중 오류가 발생했습니다.'
+    searchError.value =
+      error instanceof Error
+        ? error.message
+        : '도시 검색 중 오류가 발생했습니다.'
   } finally {
     isSearching.value = false
   }
-}
-
-function selectDestination(city) {
-  destination.value = {
-    name: city.name,
-    lat: city.lat,
-    lng: city.lng,
-  }
-
-  query.value = city.name
-  searchResults.value = []
-  searchError.value = ''
 }
 </script>
 
 <template>
   <section class="great-circle-controls">
     <div class="location-summary">
-      <span class="location-label">출발지</span>
-      <strong>{{ origin.name }}</strong>
-      <span>{{ origin.lat.toFixed(4) }}°, {{ origin.lng.toFixed(4) }}°</span>
+      <div class="location-heading">
+        <span class="location-label">출발지</span>
+        <strong>
+          {{ origin.name }}
+          <span v-if="origin.country" class="location-country">· {{ origin.country }}</span>
+        </strong>
+      </div>
+
+      <dl class="coordinate-list">
+        <div>
+          <dt>위도</dt>
+          <dd>{{ origin.lat.toFixed(4) }}°</dd>
+        </div>
+
+        <div>
+          <dt>경도</dt>
+          <dd>{{ origin.lng.toFixed(4) }}°</dd>
+        </div>
+      </dl>
     </div>
 
     <form class="city-search" @submit.prevent="searchCity">
@@ -134,7 +131,7 @@ function selectDestination(city) {
           id="destination-city"
           v-model="query"
           type="search"
-          placeholder="예: 런던, 뉴욕, 파리"
+          placeholder="예: 파리, 런던, 뉴욕"
           autocomplete="off"
         />
 
@@ -146,19 +143,28 @@ function selectDestination(city) {
 
     <p v-if="searchError" class="search-message">{{ searchError }}</p>
 
-    <ul v-if="searchResults.length > 0" class="search-results">
-      <li v-for="city in searchResults" :key="`${city.lat}-${city.lng}`">
-        <button type="button" @click="selectDestination(city)">
-          <strong>{{ city.name }}</strong>
-          <span>{{ city.displayName }}</span>
-        </button>
-      </li>
-    </ul>
-
     <div class="location-summary">
-      <span class="location-label">도착지</span>
-      <strong>{{ destination.name }}</strong>
-      <span>{{ destination.lat.toFixed(4) }}°, {{ destination.lng.toFixed(4) }}°</span>
+      <div class="location-heading">
+        <span class="location-label">도착지</span>
+        <strong>
+          {{ destination.name }}
+          <span v-if="destination.country" class="location-country">
+            · {{ destination.country }}
+          </span>
+        </strong>
+      </div>
+
+      <dl class="coordinate-list">
+        <div>
+          <dt>위도</dt>
+          <dd>{{ destination.lat.toFixed(4) }}°</dd>
+        </div>
+
+        <div>
+          <dt>경도</dt>
+          <dd>{{ destination.lng.toFixed(4) }}°</dd>
+        </div>
+      </dl>
     </div>
 
     <VerificationCard title="대권거리">
@@ -169,9 +175,7 @@ function selectDestination(city) {
       </p>
     </VerificationCard>
 
-    <p class="data-source">
-      도시 검색 데이터: OpenStreetMap Nominatim
-    </p>
+    <p class="attribution">Open-Meteo · GeoNames</p>
   </section>
 </template>
 
@@ -182,11 +186,8 @@ function selectDestination(city) {
 }
 
 .location-summary {
-  display: grid;
-  gap: var(--space-xs);
-
   margin-bottom: var(--space-m);
-  padding: var(--space-s);
+  padding: var(--space-s) var(--space-m);
 
   border: var(--border-default);
   border-radius: var(--radius-m);
@@ -196,12 +197,64 @@ function selectDestination(city) {
 
   font-family: var(--font-family-content);
   font-size: var(--font-size-s);
-  line-height: 1.5;
+}
+
+.location-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-s);
+
+  margin-bottom: var(--space-s);
 }
 
 .location-label {
+  flex: 0 0 auto;
+
   color: var(--color-text-sub);
   font-weight: var(--font-weight-semibold);
+}
+
+.location-heading strong {
+  min-width: 0;
+
+  color: var(--color-text-main);
+  font-size: var(--font-size-m);
+  text-align: right;
+}
+
+.location-country {
+  color: var(--color-text-sub);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+}
+
+.coordinate-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-s);
+
+  margin: 0;
+}
+
+.coordinate-list div {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+
+  min-width: 0;
+}
+
+.coordinate-list dt {
+  color: var(--color-text-sub);
+  font-weight: var(--font-weight-semibold);
+}
+
+.coordinate-list dd {
+  margin: 0;
+
+  color: var(--color-text-content);
+  font-variant-numeric: tabular-nums;
 }
 
 .city-search {
@@ -233,8 +286,9 @@ function selectDestination(city) {
   font-size: var(--font-size-m);
 }
 
-.search-row button,
-.search-results button {
+.search-row button {
+  padding: var(--space-s) var(--space-m);
+
   border: var(--border-default);
   border-radius: var(--radius-s);
 
@@ -242,19 +296,13 @@ function selectDestination(city) {
   color: var(--color-main);
 
   font-family: var(--font-family-content);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-semibold);
 
   cursor: pointer;
 }
 
-.search-row button {
-  padding: var(--space-s) var(--space-m);
-
-  font-size: var(--font-size-s);
-  font-weight: var(--font-weight-semibold);
-}
-
-.search-row button:hover,
-.search-results button:hover {
+.search-row button:hover {
   background: var(--color-main-sub);
 }
 
@@ -269,36 +317,6 @@ function selectDestination(city) {
   color: var(--color-text-sub);
   font-family: var(--font-family-content);
   font-size: var(--font-size-s);
-}
-
-.search-results {
-  display: grid;
-  gap: var(--space-xs);
-
-  margin: 0 0 var(--space-m);
-  padding: 0;
-
-  list-style: none;
-}
-
-.search-results button {
-  display: grid;
-  gap: var(--space-xs);
-
-  width: 100%;
-  padding: var(--space-s);
-
-  text-align: left;
-}
-
-.search-results button strong {
-  font-size: var(--font-size-s);
-}
-
-.search-results button span {
-  color: var(--color-text-sub);
-  font-size: var(--font-size-xs);
-  line-height: 1.4;
 }
 
 .route-name {
@@ -320,13 +338,13 @@ function selectDestination(city) {
   text-align: center;
 }
 
-.data-source {
+.attribution {
   margin: var(--space-s) 0 0;
 
   color: var(--color-text-sub);
   font-family: var(--font-family-content);
   font-size: var(--font-size-xs);
-  line-height: 1.5;
-  text-align: center;
+  line-height: 1.4;
+  text-align: right;
 }
 </style>

@@ -26,6 +26,12 @@ const PATH_ALTITUDE = 0.01
 const PATH_TRANSITION_DURATION = 1800
 const PATH_SEGMENTS = 96
 
+/*
+ * useThreeViewer의 기본 카메라는 원점을 향한다.
+ * 서울이 초기 화면의 정면에 오도록 지구본 자체만 회전시킨다.
+ */
+const INITIAL_VIEW_DIRECTION = new THREE.Vector3(3.7, 3.4, 5.0).normalize()
+
 let globe = null
 
 // --------------------------------------
@@ -102,6 +108,33 @@ function createGreatCirclePath(start, end) {
 }
 
 // --------------------------------------
+// 지구본 초기 방향
+// --------------------------------------
+
+function orientGlobeToOrigin() {
+  if (!globe) {
+    return
+  }
+
+  const originCoords = globe.getCoords(
+    props.route.origin.lat,
+    props.route.origin.lng,
+    0,
+  )
+
+  const originDirection = new THREE.Vector3(
+    originCoords.x,
+    originCoords.y,
+    originCoords.z,
+  ).normalize()
+
+  globe.quaternion.setFromUnitVectors(
+    originDirection,
+    INITIAL_VIEW_DIRECTION,
+  )
+}
+
+// --------------------------------------
 // 지구본 생성 / 업데이트
 // --------------------------------------
 
@@ -134,6 +167,8 @@ function createModel() {
     .labelDotRadius(0)
 
   globe.scale.setScalar(GLOBE_SCALE)
+
+  orientGlobeToOrigin()
 
   model.add(globe)
 
