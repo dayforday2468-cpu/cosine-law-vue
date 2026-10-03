@@ -83,7 +83,7 @@ const TRANSLATE_DURATION = 900
 const ROTATE_DURATION = 1100
 const SPHERE_FADE_DURATION = 700
 const NORMALIZE_DURATION = 1500
-const GEOMETRY_HOLD_DURATION = 600
+const ANGLE_TRANSITION_DURATION = 600
 const LABEL_TRANSITION_DURATION = 700
 const FINAL_HOLD_DURATION = 2000
 
@@ -91,8 +91,8 @@ const TRANSLATE_START = INITIAL_HOLD_DURATION
 const ROTATE_START = TRANSLATE_START + TRANSLATE_DURATION
 const SPHERE_FADE_START = ROTATE_START + ROTATE_DURATION
 const NORMALIZE_START = SPHERE_FADE_START + SPHERE_FADE_DURATION
-const GEOMETRY_HOLD_START = NORMALIZE_START + NORMALIZE_DURATION
-const LABEL_TRANSITION_START = GEOMETRY_HOLD_START + GEOMETRY_HOLD_DURATION
+const ANGLE_TRANSITION_START = NORMALIZE_START + NORMALIZE_DURATION
+const LABEL_TRANSITION_START = ANGLE_TRANSITION_START + ANGLE_TRANSITION_DURATION
 const FINAL_HOLD_START = LABEL_TRANSITION_START + LABEL_TRANSITION_DURATION
 
 const CYCLE_DURATION = FINAL_HOLD_START + FINAL_HOLD_DURATION
@@ -105,9 +105,8 @@ let animationStartTime = null
 
 let figureGroup = null
 let guideGroup = null
-let initialTheta1Group = null
+let initialTheta1ArcGroup = null
 let sphereTheta1ArcGroup = null
-let sphereTheta1LabelGroup = null
 let initialLatitudeArcGroup = null
 let finalLatitudeArcGroup = null
 let centerAngleGroup = null
@@ -289,11 +288,11 @@ function updateAnimation(timestamp) {
     NORMALIZE_DURATION,
   )
 
-  const greatCircleProgress = easeInOutCubic(
+  const angleProgress = easeInOutCubic(
     phaseProgress(
       elapsed,
-      GEOMETRY_HOLD_START,
-      GEOMETRY_HOLD_DURATION,
+      ANGLE_TRANSITION_START,
+      ANGLE_TRANSITION_DURATION,
     ),
   )
 
@@ -315,19 +314,23 @@ function updateAnimation(timestamp) {
 
   sphere.material.opacity = SPHERE_OPACITY * sphereProgress
 
-  setGroupOpacity(initialTheta1Group, 1 - sphereProgress)
-  setGroupOpacity(sphereTheta1ArcGroup, sphereProgress)
-  setGroupOpacity(
-    sphereTheta1LabelGroup,
-    sphereProgress * (1 - labelProgress),
-  )
+  /*
+   * 점들이 구면 위에 도착한 뒤
+   * 사면체의 각호를 Haversine 도식의 각호로 바꾼다.
+   */
+  setGroupOpacity(initialTheta1ArcGroup, 1 - angleProgress)
+  setGroupOpacity(sphereTheta1ArcGroup, angleProgress)
 
-  setGroupOpacity(centerAngleGroup, 1 - greatCircleProgress)
-  setGroupOpacity(greatCircleArcGroup, greatCircleProgress)
+  setGroupOpacity(initialLatitudeArcGroup, 1 - angleProgress)
+  setGroupOpacity(finalLatitudeArcGroup, angleProgress)
 
-  setGroupOpacity(initialLatitudeArcGroup, 1 - labelProgress)
-  setGroupOpacity(finalLatitudeArcGroup, labelProgress)
+  setGroupOpacity(centerAngleGroup, 1 - angleProgress)
+  setGroupOpacity(greatCircleArcGroup, angleProgress)
 
+  /*
+   * 각호 변환이 끝난 뒤에만
+   * 사면체의 라벨을 구면 문제의 라벨로 바꾼다.
+   */
   setGroupOpacity(initialLabelsGroup, 1 - labelProgress)
   setGroupOpacity(finalLabelsGroup, labelProgress)
 
@@ -495,9 +498,9 @@ function createModel() {
   // θ₁: 기존 이면각 표시
   // --------------------------------------
 
-  initialTheta1Group = new THREE.Group()
+  initialTheta1ArcGroup = new THREE.Group()
 
-  initialTheta1Group.add(
+  initialTheta1ArcGroup.add(
     createAngleArc(
       extendedO,
       extendedB,
@@ -505,23 +508,9 @@ function createModel() {
       0.34,
       0x7c3aed,
     ),
-
-    createLabel(
-      'θ₁',
-      getAngleLabelPosition(
-        extendedO,
-        extendedB,
-        extendedC,
-        0.5,
-      ),
-      {
-        textColor: '#7c3aed',
-        scale: 0.2,
-      },
-    ),
   )
 
-  figureGroup.add(initialTheta1Group)
+  figureGroup.add(initialTheta1ArcGroup)
 
   // --------------------------------------
   // θ₁: 적도면에서 본 두 경도의 차
@@ -561,26 +550,6 @@ function createModel() {
   )
 
   figureGroup.add(sphereTheta1ArcGroup)
-
-  sphereTheta1LabelGroup = new THREE.Group()
-
-  sphereTheta1LabelGroup.add(
-    createLabel(
-      'θ₁',
-      getAngleLabelPosition(
-        ORIGIN,
-        equatorDirectionB,
-        equatorDirectionC,
-        0.47,
-      ),
-      {
-        textColor: '#7c3aed',
-        scale: 0.2,
-      },
-    ),
-  )
-
-  figureGroup.add(sphereTheta1LabelGroup)
 
   // --------------------------------------
   // 구면 문제의 위도 각도
@@ -669,6 +638,20 @@ function createModel() {
     initialPointLabels.O,
     initialPointLabels.B,
     initialPointLabels.C,
+
+    createLabel(
+      'θ₁',
+      getAngleLabelPosition(
+        extendedO,
+        extendedB,
+        extendedC,
+        0.5,
+      ),
+      {
+        textColor: '#7c3aed',
+        scale: 0.2,
+      },
+    ),
 
     createLabel(
       'θ₂',
@@ -806,7 +789,6 @@ function createModel() {
 
   // 첫 프레임 전 숨겨야 하는 요소
   setGroupOpacity(sphereTheta1ArcGroup, 0)
-  setGroupOpacity(sphereTheta1LabelGroup, 0)
   setGroupOpacity(finalLatitudeArcGroup, 0)
   setGroupOpacity(greatCircleArcGroup, 0)
   setGroupOpacity(finalLabelsGroup, 0)
