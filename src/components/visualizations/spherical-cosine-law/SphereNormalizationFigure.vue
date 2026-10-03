@@ -108,6 +108,10 @@ let guideGroup = null
 let initialTheta1Group = null
 let sphereTheta1ArcGroup = null
 let sphereTheta1LabelGroup = null
+let initialLatitudeArcGroup = null
+let finalLatitudeArcGroup = null
+let centerAngleGroup = null
+let greatCircleArcGroup = null
 let initialLabelsGroup = null
 let finalLabelsGroup = null
 let sphere = null
@@ -285,6 +289,14 @@ function updateAnimation(timestamp) {
     NORMALIZE_DURATION,
   )
 
+  const greatCircleProgress = easeInOutCubic(
+    phaseProgress(
+      elapsed,
+      GEOMETRY_HOLD_START,
+      GEOMETRY_HOLD_DURATION,
+    ),
+  )
+
   const labelProgress = easeInOutCubic(
     phaseProgress(
       elapsed,
@@ -309,6 +321,12 @@ function updateAnimation(timestamp) {
     sphereTheta1LabelGroup,
     sphereProgress * (1 - labelProgress),
   )
+
+  setGroupOpacity(centerAngleGroup, 1 - greatCircleProgress)
+  setGroupOpacity(greatCircleArcGroup, greatCircleProgress)
+
+  setGroupOpacity(initialLatitudeArcGroup, 1 - labelProgress)
+  setGroupOpacity(finalLatitudeArcGroup, labelProgress)
 
   setGroupOpacity(initialLabelsGroup, 1 - labelProgress)
   setGroupOpacity(finalLabelsGroup, labelProgress)
@@ -434,10 +452,12 @@ function createModel() {
   figureGroup.add(pointA, pointO, pointB, pointC)
 
   // --------------------------------------
-  // 고정 각도 원호
+  // 사면체 문제의 각도 원호
   // --------------------------------------
 
-  figureGroup.add(
+  initialLatitudeArcGroup = new THREE.Group()
+
+  initialLatitudeArcGroup.add(
     createAngleArc(
       ORIGIN,
       initialO,
@@ -453,7 +473,13 @@ function createModel() {
       0.34,
       0x059669,
     ),
+  )
 
+  figureGroup.add(initialLatitudeArcGroup)
+
+  centerAngleGroup = new THREE.Group()
+
+  centerAngleGroup.add(
     createAngleArc(
       ORIGIN,
       initialC,
@@ -462,6 +488,8 @@ function createModel() {
       0xd97706,
     ),
   )
+
+  figureGroup.add(centerAngleGroup)
 
   // --------------------------------------
   // θ₁: 기존 이면각 표시
@@ -553,6 +581,50 @@ function createModel() {
   )
 
   figureGroup.add(sphereTheta1LabelGroup)
+
+  // --------------------------------------
+  // 구면 문제의 위도 각도
+  // --------------------------------------
+
+  finalLatitudeArcGroup = new THREE.Group()
+
+  finalLatitudeArcGroup.add(
+    createAngleArc(
+      ORIGIN,
+      targetO,
+      targetB,
+      0.5,
+      0x2563eb,
+    ),
+
+    createAngleArc(
+      ORIGIN,
+      targetO,
+      targetC,
+      0.62,
+      0x10b981,
+    ),
+  )
+
+  figureGroup.add(finalLatitudeArcGroup)
+
+  // --------------------------------------
+  // P₁-P₂ 대권호
+  // --------------------------------------
+
+  greatCircleArcGroup = new THREE.Group()
+
+  greatCircleArcGroup.add(
+    createAngleArc(
+      ORIGIN,
+      targetB,
+      targetC,
+      SPHERE_RADIUS,
+      0xf59e0b,
+    ),
+  )
+
+  figureGroup.add(greatCircleArcGroup)
 
   // --------------------------------------
   // 사면체 문제 라벨
@@ -697,7 +769,7 @@ function createModel() {
       ),
       {
         textColor: '#7c3aed',
-        scale: 0.2,
+        scale: 0.24,
       },
     ),
 
@@ -707,11 +779,11 @@ function createModel() {
         ORIGIN,
         targetO,
         targetB,
-        0.34,
+        0.62,
       ),
       {
         textColor: '#2563eb',
-        scale: 0.2,
+        scale: 0.23,
       },
     ),
 
@@ -721,25 +793,11 @@ function createModel() {
         ORIGIN,
         targetO,
         targetC,
-        0.45,
+        0.76,
       ),
       {
         textColor: '#059669',
-        scale: 0.2,
-      },
-    ),
-
-    createLabel(
-      'θ',
-      getAngleLabelPosition(
-        ORIGIN,
-        targetC,
-        targetB,
-        0.57,
-      ),
-      {
-        textColor: '#d97706',
-        scale: 0.2,
+        scale: 0.23,
       },
     ),
   )
@@ -749,6 +807,8 @@ function createModel() {
   // 첫 프레임 전 숨겨야 하는 요소
   setGroupOpacity(sphereTheta1ArcGroup, 0)
   setGroupOpacity(sphereTheta1LabelGroup, 0)
+  setGroupOpacity(finalLatitudeArcGroup, 0)
+  setGroupOpacity(greatCircleArcGroup, 0)
   setGroupOpacity(finalLabelsGroup, 0)
 }
 
