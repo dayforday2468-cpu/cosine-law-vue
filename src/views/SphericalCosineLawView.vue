@@ -251,7 +251,7 @@ import {
       도형을 $A$ 중심으로 옮기고 $\overline{AO}$를 북극 방향으로 놓은 뒤 세 점을 같은 구면 위에
       올리면 다음과 같이 대권거리 문제의 구조가 된다.
     </ArticleText>
-    <ArticleFigure caption="사면체에서 구면 위의 세 점으로">
+    <ArticleFigure caption="사면체에서 구면 위의 세 점으로" width="content">
       <SphereNormalizationFigure />
     </ArticleFigure>
     <ArticleText>

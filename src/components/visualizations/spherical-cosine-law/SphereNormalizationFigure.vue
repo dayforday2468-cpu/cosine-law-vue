@@ -303,7 +303,6 @@ function updateAnimation(timestamp) {
 
   sphere.material.opacity = SPHERE_OPACITY * sphereProgress
 
-  setGroupOpacity(guideGroup, 1 - sphereProgress)
   setGroupOpacity(initialTheta1Group, 1 - sphereProgress)
   setGroupOpacity(sphereTheta1ArcGroup, sphereProgress)
   setGroupOpacity(
