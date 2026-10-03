@@ -16,9 +16,9 @@ const route = reactive({
     lng: 126.978,
   },
   destination: {
-    name: '도쿄',
-    lat: 35.6762,
-    lng: 139.6503,
+    name: '하와이',
+    lat: 21.3069,
+    lng: -157.8583,
   },
 })
 </script>

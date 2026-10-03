@@ -22,13 +22,11 @@ const EARTH_IMAGE_URL =
   'https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'
 
 const GLOBE_SCALE = 0.02
-const ARC_ALTITUDE = 0.18
-const AIRPLANE_LOOP_DURATION = 6000
+const PATH_ALTITUDE = 0.01
+const PATH_TRANSITION_DURATION = 1800
+const PATH_SEGMENTS = 96
 
 let globe = null
-let airplane = null
-let airplaneAnimationFrameId = null
-let airplaneAnimationStartedAt = null
 
 // --------------------------------------
 // Three.js Viewer
@@ -65,13 +63,14 @@ function latLngToUnitVector({ lat, lng }) {
 function unitVectorToLatLng(vector) {
   const normalized = vector.clone().normalize()
 
-  return {
-    lat: THREE.MathUtils.radToDeg(Math.asin(normalized.y)),
-    lng: THREE.MathUtils.radToDeg(Math.atan2(normalized.x, normalized.z)),
-  }
+  return [
+    THREE.MathUtils.radToDeg(Math.asin(normalized.y)),
+    THREE.MathUtils.radToDeg(Math.atan2(normalized.x, normalized.z)),
+    PATH_ALTITUDE,
+  ]
 }
 
-function interpolateGreatCircle(start, end, progress) {
+function createGreatCirclePath(start, end) {
   const startVector = latLngToUnitVector(start)
   const endVector = latLngToUnitVector(end)
 
@@ -79,105 +78,27 @@ function interpolateGreatCircle(start, end, progress) {
   const angle = Math.acos(dot)
 
   if (angle < 1e-7) {
-    return start
+    return [
+      [start.lat, start.lng, PATH_ALTITUDE],
+      [end.lat, end.lng, PATH_ALTITUDE],
+    ]
   }
 
   const sinAngle = Math.sin(angle)
-  const startWeight = Math.sin((1 - progress) * angle) / sinAngle
-  const endWeight = Math.sin(progress * angle) / sinAngle
 
-  const interpolated = startVector
-    .multiplyScalar(startWeight)
-    .add(endVector.multiplyScalar(endWeight))
+  return Array.from({ length: PATH_SEGMENTS + 1 }, (_, index) => {
+    const progress = index / PATH_SEGMENTS
 
-  return unitVectorToLatLng(interpolated)
-}
+    const startWeight = Math.sin((1 - progress) * angle) / sinAngle
+    const endWeight = Math.sin(progress * angle) / sinAngle
 
-// --------------------------------------
-// 비행기
-// --------------------------------------
+    const point = startVector
+      .clone()
+      .multiplyScalar(startWeight)
+      .add(endVector.clone().multiplyScalar(endWeight))
 
-function createAirplane() {
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xf97316,
-    roughness: 0.55,
+    return unitVectorToLatLng(point)
   })
-
-  const airplaneGroup = new THREE.Group()
-
-  const body = new THREE.Mesh(
-    new THREE.ConeGeometry(0.055, 0.22, 4),
-    material,
-  )
-
-  const wing = new THREE.Mesh(
-    new THREE.BoxGeometry(0.2, 0.025, 0.045),
-    material,
-  )
-
-  wing.position.y = -0.025
-
-  airplaneGroup.add(body, wing)
-
-  return airplaneGroup
-}
-
-function updateAirplanePosition(timestamp) {
-  if (!globe || !airplane) {
-    return
-  }
-
-  if (airplaneAnimationStartedAt === null) {
-    airplaneAnimationStartedAt = timestamp
-  }
-
-  const progress =
-    ((timestamp - airplaneAnimationStartedAt) % AIRPLANE_LOOP_DURATION) /
-    AIRPLANE_LOOP_DURATION
-
-  const nextProgress = (progress + 0.002) % 1
-
-  const current = interpolateGreatCircle(
-    props.route.origin,
-    props.route.destination,
-    progress,
-  )
-
-  const next = interpolateGreatCircle(
-    props.route.origin,
-    props.route.destination,
-    nextProgress,
-  )
-
-  const altitude = 0.025 + Math.sin(Math.PI * progress) * ARC_ALTITUDE
-  const nextAltitude = 0.025 + Math.sin(Math.PI * nextProgress) * ARC_ALTITUDE
-
-  const position = globe.getCoords(current.lat, current.lng, altitude)
-  const nextPosition = globe.getCoords(next.lat, next.lng, nextAltitude)
-
-  const scaledPosition = new THREE.Vector3(position.x, position.y, position.z)
-    .multiplyScalar(GLOBE_SCALE)
-
-  const scaledNextPosition = new THREE.Vector3(
-    nextPosition.x,
-    nextPosition.y,
-    nextPosition.z,
-  ).multiplyScalar(GLOBE_SCALE)
-
-  airplane.position.copy(scaledPosition)
-
-  const tangent = scaledNextPosition.sub(scaledPosition).normalize()
-
-  airplane.quaternion.setFromUnitVectors(
-    new THREE.Vector3(0, 1, 0),
-    tangent,
-  )
-
-  airplaneAnimationFrameId = requestAnimationFrame(updateAirplanePosition)
-}
-
-function restartAirplaneAnimation() {
-  airplaneAnimationStartedAt = null
 }
 
 // --------------------------------------
@@ -202,9 +123,10 @@ function createModel() {
     .pointAltitude(0.025)
     .pointRadius(0.55)
     .pointColor((point) => point.color)
-    .arcAltitude(ARC_ALTITUDE)
-    .arcStroke(0.45)
-    .arcColor(() => '#ef4444')
+    .pathPointAlt((point) => point[2])
+    .pathColor(() => '#ef4444')
+    .pathStroke(0.65)
+    .pathTransitionDuration(PATH_TRANSITION_DURATION)
     .labelText('name')
     .labelColor(() => '#111827')
     .labelSize(0.55)
@@ -213,9 +135,7 @@ function createModel() {
 
   globe.scale.setScalar(GLOBE_SCALE)
 
-  airplane = createAirplane()
-
-  model.add(globe, airplane)
+  model.add(globe)
 
   updateRoute()
 }
@@ -236,19 +156,15 @@ function updateRoute() {
     },
   ]
 
+  const path = createGreatCirclePath(
+    props.route.origin,
+    props.route.destination,
+  )
+
   globe
     .pointsData(points)
     .labelsData(points)
-    .arcsData([
-      {
-        startLat: props.route.origin.lat,
-        startLng: props.route.origin.lng,
-        endLat: props.route.destination.lat,
-        endLng: props.route.destination.lng,
-      },
-    ])
-
-  restartAirplaneAnimation()
+    .pathsData([path])
 }
 
 // --------------------------------------
@@ -275,15 +191,9 @@ onMounted(() => {
   resizeRenderer()
   animate()
   observeResize()
-
-  airplaneAnimationFrameId = requestAnimationFrame(updateAirplanePosition)
 })
 
 onBeforeUnmount(() => {
-  if (airplaneAnimationFrameId !== null) {
-    cancelAnimationFrame(airplaneAnimationFrameId)
-  }
-
   disposeThree()
 })
 </script>
