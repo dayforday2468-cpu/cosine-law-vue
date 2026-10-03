@@ -116,22 +116,16 @@ function orientGlobeToOrigin() {
     return
   }
 
-  const originCoords = globe.getCoords(
-    props.route.origin.lat,
+  const cameraLongitude = Math.atan2(
+    INITIAL_VIEW_DIRECTION.x,
+    INITIAL_VIEW_DIRECTION.z,
+  )
+
+  const originLongitude = THREE.MathUtils.degToRad(
     props.route.origin.lng,
-    0,
   )
 
-  const originDirection = new THREE.Vector3(
-    originCoords.x,
-    originCoords.y,
-    originCoords.z,
-  ).normalize()
-
-  globe.quaternion.setFromUnitVectors(
-    originDirection,
-    INITIAL_VIEW_DIRECTION,
-  )
+  globe.rotation.y = cameraLongitude - originLongitude
 }
 
 // --------------------------------------
@@ -158,13 +152,8 @@ function createModel() {
     .pointColor((point) => point.color)
     .pathPointAlt((point) => point[2])
     .pathColor(() => '#ef4444')
-    .pathStroke(0.65)
+    .pathStroke(1)
     .pathTransitionDuration(PATH_TRANSITION_DURATION)
-    .labelText('name')
-    .labelColor(() => '#111827')
-    .labelSize(0.55)
-    .labelAltitude(0.045)
-    .labelDotRadius(0)
 
   globe.scale.setScalar(GLOBE_SCALE)
 
@@ -198,7 +187,6 @@ function updateRoute() {
 
   globe
     .pointsData(points)
-    .labelsData(points)
     .pathsData([path])
 }
 
