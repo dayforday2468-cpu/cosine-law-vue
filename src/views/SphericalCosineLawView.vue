@@ -13,6 +13,7 @@ import {
   AngleInvarianceVisualizer,
   HaversineVisualizer,
   ArcLengthVisualizer,
+  GreatCircleVisualizer,
 } from '@/components/visualizations/spherical-cosine-law'
 </script>
 
@@ -163,8 +164,13 @@ import {
     <ArticleText>
       공식이 각 변의 길이와 무관하다는 점을 이용하여, 지표면 상의 두 점 사이의 거리를 측정하는데
       사용할 수 있다. 둥근 지구 표면 위에서 두 점 사이를 가장 짧게 연결한 거리를 대권거리라고 한다.
+    </ArticleText>
+    <ArticleFigure caption="서울과 선택한 도시 사이의 대권거리">
+      <GreatCircleVisualizer />
+    </ArticleFigure>
+    <ArticleText>
       점 $A$를 지구의 중심, 점 $O$를 북극점에 놓고, 나머지 두 점 $B,C$를 거리를 구하고 싶은 지표면
-      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다. 
+      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다.
     </ArticleText>
     <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
       <ArticleText>

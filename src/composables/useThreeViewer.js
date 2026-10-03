@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 import { createLabel, disposeObject } from '../utils/threeGeometry.js'
 
-export function useThreeViewer(dimension = '3d') {
+export function useThreeViewer(dimension = '3d', { showAxes = true } = {}) {
   // --------------------------------------
   // Dimension 검증
   // --------------------------------------
@@ -151,34 +151,36 @@ export function useThreeViewer(dimension = '3d') {
 
     scene.add(directionalLight)
 
-    // 좌표축
+    if (showAxes) {
+      // 좌표축
 
-    const axesHelper = new THREE.AxesHelper(2.5)
+      const axesHelper = new THREE.AxesHelper(2.5)
 
-    scene.add(axesHelper)
+      scene.add(axesHelper)
 
-    // 좌표축 라벨
+      // 좌표축 라벨
 
-    const axisLabels = new THREE.Group()
+      const axisLabels = new THREE.Group()
 
-    axisLabels.add(
-      createLabel('x', new THREE.Vector3(2.7, 0, 0), {
-        textColor: '#ef4444',
-        scale: 0.32,
-      }),
+      axisLabels.add(
+        createLabel('x', new THREE.Vector3(2.7, 0, 0), {
+          textColor: '#ef4444',
+          scale: 0.32,
+        }),
 
-      createLabel('y', new THREE.Vector3(0, 2.7, 0), {
-        textColor: '#16a34a',
-        scale: 0.32,
-      }),
+        createLabel('y', new THREE.Vector3(0, 2.7, 0), {
+          textColor: '#16a34a',
+          scale: 0.32,
+        }),
 
-      createLabel('z', new THREE.Vector3(0, 0, 2.7), {
-        textColor: '#2563eb',
-        scale: 0.32,
-      }),
-    )
+        createLabel('z', new THREE.Vector3(0, 0, 2.7), {
+          textColor: '#2563eb',
+          scale: 0.32,
+        }),
+      )
 
-    scene.add(axisLabels)
+      scene.add(axisLabels)
+    }
   }
 
   // --------------------------------------
