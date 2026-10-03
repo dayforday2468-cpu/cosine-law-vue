@@ -1,4 +1,5 @@
 export { default as Problem1Figure } from './Problem1Figure.vue'
+export { default as SphereNormalizationFigure } from './SphereNormalizationFigure.vue'
 export { default as CosineLawVisualizer } from './cosine-law/CosineLawVisualizer.vue'
 export { default as AngleInvarianceVisualizer } from './angle-invariance/AngleInvarianceVisualizer.vue'
 export { default as HaversineVisualizer } from './haversine-formula/HaversineVisualizer.vue'

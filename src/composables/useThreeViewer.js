@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 import { createLabel, disposeObject } from '../utils/threeGeometry.js'
 
-export function useThreeViewer(dimension = '3d', { showAxes = true } = {}) {
+export function useThreeViewer(dimension = '3d', { showAxes = true, onFrame = null } = {}) {
   // --------------------------------------
   // Dimension 검증
   // --------------------------------------
@@ -350,10 +350,14 @@ export function useThreeViewer(dimension = '3d', { showAxes = true } = {}) {
   // 렌더링 반복
   // --------------------------------------
 
-  function animate() {
+  function animate(timestamp) {
     animationFrameId = requestAnimationFrame(animate)
 
     orbitControls?.update()
+
+    if (typeof onFrame === 'function') {
+      onFrame(timestamp ?? performance.now())
+    }
 
     if (renderer && scene && camera) {
       renderer.render(scene, camera)

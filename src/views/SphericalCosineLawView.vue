@@ -9,6 +9,7 @@ import {
 } from '@/components/article'
 import {
   Problem1Figure,
+  SphereNormalizationFigure,
   CosineLawVisualizer,
   AngleInvarianceVisualizer,
   HaversineVisualizer,
@@ -245,8 +246,17 @@ import {
       <HaversineVisualizer />
     </ArticleFigure>
     <ArticleText>
-      점 $A$를 지구의 중심, 점 $O$를 북극점에 놓고, 나머지 두 점 $B,C$를 거리를 구하고 싶은 지표면
-      상의 두 점 $P_1,P_2$에 두면, 문제 상황과 그대로 일치한다.
+      앞서 확인했듯 이 공식의 각도 관계는 $\overline{AO}, \overline{AB}, \overline{AC}$의 길이와
+      무관하다. 따라서 $A$에서 바라본 방향은 그대로 유지한 채 세 선분의 길이를 같게 만들 수 있다.
+      도형을 $A$ 중심으로 옮기고 $\overline{AO}$를 북극 방향으로 놓은 뒤 세 점을 같은 구면 위에
+      올리면 다음과 같이 대권거리 문제의 구조가 된다.
+    </ArticleText>
+    <ArticleFigure caption="사면체에서 구면 위의 세 점으로">
+      <SphereNormalizationFigure />
+    </ArticleFigure>
+    <ArticleText>
+      이때 점 $A$는 지구의 중심, 점 $O$는 북극점에 대응하고, 나머지 두 점 $B,C$는 거리를 구하고 싶은
+      지표면 위의 두 점 $P_1,P_2$에 대응한다.
     </ArticleText>
     <ArticleFigure caption="사면체 문제와 대권거리 문제의 변수 대응">
       <ArticleText>
