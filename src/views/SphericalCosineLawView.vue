@@ -6,6 +6,7 @@ import {
   ArticleDisclosure,
   ArticleCallout,
   ArticleFigure,
+  ArticleSources,
 } from '@/components/article'
 import {
   Problem1Figure,
@@ -16,6 +17,8 @@ import {
   ArcLengthVisualizer,
   GreatCircleVisualizer,
 } from '@/components/visualizations/spherical-cosine-law'
+
+import { sources } from '@/data/article-sources/spherical-cosine-law.js'
 </script>
 
 <template>
@@ -272,5 +275,7 @@ import {
     <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
       <HaversineVisualizer />
     </ArticleFigure>
+
+    <ArticleSources :sources="sources" />
   </ArticleLayout>
 </template>
