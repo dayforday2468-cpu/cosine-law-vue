@@ -19,14 +19,19 @@ import {
 } from '@/components/visualizations/spherical-cosine-law'
 
 import { sources } from '@/data/article-sources/spherical-cosine-law.js'
+import { articles } from '@/data/articles.js'
+
+const article = articles.find(
+  ({ slug }) => slug === 'spherical-cosine-law',
+)
 </script>
 
 <template>
   <ArticleLayout>
     <ArticleHeader
-      title="계산 실수로 발견한 구면삼각형 코사인 법칙"
-      description="6년 묵은 오답노트, 커리어의 핵심이 되다."
-      date="2026-08-05"
+      :title="article.title"
+      :description="article.description"
+      :date="article.date"
     />
     <ArticleText>
       실수는 누구나 피하고 싶은 것이다. 2017년 고등학교 시절, 쉬운 시험문제를 잘못 계산해서 틀렸다.
