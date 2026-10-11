@@ -6,4 +6,11 @@ export const articles = [
     date: '2026-08-05',
     tags: ['Mathematics', 'Geospatial Analysis'],
   },
+  {
+    slug: 'kakao-friends-run-2026',
+    title: '카카오프렌즈런 2026 후기',
+    description: '달린 길을 지도에 옮기다 보니 궁금해진 것들.',
+    date: '2026-10-10',
+    tags: ['Running', 'Geospatial Analysis'],
+  }
 ]

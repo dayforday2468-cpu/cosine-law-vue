@@ -15,6 +15,6 @@ const { mathContainer } = useMathRenderer()
   width: 100%;
   max-width: var(--article-content-width);
 
-  margin: 0 auto;
+  margin: var(--space-m) auto;
 }
 </style>
