@@ -6,11 +6,13 @@ import {
   ArticleDisclosure,
   ArticleCallout,
   ArticleFigure,
+  ArticleGallery,
   ArticleSources,
 } from '@/components/article'
 
 
 import { articles } from '@/data/articles.js'
+import { beforeRunPhotos } from '@/data/article-media/kakao-friends-run-2026.js'
 
 const article = articles.find(
   ({ slug }) => slug === 'kakao-friends-run-2026',
@@ -79,6 +81,8 @@ const article = articles.find(
             가져간 바람막이는 벗었다. 10월인데 기온은 여름에 못지않았기 때문이다.
             굿즈로 받은 간식이 남아있는 가방을 들고, 유튜버 한스님처럼 먹방런을 할지 잠시 고민했다가 물품보관소에 짐을 넣기로 했다.
         </ArticleText>
+
+        <ArticleGallery :items="beforeRunPhotos" />
 
         <ArticleText>
             러닝 대회가 인생 처음이라 긴장이 되었다. 이런 맘을 알기라도 한 듯이, 익살스런 간이 악단이 가는 길을 풀어줬다.
