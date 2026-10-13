@@ -106,5 +106,10 @@ export const afterRunPhotos = [
 
 export const johnParkIntroVideo = {
   src: `${VIDEO_BASE_URL}/20261010_102700.mp4`,
-  caption: '존박 소개 영상',
+  caption: '존박 오프닝',
+}
+
+export const ResceneIntroVideo = {
+  src: `${VIDEO_BASE_URL}/20261010_105206.mp4`,
+  caption: '리센느 오프닝',
 }

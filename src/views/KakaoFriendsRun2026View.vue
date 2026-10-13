@@ -13,7 +13,7 @@ import {
 
 
 import { articles } from '@/data/articles.js'
-import { afterRunPhotos, beforeRunPhotos, bootcampScreenshots, duringRunPhotos, johnParkIntroVideo } from '@/data/article-media/kakao-friends-run-2026.js'
+import { afterRunPhotos, beforeRunPhotos, bootcampScreenshots, duringRunPhotos, johnParkIntroVideo, ResceneIntroVideo } from '@/data/article-media/kakao-friends-run-2026.js'
 
 const article = articles.find(
   ({ slug }) => slug === 'kakao-friends-run-2026',
@@ -188,18 +188,7 @@ const article = articles.find(
 
         <ArticleText>
             어느 정도 시간이 지났을 때, 무대에서 진행자가 축하 공연으로 온 가수의 라인업을 알렸다.
-            존박 님과 리센느가 왔다. 예전에 SKALA 팀원들과 사이트에 나온 실루엣으로 카카오 엔터테인먼트 소속의 키키로 예측했었다.
-            그런데 8만 원으로 이런 호사를 누릴 수 있다고 예상치도 못했다! 리센느에는 큰 관심이 없었는데, 최근에 '거제 야호'로 알게 되었다.
-            뜬금없는 파라파라 춤과 낚시의 조합이 신선했다. 그런 우연함이야말로 가치가 있다고 생각한다.
-        </ArticleText>
-
-        <ArticleVideo
-          :src="johnParkIntroVideo.src"
-          :caption="johnParkIntroVideo.caption"
-        />
-
-        <ArticleText>
-            존박 님이 먼저 공연을 하셨다. 한로로의 '0+0', '네 생각' 등의 곡들을 불러주셨다. 나에게 건네주는 위로 같은 느낌을 받았다.
+            먼저 남자 가수로는 존박님이 오셨다. 한로로의 '0+0', '네 생각' 등의 곡들을 불러주셨다. 나에게 건네주는 위로 같은 느낌을 받았다.
             가장 마음에 훅 들어온 가사는
         </ArticleText>
 
@@ -218,7 +207,15 @@ const article = articles.find(
             나 역시 이 포트폴리오를 통해 글, 수식, 웹 페이지 같은 다양한 매체로 스스로를 표현하며 느낀 감정이라 공감이 되었다.
         </ArticleText>
 
+        <ArticleVideo
+          :src="johnParkIntroVideo.src"
+          :caption="johnParkIntroVideo.caption"
+        />
+
         <ArticleText>
+            여자 가수로는 리센느가 왔다. 예전에 SKALA 팀원들과 사이트에 나온 실루엣으로 카카오 엔터테인먼트 소속의 키키로 예측했었다.
+            그런데 8만 원으로 이런 호사를 누릴 수 있다고 예상치도 못했다! 리센느에는 큰 관심이 없었는데, 최근에 '거제 야호'로 알게 되었다.
+            뜬금없는 파라파라 춤과 낚시의 조합이 신선했다. 그런 우연함이야말로 가치가 있다고 생각한다.
             드디어 축제의 화룡점정인 리센느의 공연이 시작됐다. 들으면서 이 곡도 리센느 곡이었구나 알게 된 것들도 있었다.
             러닝하며 나도 모르게 덕택을 보고 있던 것이다. 무대 앞자리를 선점하지 못한 게 약간 아쉬웠다.
             청바지 재질의 멜빵에 흰 반팔 티를 입은 모습이 멀리서도 그 외모가 느껴졌다. 
@@ -228,5 +225,10 @@ const article = articles.find(
             차로 돌아가기 위해 탄천을 건너며 다리 아래 물가에서 잉어 무리를 맞닥뜨렸다.
             SKALA 시절, 탄천 러닝을 하며 만난 너구리와 참게와의 추억으로 마무리할 수 있는 축제였다.
         </ArticleText>
+
+        <ArticleVideo
+          :src="ResceneIntroVideo.src"
+          :caption="ResceneIntroVideo.caption"
+        />
     </ArticleLayout>
 </template>
