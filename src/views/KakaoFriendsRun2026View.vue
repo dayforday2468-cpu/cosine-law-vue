@@ -7,12 +7,13 @@ import {
   ArticleCallout,
   ArticleFigure,
   ArticleGallery,
+  ArticleVideo,
   ArticleSources,
 } from '@/components/article'
 
 
 import { articles } from '@/data/articles.js'
-import { afterRunPhotos, beforeRunPhotos, bootcampScreenshots, duringRunPhotos } from '@/data/article-media/kakao-friends-run-2026.js'
+import { afterRunPhotos, beforeRunPhotos, bootcampScreenshots, duringRunPhotos, johnParkIntroVideo } from '@/data/article-media/kakao-friends-run-2026.js'
 
 const article = articles.find(
   ({ slug }) => slug === 'kakao-friends-run-2026',
@@ -191,6 +192,11 @@ const article = articles.find(
             그런데 8만 원으로 이런 호사를 누릴 수 있다고 예상치도 못했다! 리센느에는 큰 관심이 없었는데, 최근에 '거제 야호'로 알게 되었다.
             뜬금없는 파라파라 춤과 낚시의 조합이 신선했다. 그런 우연함이야말로 가치가 있다고 생각한다.
         </ArticleText>
+
+        <ArticleVideo
+          :src="johnParkIntroVideo.src"
+          :caption="johnParkIntroVideo.caption"
+        />
 
         <ArticleText>
             존박 님이 먼저 공연을 하셨다. 한로로의 '0+0', '네 생각' 등의 곡들을 불러주셨다. 나에게 건네주는 위로 같은 느낌을 받았다.

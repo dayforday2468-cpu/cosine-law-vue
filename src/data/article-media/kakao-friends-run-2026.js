@@ -1,6 +1,9 @@
 const MEDIA_BASE_URL =
   'https://d2r1gdcfo42wlx.cloudfront.net/articles/kakao-friends-run-2026/photos'
 
+const VIDEO_BASE_URL =
+  'https://d2r1gdcfo42wlx.cloudfront.net/articles/kakao-friends-run-2026/videos'
+
 export const bootcampScreenshots = [
   {
     src: `${MEDIA_BASE_URL}/skala_합격.webp`,
@@ -100,3 +103,8 @@ export const afterRunPhotos = [
   caption: '받은 참치로 만든 샌드위치',
   },
 ]
+
+export const johnParkIntroVideo = {
+  src: `${VIDEO_BASE_URL}/20261010_102700.mp4`,
+  caption: '존박 소개 영상',
+}
