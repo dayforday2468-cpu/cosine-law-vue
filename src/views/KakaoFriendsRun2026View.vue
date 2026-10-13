@@ -12,7 +12,7 @@ import {
 
 
 import { articles } from '@/data/articles.js'
-import { beforeRunPhotos, duringRunPhotos } from '@/data/article-media/kakao-friends-run-2026.js'
+import { beforeRunPhotos, bootcampScreenshots, duringRunPhotos } from '@/data/article-media/kakao-friends-run-2026.js'
 
 const article = articles.find(
   ({ slug }) => slug === 'kakao-friends-run-2026',
@@ -28,13 +28,69 @@ const article = articles.find(
         />
         <ArticleText>
             SKALA 부트캠프에서 나오며 선택과 집중의 시간을 가지려 했다.
-            부트캠프 선택의 기준은 초스피드로 풀스택과 AI 관련 서비스 역량을 기를 수 있다는 속도였다. 다만, 그 속도가 오히려 독이 되었다.
-            배운 내용을 구현과 하드코딩은 AI에게 맡기더라도 구조와 흐름은 설계할 수 있어야 내 것이라고 보았다.
-            이 게시물을 만들면서 느끼는 것은, 간단한 웹 서비스라도 많은 양의 코드와 복잡한 폴더 구조가 필요하다는 점이다.
-            풀스택으로 갈수록 읽어야 할 코드 양이 많아져 직접 보지 않고, AI를 통해 과제 코드를 이해해야 했다.
-            이것은 명백히 실력 향상이 아니다. AI가 제시하는 이해의 관점을 그저 받아들이고 있기 때문이다.
-            실력이 생겼다면 코드를 볼 수 있는 눈이 생겨야 한다. 그래야 AI에게 시키는 것도 잘할 수 있다.
-            개인 프로젝트에서 배운 내용을 하나씩 응용해가며 그 구조를 스스로 그려보는 게 가장 도움이 된다고 봤다.
+            지난 상반기, 취준기간을 집에서 보내기가 부모님께 죄송스러워서, 부트캠프 입과를 계획했다.
+            SKALA뿐 아니라 SSAFY, 소프티어까지 메이져한 곳들로 지원했다. 면접과 코딩테스트 연습을 하는 셈치고 밑져야 본전이라 생각하고 임했다.
+            감사하게도 3곳 모두 합격을 주셨다.
+        </ArticleText>
+
+        <ArticleGallery :items="bootcampScreenshots"/>
+
+        <ArticleText>
+            문제는 각 부트캠프마다 장단점이 있다는 것이다. 
+            나는 전공자이지만, 이론 위주의 학습을 해왔기에 개발 실무를 잘하진 않았다.
+            그래서, 기초부터 배우기엔 아깝고, 실무부터 하기엔 좋은 결과를 만들 자신이 없었다.
+            도메인은 모빌리티가 가장 적합했고, AI를 활용한 서비스 개발은 학부 프로젝트 경험으로 볼 때, 내 적성에 맞지 않았다.
+        </ArticleText>
+
+        <ArticleFigure caption="부트캠프 비교">
+            <ArticleText>
+                $$
+                \begin{array}{c|c|c|c}
+                \textbf{기준}
+                & \textbf{SKALA}
+                & \textbf{SSAFY}
+                & \textbf{소프티어} \\ \hline
+
+                \text{도메인}
+                & \text{AI · SW 서비스}
+                & \text{SW 전반}
+                & \text{모빌리티} \\
+
+                \text{위치}
+                & \text{타지 자취}
+                & \text{대전 통학}
+                & \text{타지 자취} \\
+
+                \text{지원금}
+                & \text{많음}
+                & \text{많음}
+                & \text{없음} \\
+
+                \text{실질 비용}
+                & \text{자취비로 상쇄}
+                & \text{없음}
+                & \text{자취비 부담} \\
+
+                \text{교육 기간}
+                & \text{6개월}
+                & \text{1년}
+                & \text{2개월} \\
+
+                \text{취업 연계}
+                & \text{약 30\%}
+                & \text{채용 연계 없음}
+                & \text{서류 전형 면제}
+                \end{array}
+                $$
+            </ArticleText>
+        </ArticleFigure>
+
+        <ArticleText>
+            부트캠프 선택의 기준은 빠르게 서비스 역량을 기를 수 있는지였다. 개발역량 없이는 지원할 수 있는 직무가 제한되었기 때문이다.
+            그렇게 SKALA에 입과하게 되었다. 다만, 장점이던 속도가 오히려 독이 되었다.
+            배운 내용을 구현과 하드코딩은 AI에게 맡기더라도 구조와 흐름은 설계할 수 있어야 실력이 향상되었다고 생각한다.
+            그런데, 풀스택으로 갈수록 읽어야 할 코드 양이 많아지고, 주어진 시간은 촉박했다. 그래서, 점점 더 AI에 의존해서 과제를 해야 했다.
+            AI가 제시하는 이해의 관점을 그저 받아들인다면 그 지식은 머릿속에서 쉽게 휘발되기에 남는게 적다고 판단했다.
             중도 퇴소가 큰 비용이 있는 선택이었음에도, 나와서 개인 프로젝트에 집중하고, 채용 공고에 더 신경 써보는게 좋을 수 있다고 생각했다.
         </ArticleText>
 

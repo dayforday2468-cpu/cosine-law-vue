@@ -1,6 +1,21 @@
 const MEDIA_BASE_URL =
   'https://d2r1gdcfo42wlx.cloudfront.net/articles/kakao-friends-run-2026/photos'
 
+export const bootcampScreenshots = [
+  {
+    src: `${MEDIA_BASE_URL}/skala_합격.webp`,
+    caption: 'SKALA 합격',
+  },
+  {
+    src: `${MEDIA_BASE_URL}/ssafy_합격.webp`,
+    caption: 'SSAFY 합격',
+  },
+  {
+    src: `${MEDIA_BASE_URL}/소프티어_합격.webp`,
+    caption: '소프티어 합격',
+  },
+]
+
 export const beforeRunPhotos = [
   {
     src: `${MEDIA_BASE_URL}/20261010_070858.webp`,
@@ -20,7 +35,7 @@ export const beforeRunPhotos = [
   },
   {
     src: `${MEDIA_BASE_URL}/20261010_073201.webp`,
-    caption: '포토존에서 셀파 찰칵',
+    caption: '포토존에서 셀카 찰칵',
   },
 ]
 
