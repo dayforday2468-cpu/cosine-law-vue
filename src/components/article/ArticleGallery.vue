@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
+import ArticleMediaFrame from './ArticleMediaFrame.vue'
 
 const props = defineProps({
   items: {
@@ -28,76 +29,61 @@ function showItem(index) {
 </script>
 
 <template>
-  <div v-if="currentItem" class="article-gallery">
-    <div class="gallery-content">
-      <div class="gallery-viewer">
-        <img
-          :key="currentItem.src"
-          :src="currentItem.src"
-          :alt="currentItem.caption"
-          class="gallery-image"
-          loading="lazy"
-          decoding="async"
-        />
+  <ArticleMediaFrame
+    v-if="currentItem"
+    :caption="currentItem.caption"
+  >
+    <div class="gallery-viewer">
+      <img
+        :key="currentItem.src"
+        :src="currentItem.src"
+        :alt="currentItem.caption"
+        class="gallery-image"
+        loading="lazy"
+        decoding="async"
+      />
 
-        <template v-if="items.length > 1">
-          <button
-            type="button"
-            class="gallery-control gallery-control--previous"
-            aria-label="이전 사진"
-            @click="showPrevious"
-          >
-            ‹
-          </button>
-
-          <button
-            type="button"
-            class="gallery-control gallery-control--next"
-            aria-label="다음 사진"
-            @click="showNext"
-          >
-            ›
-          </button>
-
-          <span class="gallery-counter">
-            {{ currentIndex + 1 }} / {{ items.length }}
-          </span>
-        </template>
-      </div>
-
-      <div v-if="items.length > 1" class="gallery-indicator" aria-label="사진 선택">
+      <template v-if="items.length > 1">
         <button
-          v-for="(_, index) in items"
-          :key="index"
           type="button"
-          class="gallery-dot"
-          :class="{ 'gallery-dot--active': index === currentIndex }"
-          :aria-label="`${index + 1}번째 사진 보기`"
-          :aria-current="index === currentIndex ? 'true' : undefined"
-          @click="showItem(index)"
-        />
-      </div>
+          class="gallery-control gallery-control--previous"
+          aria-label="이전 사진"
+          @click="showPrevious"
+        >
+          ‹
+        </button>
 
-      <div class="gallery-caption article-component-content">
-        {{ currentItem.caption }}
-      </div>
+        <button
+          type="button"
+          class="gallery-control gallery-control--next"
+          aria-label="다음 사진"
+          @click="showNext"
+        >
+          ›
+        </button>
+
+        <span class="gallery-counter">
+          {{ currentIndex + 1 }} / {{ items.length }}
+        </span>
+      </template>
     </div>
-  </div>
+
+    <div v-if="items.length > 1" class="gallery-indicator" aria-label="사진 선택">
+      <button
+        v-for="(_, index) in items"
+        :key="index"
+        type="button"
+        class="gallery-dot"
+        :class="{ 'gallery-dot--active': index === currentIndex }"
+        :aria-label="`${index + 1}번째 사진 보기`"
+        :aria-current="index === currentIndex ? 'true' : undefined"
+        @click="showItem(index)"
+      />
+    </div>
+  </ArticleMediaFrame>
 </template>
 
 <style scoped>
-.article-gallery {
-  width: 100%;
-  max-width: var(--article-content-width);
-
-  margin: var(--space-l) auto;
-}
-
-.gallery-content {
-  width: 75%;
-  margin: 0 auto;
-}
-
 .gallery-viewer {
   position: relative;
 
@@ -194,19 +180,5 @@ function showItem(index) {
 
 .gallery-dot--active {
   background: var(--color-main);
-}
-
-.gallery-caption {
-  margin-top: var(--space-s);
-
-  color: var(--color-text-sub);
-  font-size: var(--font-size-s);
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .gallery-content {
-    width: 100%;
-  }
 }
 </style>

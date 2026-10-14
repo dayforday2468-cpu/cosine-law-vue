@@ -1,4 +1,6 @@
 <script setup>
+import ArticleMediaFrame from './ArticleMediaFrame.vue'
+
 defineProps({
   src: {
     type: String,
@@ -12,36 +14,18 @@ defineProps({
 </script>
 
 <template>
-  <div class="article-video">
-    <div class="video-content">
-      <video
-        class="video-player"
-        :src="src"
-        controls
-        preload="metadata"
-        playsinline
-      />
-
-      <div class="video-caption article-component-content">
-        {{ caption }}
-      </div>
-    </div>
-  </div>
+  <ArticleMediaFrame :caption="caption">
+    <video
+      class="video-player"
+      :src="src"
+      controls
+      preload="metadata"
+      playsinline
+    />
+  </ArticleMediaFrame>
 </template>
 
 <style scoped>
-.article-video {
-  width: 100%;
-  max-width: var(--article-content-width);
-
-  margin: var(--space-l) auto;
-}
-
-.video-content {
-  width: 75%;
-  margin: 0 auto;
-}
-
 .video-player {
   display: block;
 
@@ -51,19 +35,5 @@ defineProps({
   border-radius: var(--radius-m);
 
   background: var(--color-background-sub);
-}
-
-.video-caption {
-  margin-top: var(--space-s);
-
-  color: var(--color-text-sub);
-  font-size: var(--font-size-s);
-  text-align: center;
-}
-
-@media (max-width: 768px) {
-  .video-content {
-    width: 100%;
-  }
 }
 </style>
