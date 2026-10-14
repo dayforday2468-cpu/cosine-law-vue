@@ -13,6 +13,7 @@ import {
 } from '@/components/article'
 
 
+import KakaoMap from '@/components/map/KakaoMap.vue'
 import { articles } from '@/data/articles.js'
 import { afterRunPhotos, beforeRunPhotos, bootcampScreenshots, duringRunPhotos, johnParkIntroVideo, ResceneIntroVideo } from '@/data/article-media/kakao-friends-run-2026.js'
 
@@ -160,6 +161,12 @@ const article = articles.find(
         </ArticleText>
 
         <ArticleGallery :items="duringRunPhotos"/>
+
+        <KakaoMap
+          :latitude="37.4102555"
+          :longitude="127.1212958"
+          :level="4"
+        />
 
         <ArticleText>
             25분 37초. IT 회사답게 결승점을 지나자 배번표 태그를 인식해서 기록을 확정하고, 핸드폰으로 결과를 전송해 준다.
