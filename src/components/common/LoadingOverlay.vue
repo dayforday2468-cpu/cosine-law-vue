@@ -4,23 +4,22 @@ defineProps({
     type: Boolean,
     required: true,
   },
-
   message: {
     type: String,
-    default: '화면 크기를 조정하고 있습니다.',
+    default: '불러오는 중입니다.',
   },
 })
 </script>
 
 <template>
-  <div v-if="visible" class="resize-loading" aria-live="polite">
+  <div v-if="visible" class="loading-overlay" aria-live="polite">
     <span class="loading-spinner"></span>
     <p>{{ message }}</p>
   </div>
 </template>
 
 <style scoped>
-.resize-loading {
+.loading-overlay {
   position: absolute;
   z-index: 20;
   inset: 0;
@@ -36,7 +35,7 @@ defineProps({
   pointer-events: all;
 }
 
-.resize-loading p {
+.loading-overlay p {
   color: var(--color-text-sub);
   font-size: var(--font-size-m);
   font-family: var(--font-family-content);

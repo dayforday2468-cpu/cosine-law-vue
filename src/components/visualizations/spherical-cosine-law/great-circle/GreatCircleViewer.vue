@@ -4,10 +4,8 @@ import { onBeforeUnmount, onMounted, watch } from 'vue'
 import * as THREE from 'three'
 import ThreeGlobe from 'three-globe'
 
-import {
-  ResizingLoading,
-  ViewerGuide
-} from '@/components/visualizations/common'
+import { LoadingOverlay } from '@/components/common'
+import { ViewerGuide } from '@/components/visualizations/common'
 
 import { useThreeViewer } from '@/composables/useThreeViewer.js'
 
@@ -225,7 +223,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section ref="viewer" class="great-circle-viewer">
-    <ResizingLoading :visible="isResizing" message="화면 크기를 조정하고 있습니다." />
+    <LoadingOverlay :visible="isResizing" message="화면 크기를 조정하고 있습니다." />
     <ViewerGuide>드래그: 회전 · 휠: 확대/축소</ViewerGuide>
   </section>
 </template>

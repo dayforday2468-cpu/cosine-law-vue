@@ -1,5 +1,8 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+
+import { LoadingOverlay } from '@/components/common'
+
 import ArticleMediaFrame from './ArticleMediaFrame.vue'
 
 const props = defineProps({
@@ -10,8 +13,16 @@ const props = defineProps({
 })
 
 const currentIndex = ref(0)
+const isLoading = ref(true)
 
 const currentItem = computed(() => props.items[currentIndex.value])
+
+watch(
+  () => currentItem.value?.src,
+  () => {
+    isLoading.value = true
+  },
+)
 
 function showPrevious() {
   currentIndex.value =
@@ -41,6 +52,13 @@ function showItem(index) {
         class="gallery-image"
         loading="lazy"
         decoding="async"
+        @load="isLoading = false"
+        @error="isLoading = false"
+      />
+
+      <LoadingOverlay
+        :visible="isLoading"
+        message="사진을 불러오고 있습니다."
       />
 
       <template v-if="items.length > 1">
