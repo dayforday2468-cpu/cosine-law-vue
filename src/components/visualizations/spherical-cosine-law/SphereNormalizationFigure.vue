@@ -3,10 +3,8 @@ import { onBeforeUnmount, onMounted } from 'vue'
 
 import * as THREE from 'three'
 
-import {
-  ResizingLoading,
-  ViewerGuide
-} from '@/components/visualizations/common'
+import { LoadingOverlay } from '@/components/common'
+import { ViewerGuide } from '@/components/visualizations/common'
 
 import { useThreeViewer } from '@/composables/useThreeViewer.js'
 
@@ -816,7 +814,7 @@ onBeforeUnmount(() => {
     ref="viewer"
     class="sphere-normalization-figure"
   >
-    <ResizingLoading
+    <LoadingOverlay
       :visible="isResizing"
       message="화면 크기를 조정하고 있습니다."
     />
