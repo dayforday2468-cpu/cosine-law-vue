@@ -19,6 +19,8 @@ const props = defineProps({
   },
 })
 
+const emit = defineEmits(['ready'])
+
 const mapContainer = ref(null)
 const map = shallowRef(null)
 const isLoading = ref(true)
@@ -38,6 +40,11 @@ onMounted(async () => {
     map.value = new mapsApi.Map(mapContainer.value, {
       center,
       level: props.level,
+    })
+
+    emit('ready', {
+      map: map.value,
+      maps: mapsApi,
     })
 
     tilesLoadedHandler = () => {
