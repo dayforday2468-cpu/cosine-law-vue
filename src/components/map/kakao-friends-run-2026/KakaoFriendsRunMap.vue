@@ -3,12 +3,8 @@ import { onBeforeUnmount } from 'vue'
 
 import KakaoMap from '@/components/map/KakaoMap.vue'
 import { MapFrame } from '@/components/map/common'
+import { createRunPhotoData } from '@/data/article-media/kakao-friends-run-2026'
 import mapData from '@/data/map/map_data.json'
-
-import {
-  createRunPhotoSrc,
-  runPhotos,
-} from '@/data/articles/kakao-friends-run-2026'
 
 const STADIUM = {
   latitude: 37.4102555,
@@ -20,7 +16,10 @@ const MAP_LEVEL = 4
 const START_POINT_COLOR = '#22c55e'
 const END_POINT_COLOR = '#ef4444'
 
+const photoData = createRunPhotoData(mapData.photos)
+
 let routeSegments = []
+let photoOverlays = []
 let startPoint = null
 let endPoint = null
 
@@ -144,6 +143,97 @@ function createPointOverlay({
   })
 }
 
+function createPhotoOverlay({
+  map,
+  maps,
+  photo,
+}) {
+  const button = document.createElement('button')
+
+  button.type = 'button'
+  button.title = photo.caption
+  button.style.border = 'var(--border-default)'
+  button.style.borderRadius = 'var(--radius-m)'
+  button.style.background = 'var(--color-background)'
+  button.style.color = 'var(--color-text-content)'
+  button.style.fontFamily = 'var(--font-family-content)'
+  button.style.fontSize = 'var(--font-size-s)'
+  button.style.fontWeight = 'var(--font-weight-semibold)'
+  button.style.boxShadow = '0 2px 8px rgb(15 23 42 / 18%)'
+  button.style.cursor = 'pointer'
+  button.style.overflow = 'hidden'
+
+  let expanded = false
+
+  function renderCaption() {
+    button.replaceChildren()
+    button.textContent = photo.caption
+    button.style.padding =
+      'var(--space-s) var(--space-m)'
+  }
+
+  function renderPhoto() {
+    const image = document.createElement('img')
+
+    image.src = photo.src
+    image.alt = photo.caption
+    image.style.display = 'block'
+    image.style.width = '180px'
+    image.style.height = 'auto'
+
+    button.replaceChildren(image)
+    button.style.padding = '4px'
+  }
+
+  renderCaption()
+
+  button.addEventListener('click', (event) => {
+    event.stopPropagation()
+
+    expanded = !expanded
+
+    if (expanded) {
+      renderPhoto()
+    } else {
+      renderCaption()
+    }
+  })
+
+  return new maps.CustomOverlay({
+    map,
+    position: new maps.LatLng(
+      photo.latitude,
+      photo.longitude,
+    ),
+    content: button,
+    xAnchor: 0.5,
+    yAnchor: 1.1,
+    zIndex: 5,
+  })
+}
+
+function drawPhotoOverlays({
+  map,
+  maps,
+  photos,
+}) {
+  return photos.map(photo =>
+    createPhotoOverlay({
+      map,
+      maps,
+      photo,
+    }),
+  )
+}
+
+function clearPhotoOverlays() {
+  for (const overlay of photoOverlays) {
+    overlay.setMap(null)
+  }
+
+  photoOverlays = []
+}
+
 function resetMapView() {
   if (!mapInstance || !mapsApi) {
     return
@@ -163,6 +253,12 @@ function handleMapReady({ map, maps }) {
   mapsApi = maps
 
   renderRoute()
+
+  photoOverlays = drawPhotoOverlays({
+    map,
+    maps,
+    photos: photoData,
+  })
 
   const start = mapData.route[0]
   const end = mapData.route.at(-1)
@@ -200,6 +296,7 @@ function handleMapReady({ map, maps }) {
 
 onBeforeUnmount(() => {
   clearRouteSegments()
+  clearPhotoOverlays()
 
   startPoint?.setMap(null)
   endPoint?.setMap(null)
