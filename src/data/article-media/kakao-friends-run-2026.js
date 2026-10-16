@@ -104,27 +104,26 @@ export const runPhotos = [
   },
 ]
 
-
 export const afterRunPhotos = [
   {
-  src: `${MEDIA_BASE_URL}/20261010_090529.webp`,
-  caption: '완주 기념 포토존에서',
+    src: `${MEDIA_BASE_URL}/20261010_090529.webp`,
+    caption: '완주 기념 포토존에서',
   },
   {
-  src: `${MEDIA_BASE_URL}/20261010_091417.webp`,
-  caption: '골드바 겟또!',
+    src: `${MEDIA_BASE_URL}/20261010_091417.webp`,
+    caption: '골드바 겟또!',
   },
   {
-  src: `${MEDIA_BASE_URL}/20261010_095345.webp`,
-  caption: '달리고, 또 달리기',
+    src: `${MEDIA_BASE_URL}/20261010_095345.webp`,
+    caption: '달리고, 또 달리기',
   },
   {
-  src: `${MEDIA_BASE_URL}/20261010_102639.webp`,
-  caption: '참치는 못 참치!',
+    src: `${MEDIA_BASE_URL}/20261010_102639.webp`,
+    caption: '참치는 못 참치!',
   },
   {
-  src: `${MEDIA_BASE_URL}/20261011_094154.webp`,
-  caption: '받은 참치로 만든 샌드위치',
+    src: `${MEDIA_BASE_URL}/20261011_094154.webp`,
+    caption: '받은 참치로 만든 샌드위치',
   },
 ]
 
@@ -137,8 +136,6 @@ export const ResceneIntroVideo = {
   src: `${VIDEO_BASE_URL}/20261010_105206.mp4`,
   caption: '리센느 오프닝',
 }
-
-
 
 export function createRunPhotoSrc(assetKey) {
   return `${MEDIA_BASE_URL}/${assetKey}`
