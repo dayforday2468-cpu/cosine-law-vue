@@ -140,3 +140,18 @@ export const ResceneIntroVideo = {
 export function createRunPhotoSrc(assetKey) {
   return `${MEDIA_BASE_URL}/${assetKey}`
 }
+
+export function createRunPhotoData(mapPhotos) {
+  const contentByAssetKey = new Map(
+    runPhotos.map(photo => [
+      photo.assetKey,
+      photo,
+    ]),
+  )
+
+  return mapPhotos.map(photo => ({
+    ...photo,
+    ...contentByAssetKey.get(photo.assetKey),
+    src: createRunPhotoSrc(photo.assetKey),
+  }))
+}
