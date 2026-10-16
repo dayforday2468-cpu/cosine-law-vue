@@ -5,6 +5,11 @@ import KakaoMap from '@/components/map/KakaoMap.vue'
 import { MapFrame } from '@/components/map/common'
 import mapData from '@/data/map/map_data.json'
 
+import {
+  createRunPhotoSrc,
+  runPhotos,
+} from '@/data/articles/kakao-friends-run-2026'
+
 const STADIUM = {
   latitude: 37.4102555,
   longitude: 127.1212958,

@@ -81,6 +81,30 @@ export const duringRunPhotos = [
   },
 ]
 
+export const runPhotos = [
+  {
+    assetKey: '20261010_082739.webp',
+    caption: '출발',
+  },
+  {
+    assetKey: '20261010_083326.webp',
+    caption: '커브길',
+  },
+  {
+    assetKey: '20261010_083709.webp',
+    caption: '반환점',
+  },
+  {
+    assetKey: '20261010_084107.webp',
+    caption: '급수대',
+  },
+  {
+    assetKey: '20261010_084247.webp',
+    caption: '쿨링존',
+  },
+]
+
+
 export const afterRunPhotos = [
   {
   src: `${MEDIA_BASE_URL}/20261010_090529.webp`,
@@ -112,4 +136,10 @@ export const johnParkIntroVideo = {
 export const ResceneIntroVideo = {
   src: `${VIDEO_BASE_URL}/20261010_105206.mp4`,
   caption: '리센느 오프닝',
+}
+
+
+
+export function createRunPhotoSrc(assetKey) {
+  return `${MEDIA_BASE_URL}/${assetKey}`
 }

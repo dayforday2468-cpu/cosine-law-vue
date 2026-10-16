@@ -2,10 +2,14 @@ import json
 from pathlib import Path
 
 import gpxpy
+from exif import Image
 
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+PHOTO_DIR = SCRIPT_DIR / "photos"
 OUTPUT_PATH = SCRIPT_DIR / "map_data.json"
+
+PHOTO_EXTENSIONS = {".jpg", ".jpeg"}
 
 
 def read_gpx(gpx_path: str | Path) -> list[dict]:
@@ -36,6 +40,76 @@ def read_gpx(gpx_path: str | Path) -> list[dict]:
     return route
 
 
+def dms_to_decimal(
+    degrees: float,
+    minutes: float,
+    seconds: float,
+) -> float:
+    """Convert EXIF DMS coordinates to decimal degrees."""
+    return degrees + minutes / 60 + seconds / 3600
+
+
+def read_photo(photo_path: str | Path) -> dict | None:
+    """Read GPS coordinates and asset information from a photo."""
+    photo_path = Path(photo_path)
+
+    with photo_path.open("rb") as file:
+        image = Image(file)
+
+    if not image.has_exif:
+        return None
+
+    exif_data = image.get_all()
+
+    required_gps_fields = {
+        "gps_latitude",
+        "gps_longitude",
+        "gps_latitude_ref",
+        "gps_longitude_ref",
+    }
+
+    if not required_gps_fields <= exif_data.keys():
+        return None
+
+    latitude = dms_to_decimal(
+        *exif_data["gps_latitude"],
+    )
+    longitude = dms_to_decimal(
+        *exif_data["gps_longitude"],
+    )
+
+    if exif_data["gps_latitude_ref"] == "S":
+        latitude *= -1
+
+    if exif_data["gps_longitude_ref"] == "W":
+        longitude *= -1
+
+    return {
+        "sourceFilename": photo_path.name,
+        "assetKey": f"{photo_path.stem}.webp",
+        "latitude": latitude,
+        "longitude": longitude,
+    }
+
+
+def read_photos(photo_dir: str | Path) -> list[dict]:
+    """Read map data from photos containing GPS EXIF metadata."""
+    photo_dir = Path(photo_dir)
+
+    photos = []
+
+    for photo_path in sorted(photo_dir.iterdir()):
+        if photo_path.suffix.lower() not in PHOTO_EXTENSIONS:
+            continue
+
+        photo = read_photo(photo_path)
+
+        if photo is not None:
+            photos.append(photo)
+
+    return photos
+
+
 def find_gpx_file() -> Path:
     gpx_files = sorted(SCRIPT_DIR.glob("*.gpx"))
 
@@ -53,6 +127,7 @@ def main() -> None:
 
     map_data = {
         "route": read_gpx(gpx_path),
+        "photos": read_photos(PHOTO_DIR),
     }
 
     OUTPUT_PATH.write_text(
@@ -66,7 +141,8 @@ def main() -> None:
 
     print(
         f"Created {OUTPUT_PATH.name}: "
-        f"{len(map_data['route'])} route points."
+        f"{len(map_data['route'])} route points, "
+        f"{len(map_data['photos'])} photos."
     )
 
 
