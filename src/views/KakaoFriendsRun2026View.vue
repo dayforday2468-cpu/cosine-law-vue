@@ -16,6 +16,7 @@ import {
 import { KakaoFriendsRunMap } from '@/components/map/kakao-friends-run-2026'
 import { articles } from '@/data/articles.js'
 import { afterRunPhotos, beforeRunPhotos, bootcampScreenshots, duringRunPhotos, johnParkIntroVideo, ResceneIntroVideo } from '@/data/article-media/kakao-friends-run-2026.js'
+import { sources } from '@/data/article-sources/kakao-friends-run-2026.js'
 
 const article = articles.find(
   ({ slug }) => slug === 'kakao-friends-run-2026',
@@ -239,5 +240,7 @@ const article = articles.find(
             차로 돌아가기 위해 탄천을 건너며 다리 아래 물가에서 잉어 무리를 맞닥뜨렸다.
             SKALA 시절, 탄천 러닝을 하며 만난 너구리, 참게와의 추억으로 마무리할 수 있는 축제였다.
         </ArticleText>
+
+        <ArticleSources :sources="sources" />
     </ArticleLayout>
 </template>
