@@ -187,19 +187,7 @@ function createPhotoOverlay({
 
   renderCaption()
 
-  button.addEventListener('click', (event) => {
-    event.stopPropagation()
-
-    expanded = !expanded
-
-    if (expanded) {
-      renderPhoto()
-    } else {
-      renderCaption()
-    }
-  })
-
-  return new maps.CustomOverlay({
+  const overlay = new maps.CustomOverlay({
     map,
     position: new maps.LatLng(
       photo.latitude,
@@ -210,6 +198,22 @@ function createPhotoOverlay({
     yAnchor: 1.1,
     zIndex: 5,
   })
+
+  button.addEventListener('click', (event) => {
+    event.stopPropagation()
+
+    expanded = !expanded
+
+    if (expanded) {
+      renderPhoto()
+      overlay.setZIndex(20)
+    } else {
+      renderCaption()
+      overlay.setZIndex(5)
+    }
+  })
+
+  return overlay
 }
 
 function drawPhotoOverlays({
