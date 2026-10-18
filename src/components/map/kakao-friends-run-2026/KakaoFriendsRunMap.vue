@@ -19,7 +19,7 @@ const END_POINT_COLOR = '#ef4444'
 const photoData = createRunPhotoData(mapData.photos)
 
 let routeSegments = []
-let photoOverlays = []
+let photoMarkers = []
 let startPoint = null
 let endPoint = null
 
@@ -143,33 +143,52 @@ function createPointOverlay({
   })
 }
 
-function createPhotoOverlay({
+function createPhotoMarker({
   map,
   maps,
   photo,
 }) {
-  const button = document.createElement('button')
+  const position = new maps.LatLng(
+    photo.latitude,
+    photo.longitude,
+  )
 
-  button.type = 'button'
-  button.title = photo.caption
-  button.style.border = 'var(--border-default)'
-  button.style.borderRadius = 'var(--radius-m)'
-  button.style.background = 'var(--color-background)'
-  button.style.color = 'var(--color-text-content)'
-  button.style.fontFamily = 'var(--font-family-content)'
-  button.style.fontSize = 'var(--font-size-s)'
-  button.style.fontWeight = 'var(--font-weight-semibold)'
-  button.style.boxShadow = '0 2px 8px rgb(15 23 42 / 18%)'
-  button.style.cursor = 'pointer'
-  button.style.overflow = 'hidden'
+  const marker = new maps.Marker({
+    map,
+    position,
+    clickable: true,
+  })
+
+  const content = document.createElement('button')
+
+  content.type = 'button'
+  content.style.border = 'var(--border-default)'
+  content.style.borderRadius = 'var(--radius-m)'
+  content.style.background = 'var(--color-background)'
+  content.style.color = 'var(--color-text-content)'
+  content.style.fontFamily = 'var(--font-family-content)'
+  content.style.fontSize = 'var(--font-size-s)'
+  content.style.fontWeight = 'var(--font-weight-semibold)'
+  content.style.boxShadow = '0 2px 8px rgb(15 23 42 / 18%)'
+  content.style.cursor = 'pointer'
+  content.style.overflow = 'hidden'
+
+  const overlay = new maps.CustomOverlay({
+    position,
+    content,
+    xAnchor: 0.5,
+    yAnchor: 1.15,
+    zIndex: 10,
+  })
 
   let expanded = false
 
   function renderCaption() {
-    button.replaceChildren()
-    button.textContent = photo.caption
-    button.style.padding =
+    content.replaceChildren()
+    content.textContent = photo.caption
+    content.style.padding =
       'var(--space-s) var(--space-m)'
+    content.style.cursor = 'default'
   }
 
   function renderPhoto() {
@@ -181,48 +200,87 @@ function createPhotoOverlay({
     image.style.width = '180px'
     image.style.height = 'auto'
 
-    button.replaceChildren(image)
-    button.style.padding = '4px'
+    content.replaceChildren(image)
+    content.style.padding = '4px'
+    content.style.cursor = 'pointer'
   }
 
-  renderCaption()
+  const mouseOverHandler = () => {
+    if (expanded) {
+      return
+    }
 
-  const overlay = new maps.CustomOverlay({
-    map,
-    position: new maps.LatLng(
-      photo.latitude,
-      photo.longitude,
-    ),
-    content: button,
-    xAnchor: 0.5,
-    yAnchor: 1.1,
-    zIndex: 5,
-  })
+    renderCaption()
+    overlay.setZIndex(10)
+    overlay.setMap(map)
+  }
 
-  button.addEventListener('click', (event) => {
+  const mouseOutHandler = () => {
+    if (!expanded) {
+      overlay.setMap(null)
+    }
+  }
+
+  const markerClickHandler = () => {
+    expanded = true
+
+    renderPhoto()
+    overlay.setZIndex(20)
+    overlay.setMap(map)
+  }
+
+  const photoClickHandler = (event) => {
     event.stopPropagation()
 
-    expanded = !expanded
-
-    if (expanded) {
-      renderPhoto()
-      overlay.setZIndex(20)
-    } else {
-      renderCaption()
-      overlay.setZIndex(5)
+    if (!expanded) {
+      return
     }
-  })
 
-  return overlay
+    expanded = false
+    overlay.setMap(null)
+  }
+
+  maps.event.addListener(
+    marker,
+    'mouseover',
+    mouseOverHandler,
+  )
+
+  maps.event.addListener(
+    marker,
+    'mouseout',
+    mouseOutHandler,
+  )
+
+  maps.event.addListener(
+    marker,
+    'click',
+    markerClickHandler,
+  )
+
+  content.addEventListener(
+    'click',
+    photoClickHandler,
+  )
+
+  return {
+    marker,
+    overlay,
+    mouseOverHandler,
+    mouseOutHandler,
+    markerClickHandler,
+    content,
+    photoClickHandler,
+  }
 }
 
-function drawPhotoOverlays({
+function drawPhotoMarkers({
   map,
   maps,
   photos,
 }) {
   return photos.map(photo =>
-    createPhotoOverlay({
+    createPhotoMarker({
       map,
       maps,
       photo,
@@ -230,12 +288,44 @@ function drawPhotoOverlays({
   )
 }
 
-function clearPhotoOverlays() {
-  for (const overlay of photoOverlays) {
+function clearPhotoMarkers() {
+  for (const photoMarker of photoMarkers) {
+    const {
+      marker,
+      overlay,
+      mouseOverHandler,
+      mouseOutHandler,
+      markerClickHandler,
+      content,
+      photoClickHandler,
+    } = photoMarker
+
+    mapsApi?.event.removeListener(
+      marker,
+      'mouseover',
+      mouseOverHandler,
+    )
+    mapsApi?.event.removeListener(
+      marker,
+      'mouseout',
+      mouseOutHandler,
+    )
+    mapsApi?.event.removeListener(
+      marker,
+      'click',
+      markerClickHandler,
+    )
+
+    content.removeEventListener(
+      'click',
+      photoClickHandler,
+    )
+
     overlay.setMap(null)
+    marker.setMap(null)
   }
 
-  photoOverlays = []
+  photoMarkers = []
 }
 
 function resetMapView() {
@@ -258,7 +348,7 @@ function handleMapReady({ map, maps }) {
 
   renderRoute()
 
-  photoOverlays = drawPhotoOverlays({
+  photoMarkers = drawPhotoMarkers({
     map,
     maps,
     photos: photoData,
@@ -300,7 +390,7 @@ function handleMapReady({ map, maps }) {
 
 onBeforeUnmount(() => {
   clearRouteSegments()
-  clearPhotoOverlays()
+  clearPhotoMarkers()
 
   startPoint?.setMap(null)
   endPoint?.setMap(null)
