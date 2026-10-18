@@ -19,7 +19,7 @@ const END_POINT_COLOR = '#ef4444'
 const photoData = createRunPhotoData(mapData.photos)
 
 let routeSegments = []
-let photoMarkers = []
+let photoOverlays = []
 let startPoint = null
 let endPoint = null
 
@@ -143,16 +143,36 @@ function createPointOverlay({
   })
 }
 
-function createPhotoInfoContent(photo, expanded) {
-  const content = document.createElement('div')
+function createPhotoOverlay({
+  map,
+  maps,
+  photo,
+}) {
+  const button = document.createElement('button')
 
-  content.style.padding = 'var(--space-s)'
-  content.style.fontFamily = 'var(--font-family-content)'
-  content.style.fontSize = 'var(--font-size-s)'
-  content.style.color = 'var(--color-text-content)'
-  content.style.textAlign = 'center'
+  button.type = 'button'
+  button.title = photo.caption
+  button.style.border = 'var(--border-default)'
+  button.style.borderRadius = 'var(--radius-m)'
+  button.style.background = 'var(--color-background)'
+  button.style.color = 'var(--color-text-content)'
+  button.style.fontFamily = 'var(--font-family-content)'
+  button.style.fontSize = 'var(--font-size-s)'
+  button.style.fontWeight = 'var(--font-weight-semibold)'
+  button.style.boxShadow = '0 2px 8px rgb(15 23 42 / 18%)'
+  button.style.cursor = 'pointer'
+  button.style.overflow = 'hidden'
 
-  if (expanded) {
+  let expanded = false
+
+  function renderCaption() {
+    button.replaceChildren()
+    button.textContent = photo.caption
+    button.style.padding =
+      'var(--space-s) var(--space-m)'
+  }
+
+  function renderPhoto() {
     const image = document.createElement('img')
 
     image.src = photo.src
@@ -160,78 +180,45 @@ function createPhotoInfoContent(photo, expanded) {
     image.style.display = 'block'
     image.style.width = '180px'
     image.style.height = 'auto'
-    image.style.marginBottom = 'var(--space-s)'
-    image.style.borderRadius = 'var(--radius-s)'
 
-    content.appendChild(image)
+    button.replaceChildren(image)
+    button.style.padding = '4px'
   }
 
-  const caption = document.createElement('div')
-  caption.textContent = photo.caption
+  renderCaption()
 
-  content.appendChild(caption)
+  button.addEventListener('click', (event) => {
+    event.stopPropagation()
 
-  return content
-}
+    expanded = !expanded
 
-function createPhotoMarker({
-  map,
-  maps,
-  photo,
-}) {
-  const marker = new maps.Marker({
+    if (expanded) {
+      renderPhoto()
+    } else {
+      renderCaption()
+    }
+  })
+
+  return new maps.CustomOverlay({
     map,
     position: new maps.LatLng(
       photo.latitude,
       photo.longitude,
     ),
-    clickable: true,
+    content: button,
+    xAnchor: 0.5,
+    yAnchor: 1.1,
+    zIndex: 5,
   })
-
-  const infoWindow = new maps.InfoWindow({
-    content: createPhotoInfoContent(
-      photo,
-      false,
-    ),
-  })
-
-  let expanded = false
-
-  const clickHandler = () => {
-    expanded = !expanded
-
-    infoWindow.setContent(
-      createPhotoInfoContent(
-        photo,
-        expanded,
-      ),
-    )
-
-    infoWindow.open(map, marker)
-  }
-
-  maps.event.addListener(
-    marker,
-    'click',
-    clickHandler,
-  )
-
-  infoWindow.open(map, marker)
-
-  return {
-    marker,
-    infoWindow,
-    clickHandler,
-  }
 }
 
-function drawPhotoMarkers({
+function drawPhotoOverlays({
   map,
   maps,
   photos,
 }) {
   return photos.map(photo =>
-    createPhotoMarker({
+    createPhotoOverlay({
       map,
       maps,
       photo,
@@ -239,23 +226,12 @@ function drawPhotoMarkers({
   )
 }
 
-function clearPhotoMarkers() {
-  for (const {
-    marker,
-    infoWindow,
-    clickHandler,
-  } of photoMarkers) {
-    mapsApi?.event.removeListener(
-      marker,
-      'click',
-      clickHandler,
-    )
-
-    infoWindow.close()
-    marker.setMap(null)
+function clearPhotoOverlays() {
+  for (const overlay of photoOverlays) {
+    overlay.setMap(null)
   }
 
-  photoMarkers = []
+  photoOverlays = []
 }
 
 function resetMapView() {
@@ -278,7 +254,7 @@ function handleMapReady({ map, maps }) {
 
   renderRoute()
 
-  photoMarkers = drawPhotoMarkers({
+  photoOverlays = drawPhotoOverlays({
     map,
     maps,
     photos: photoData,
@@ -320,7 +296,7 @@ function handleMapReady({ map, maps }) {
 
 onBeforeUnmount(() => {
   clearRouteSegments()
-  clearPhotoMarkers()
+  clearPhotoOverlays()
 
   startPoint?.setMap(null)
   endPoint?.setMap(null)
