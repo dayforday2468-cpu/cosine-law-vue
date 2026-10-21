@@ -1,4 +1,6 @@
 import json
+from datetime import datetime
+from math import asin, cos, radians, sin, sqrt
 from pathlib import Path
 
 import gpxpy
@@ -10,6 +12,75 @@ PHOTO_DIR = SCRIPT_DIR / "photos"
 OUTPUT_PATH = SCRIPT_DIR / "map_data.json"
 
 PHOTO_EXTENSIONS = {".jpg", ".jpeg"}
+EARTH_RADIUS_METERS = 6_371_000
+
+
+def calculate_distance_meters(
+    start: dict,
+    end: dict,
+) -> float:
+    """Calculate the great-circle distance between two route points."""
+    start_latitude = radians(start["latitude"])
+    end_latitude = radians(end["latitude"])
+    latitude_delta = end_latitude - start_latitude
+    longitude_delta = radians(
+        end["longitude"] - start["longitude"],
+    )
+
+    haversine = (
+        sin(latitude_delta / 2) ** 2
+        + cos(start_latitude)
+        * cos(end_latitude)
+        * sin(longitude_delta / 2) ** 2
+    )
+
+    return (
+        2
+        * EARTH_RADIUS_METERS
+        * asin(sqrt(haversine))
+    )
+
+
+def add_route_metrics(route: list[dict]) -> list[dict]:
+    """Add cumulative distance in meters and speed in meters per second."""
+    cumulative_distance = 0.0
+
+    for index, point in enumerate(route):
+        if index == 0:
+            point["cumulativeDistance"] = 0.0
+            point["speed"] = 0.0
+            continue
+
+        previous = route[index - 1]
+        segment_distance = calculate_distance_meters(
+            previous,
+            point,
+        )
+        cumulative_distance += segment_distance
+
+        speed = 0.0
+        previous_timestamp = previous["timestamp"]
+        current_timestamp = point["timestamp"]
+
+        if (
+            previous_timestamp is not None
+            and current_timestamp is not None
+        ):
+            elapsed_seconds = (
+                datetime.fromisoformat(current_timestamp)
+                - datetime.fromisoformat(previous_timestamp)
+            ).total_seconds()
+
+            if elapsed_seconds > 0:
+                speed = segment_distance / elapsed_seconds
+
+        point["cumulativeDistance"] = round(
+            cumulative_distance,
+            3,
+        )
+        point["speed"] = round(speed, 3)
+
+    return route
 
 
 def read_gpx(gpx_path: str | Path) -> list[dict]:
@@ -37,7 +108,7 @@ def read_gpx(gpx_path: str | Path) -> list[dict]:
                     }
                 )
 
-    return route
+    return add_route_metrics(route)
 
 
 def dms_to_decimal(
