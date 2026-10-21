@@ -6,6 +6,9 @@ import { MapFrame } from '@/components/map/common'
 import { createRunPhotoData } from '@/data/article-media/kakao-friends-run-2026'
 import mapData from '@/data/map/map_data.json'
 
+import { usePhotoMarkers } from './usePhotoMarkers'
+import { useRouteLayer } from './useRouteLayer'
+
 const STADIUM = {
   latitude: 37.4102555,
   longitude: 127.1212958,
@@ -13,320 +16,16 @@ const STADIUM = {
 
 const MAP_LEVEL = 4
 
-const START_POINT_COLOR = '#22c55e'
-const END_POINT_COLOR = '#ef4444'
+const photoData = createRunPhotoData(
+  mapData.photos,
+)
 
-const photoData = createRunPhotoData(mapData.photos)
-
-let routeSegments = []
-let photoMarkers = []
-let startPoint = null
-let endPoint = null
-
-let mapsApi = null
 let mapInstance = null
-let zoomChangedHandler = null
+let mapsApi = null
 
-function getSegmentSize(level) {
-  if (level <= 2) return 2
-  if (level === 3) return 5
-  if (level === 4) return 10
-  if (level === 5) return 20
+const routeLayer = useRouteLayer()
 
-  return 40
-}
-
-function chunkRoute(route, size) {
-  const chunks = []
-
-  for (let i = 0; i < route.length - 1; i += size) {
-    const end = Math.min(
-      i + size,
-      route.length - 1,
-    )
-
-    chunks.push(
-      route.slice(i, end + 1),
-    )
-  }
-
-  return chunks
-}
-
-function clearRouteSegments() {
-  for (const segment of routeSegments) {
-    segment.setMap(null)
-  }
-
-  routeSegments = []
-}
-
-function drawRouteSegments({
-  map,
-  maps,
-  route,
-}) {
-  const level = map.getLevel()
-  const segmentSize = getSegmentSize(level)
-  const chunks = chunkRoute(route, segmentSize)
-
-  const segments = []
-
-  for (const chunk of chunks) {
-    const path = chunk.map(
-      ({ latitude, longitude }) =>
-        new maps.LatLng(
-          latitude,
-          longitude,
-        ),
-    )
-
-    const outline = new maps.Polyline({
-      map,
-      path,
-      strokeWeight: 8,
-      strokeColor: '#333333',
-      strokeOpacity: 0.9,
-      strokeStyle: 'solid',
-    })
-
-    const line = new maps.Polyline({
-      map,
-      path,
-      strokeWeight: 5,
-      strokeColor: '#FEE500',
-      strokeOpacity: 1,
-      strokeStyle: 'solid',
-    })
-
-    segments.push(outline, line)
-  }
-
-  return segments
-}
-
-function renderRoute() {
-  if (!mapInstance || !mapsApi) {
-    return
-  }
-
-  clearRouteSegments()
-
-  routeSegments = drawRouteSegments({
-    map: mapInstance,
-    maps: mapsApi,
-    route: mapData.route,
-  })
-}
-
-function createPointOverlay({
-  map,
-  maps,
-  position,
-  color,
-}) {
-  const element = document.createElement('div')
-
-  element.style.width = '16px'
-  element.style.height = '16px'
-  element.style.border = '3px solid #ffffff'
-  element.style.borderRadius = '50%'
-  element.style.backgroundColor = color
-  element.style.boxSizing = 'border-box'
-
-  return new maps.CustomOverlay({
-    map,
-    position,
-    content: element,
-    xAnchor: 0.5,
-    yAnchor: 0.5,
-  })
-}
-
-function createPhotoMarker({
-  map,
-  maps,
-  photo,
-}) {
-  const position = new maps.LatLng(
-    photo.latitude,
-    photo.longitude,
-  )
-
-  const marker = new maps.Marker({
-    map,
-    position,
-    clickable: true,
-  })
-
-  const content = document.createElement('button')
-
-  content.type = 'button'
-  content.style.border = 'var(--border-default)'
-  content.style.borderRadius = 'var(--radius-m)'
-  content.style.background = 'var(--color-background)'
-  content.style.color = 'var(--color-text-content)'
-  content.style.fontFamily = 'var(--font-family-content)'
-  content.style.fontSize = 'var(--font-size-s)'
-  content.style.fontWeight = 'var(--font-weight-semibold)'
-  content.style.boxShadow = '0 2px 8px rgb(15 23 42 / 18%)'
-  content.style.cursor = 'pointer'
-  content.style.overflow = 'hidden'
-
-  const overlay = new maps.CustomOverlay({
-    position,
-    content,
-    xAnchor: 0.5,
-    yAnchor: 1.15,
-    zIndex: 10,
-  })
-
-  let expanded = false
-
-  function renderCaption() {
-    content.replaceChildren()
-    content.textContent = photo.caption
-    content.style.padding =
-      'var(--space-s) var(--space-m)'
-    content.style.cursor = 'default'
-  }
-
-  function renderPhoto() {
-    const image = document.createElement('img')
-
-    image.src = photo.src
-    image.alt = photo.caption
-    image.style.display = 'block'
-    image.style.width = '180px'
-    image.style.height = 'auto'
-
-    content.replaceChildren(image)
-    content.style.padding = '4px'
-    content.style.cursor = 'pointer'
-  }
-
-  const mouseOverHandler = () => {
-    if (expanded) {
-      return
-    }
-
-    renderCaption()
-    overlay.setZIndex(10)
-    overlay.setMap(map)
-  }
-
-  const mouseOutHandler = () => {
-    if (!expanded) {
-      overlay.setMap(null)
-    }
-  }
-
-  const markerClickHandler = () => {
-    expanded = true
-
-    renderPhoto()
-    overlay.setZIndex(20)
-    overlay.setMap(map)
-  }
-
-  const photoClickHandler = (event) => {
-    event.stopPropagation()
-
-    if (!expanded) {
-      return
-    }
-
-    expanded = false
-    overlay.setMap(null)
-  }
-
-  maps.event.addListener(
-    marker,
-    'mouseover',
-    mouseOverHandler,
-  )
-
-  maps.event.addListener(
-    marker,
-    'mouseout',
-    mouseOutHandler,
-  )
-
-  maps.event.addListener(
-    marker,
-    'click',
-    markerClickHandler,
-  )
-
-  content.addEventListener(
-    'click',
-    photoClickHandler,
-  )
-
-  return {
-    marker,
-    overlay,
-    mouseOverHandler,
-    mouseOutHandler,
-    markerClickHandler,
-    content,
-    photoClickHandler,
-  }
-}
-
-function drawPhotoMarkers({
-  map,
-  maps,
-  photos,
-}) {
-  return photos.map(photo =>
-    createPhotoMarker({
-      map,
-      maps,
-      photo,
-    }),
-  )
-}
-
-function clearPhotoMarkers() {
-  for (const photoMarker of photoMarkers) {
-    const {
-      marker,
-      overlay,
-      mouseOverHandler,
-      mouseOutHandler,
-      markerClickHandler,
-      content,
-      photoClickHandler,
-    } = photoMarker
-
-    mapsApi?.event.removeListener(
-      marker,
-      'mouseover',
-      mouseOverHandler,
-    )
-    mapsApi?.event.removeListener(
-      marker,
-      'mouseout',
-      mouseOutHandler,
-    )
-    mapsApi?.event.removeListener(
-      marker,
-      'click',
-      markerClickHandler,
-    )
-
-    content.removeEventListener(
-      'click',
-      photoClickHandler,
-    )
-
-    overlay.setMap(null)
-    marker.setMap(null)
-  }
-
-  photoMarkers = []
-}
+let photoLayer = null
 
 function resetMapView() {
   if (!mapInstance || !mapsApi) {
@@ -346,66 +45,22 @@ function handleMapReady({ map, maps }) {
   mapInstance = map
   mapsApi = maps
 
-  renderRoute()
+  routeLayer.initialize({
+    map,
+    maps,
+    route: mapData.route,
+  })
 
-  photoMarkers = drawPhotoMarkers({
+  photoLayer = usePhotoMarkers({
     map,
     maps,
     photos: photoData,
   })
-
-  const start = mapData.route[0]
-  const end = mapData.route.at(-1)
-
-  startPoint = createPointOverlay({
-    map,
-    maps,
-    position: new maps.LatLng(
-      start.latitude,
-      start.longitude,
-    ),
-    color: START_POINT_COLOR,
-  })
-
-  endPoint = createPointOverlay({
-    map,
-    maps,
-    position: new maps.LatLng(
-      end.latitude,
-      end.longitude,
-    ),
-    color: END_POINT_COLOR,
-  })
-
-  zoomChangedHandler = () => {
-    renderRoute()
-  }
-
-  maps.event.addListener(
-    map,
-    'zoom_changed',
-    zoomChangedHandler,
-  )
 }
 
 onBeforeUnmount(() => {
-  clearRouteSegments()
-  clearPhotoMarkers()
-
-  startPoint?.setMap(null)
-  endPoint?.setMap(null)
-
-  if (
-    mapsApi
-    && mapInstance
-    && zoomChangedHandler
-  ) {
-    mapsApi.event.removeListener(
-      mapInstance,
-      'zoom_changed',
-      zoomChangedHandler,
-    )
-  }
+  routeLayer.destroy()
+  photoLayer?.destroy()
 })
 </script>
 
