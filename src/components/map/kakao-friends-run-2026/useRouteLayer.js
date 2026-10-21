@@ -1,5 +1,6 @@
 const START_POINT_COLOR = '#22c55e'
 const END_POINT_COLOR = '#ef4444'
+const HOVER_POINT_COLOR = '#FEE500'
 
 export function useRouteLayer() {
   let mapInstance = null
@@ -9,6 +10,7 @@ export function useRouteLayer() {
   let routeSegments = []
   let startPoint = null
   let endPoint = null
+  let hoverPoint = null
 
   let zoomChangedHandler = null
 
@@ -58,23 +60,32 @@ export function useRouteLayer() {
     endPoint = null
   }
 
-  function createPointOverlay({
-    position,
+  function createPointElement({
+    size = '16px',
     color,
   }) {
     const element = document.createElement('div')
 
-    element.style.width = '16px'
-    element.style.height = '16px'
+    element.style.width = size
+    element.style.height = size
     element.style.border = '3px solid #ffffff'
     element.style.borderRadius = '50%'
     element.style.backgroundColor = color
     element.style.boxSizing = 'border-box'
 
+    return element
+  }
+
+  function createPointOverlay({
+    position,
+    color,
+  }) {
     return new mapsApi.CustomOverlay({
       map: mapInstance,
       position,
-      content: element,
+      content: createPointElement({
+        color,
+      }),
       xAnchor: 0.5,
       yAnchor: 0.5,
     })
@@ -179,6 +190,43 @@ export function useRouteLayer() {
     drawRouteSegments()
   }
 
+  function showHoverPoint(point) {
+    if (!mapInstance || !mapsApi || !point) {
+      return
+    }
+
+    const position = new mapsApi.LatLng(
+      point.latitude,
+      point.longitude,
+    )
+
+    if (!hoverPoint) {
+      const element = createPointElement({
+        size: '18px',
+        color: HOVER_POINT_COLOR,
+      })
+
+      element.style.boxShadow =
+        '0 0 0 2px #333333'
+
+      hoverPoint = new mapsApi.CustomOverlay({
+        position,
+        content: element,
+        xAnchor: 0.5,
+        yAnchor: 0.5,
+        zIndex: 20,
+      })
+    } else {
+      hoverPoint.setPosition(position)
+    }
+
+    hoverPoint.setMap(mapInstance)
+  }
+
+  function hideHoverPoint() {
+    hoverPoint?.setMap(null)
+  }
+
   function initialize({
     map,
     maps,
@@ -205,6 +253,9 @@ export function useRouteLayer() {
   function destroy() {
     clearRouteSegments()
     clearEndpointMarkers()
+    hideHoverPoint()
+
+    hoverPoint = null
 
     if (
       mapsApi
@@ -226,6 +277,8 @@ export function useRouteLayer() {
 
   return {
     initialize,
+    showHoverPoint,
+    hideHoverPoint,
     destroy,
   }
 }

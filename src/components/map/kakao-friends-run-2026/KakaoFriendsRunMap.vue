@@ -6,6 +6,7 @@ import { MapFrame } from '@/components/map/common'
 import { createRunPhotoData } from '@/data/article-media/kakao-friends-run-2026'
 import mapData from '@/data/map/map_data.json'
 
+import RouteTimeline from './RouteTimeline.vue'
 import { usePhotoMarkers } from './usePhotoMarkers'
 import { useRouteLayer } from './useRouteLayer'
 
@@ -58,6 +59,14 @@ function handleMapReady({ map, maps }) {
   })
 }
 
+function handleHoverPoint(point) {
+  routeLayer.showHoverPoint(point)
+}
+
+function handleTimelineLeave() {
+  routeLayer.hideHoverPoint()
+}
+
 onBeforeUnmount(() => {
   routeLayer.destroy()
   photoLayer?.destroy()
@@ -93,6 +102,12 @@ onBeforeUnmount(() => {
       >
         초기화
       </button>
+
+      <RouteTimeline
+        :route="mapData.route"
+        @hover-point="handleHoverPoint"
+        @leave="handleTimelineLeave"
+      />
     </div>
   </MapFrame>
 </template>
@@ -152,8 +167,8 @@ onBeforeUnmount(() => {
 }
 
 .reset-map-button {
-  right: var(--space-m);
-  bottom: var(--space-m);
+  top: var(--space-m);
+  left: var(--space-m);
 
   padding: var(--space-s) var(--space-m);
 
