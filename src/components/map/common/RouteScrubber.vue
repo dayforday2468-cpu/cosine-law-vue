@@ -2,40 +2,76 @@
 import { computed, ref } from 'vue'
 
 const props = defineProps({
-  route: {
+  data: {
+    type: Array,
+    required: true,
+  },
+  axes: {
+    type: Array,
+    required: true,
+  },
+  fields: {
     type: Array,
     required: true,
   },
 })
 
 const emit = defineEmits([
-  'hover-point',
+  'hover',
   'leave',
 ])
 
-const mode = ref('time')
+const selectedAxisKey = ref(
+  props.axes[0]?.key ?? null,
+)
 const hoveredPoint = ref(null)
 const pointerRatio = ref(null)
 
-const axisPoints = computed(() =>
-  props.route.filter((point) =>
-    Number.isFinite(getAxisValue(point)),
-  ),
+const selectedAxis = computed(() =>
+  props.axes.find(
+    (axis) =>
+      axis.key === selectedAxisKey.value,
+  ) ?? props.axes[0] ?? null,
 )
+
+const axisPoints = computed(() => {
+  const axis = selectedAxis.value
+
+  if (!axis) {
+    return []
+  }
+
+  return props.data.filter((point) =>
+    Number.isFinite(
+      getAxisValue(point, axis),
+    ),
+  )
+})
 
 const axisRange = computed(() => {
   if (axisPoints.value.length === 0) {
     return null
   }
 
+  const axis = selectedAxis.value
+
   return {
-    min: getAxisValue(axisPoints.value[0]),
-    max: getAxisValue(axisPoints.value.at(-1)),
+    min: getAxisValue(
+      axisPoints.value[0],
+      axis,
+    ),
+    max: getAxisValue(
+      axisPoints.value.at(-1),
+      axis,
+    ),
   }
 })
 
 const ticks = computed(() => {
-  if (!axisRange.value) {
+  if (
+    !axisRange.value
+    || !selectedAxis.value
+  ) {
     return []
   }
 
@@ -93,69 +129,93 @@ const tooltipClass = computed(() => {
   return 'route-details-center'
 })
 
-function getAxisValue(point) {
-  if (mode.value === 'distance') {
-    return Number(point.cumulativeDistance)
+const detailStyle = computed(() => ({
+  '--detail-columns': Math.max(
+    props.fields.length,
+    1,
+  ),
+}))
+
+function getValue(target, key) {
+  return key
+    .split('.')
+    .reduce(
+      (value, part) =>
+        value?.[part],
+      target,
+    )
+}
+
+function getAxisValue(point, axis) {
+  const rawValue = getValue(
+    point,
+    axis.key,
+  )
+
+  if (axis.type === 'time') {
+    if (!rawValue) {
+      return Number.NaN
+    }
+
+    return new Date(rawValue).getTime()
   }
 
-  if (!point.timestamp) {
-    return Number.NaN
-  }
-
-  return new Date(point.timestamp).getTime()
+  return Number(rawValue)
 }
 
 function formatAxisValue(value) {
-  if (mode.value === 'distance') {
-    return `${(value / 1000).toFixed(1)} km`
+  const axis = selectedAxis.value
+
+  if (!axis) {
+    return ''
   }
 
-  return new Date(value).toLocaleTimeString(
-    'ko-KR',
-    {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    },
+  if (axis.formatter) {
+    return axis.formatter(value)
+  }
+
+  if (axis.type === 'time') {
+    return new Date(value).toLocaleTimeString(
+      'ko-KR',
+      {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      },
+    )
+  }
+
+  return String(value)
+}
+
+function formatField(point, field) {
+  const value = getValue(
+    point,
+    field.key,
   )
-}
 
-function formatTime(timestamp) {
-  if (!timestamp) {
+  if (field.formatter) {
+    return field.formatter(value, point)
+  }
+
+  if (
+    value === null
+    || value === undefined
+  ) {
     return '-'
   }
 
-  return new Date(timestamp).toLocaleTimeString(
-    'ko-KR',
-    {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false,
-    },
-  )
-}
-
-function formatSpeed(speed) {
-  if (!Number.isFinite(speed)) {
-    return '-'
-  }
-
-  return `${(speed * 3.6).toFixed(1)} km/h`
-}
-
-function formatDistance(distance) {
-  if (!Number.isFinite(distance)) {
-    return '-'
-  }
-
-  return `${(distance / 1000).toFixed(2)} km`
+  return String(value)
 }
 
 function findNearestPoint(target) {
   const points = axisPoints.value
+  const axis = selectedAxis.value
 
-  if (points.length === 0) {
+  if (
+    points.length === 0
+    || !axis
+  ) {
     return null
   }
 
@@ -163,9 +223,14 @@ function findNearestPoint(target) {
   let high = points.length - 1
 
   while (low < high) {
-    const mid = Math.floor((low + high) / 2)
+    const mid = Math.floor(
+      (low + high) / 2,
+    )
 
-    if (getAxisValue(points[mid]) < target) {
+    if (
+      getAxisValue(points[mid], axis)
+      < target
+    ) {
       low = mid + 1
     } else {
       high = mid
@@ -180,24 +245,35 @@ function findNearestPoint(target) {
   const previous = points[low - 1]
 
   return (
-    Math.abs(getAxisValue(current) - target)
-    < Math.abs(getAxisValue(previous) - target)
+    Math.abs(
+      getAxisValue(current, axis)
+      - target,
+    )
+    < Math.abs(
+      getAxisValue(previous, axis)
+      - target,
+    )
   )
     ? current
     : previous
 }
 
-function selectMode(nextMode) {
-  if (mode.value === nextMode) {
+function selectAxis(axisKey) {
+  if (
+    selectedAxisKey.value === axisKey
+  ) {
     return
   }
 
-  mode.value = nextMode
+  selectedAxisKey.value = axisKey
   clearHover()
 }
 
 function handlePointerMove(event) {
-  if (!axisRange.value) {
+  if (
+    !axisRange.value
+    || !selectedAxis.value
+  ) {
     return
   }
 
@@ -218,14 +294,19 @@ function handlePointerMove(event) {
   )
 
   const { min, max } = axisRange.value
-  const target = min + (max - min) * ratio
+  const target =
+    min + (max - min) * ratio
   const point = findNearestPoint(target)
 
   if (!point) {
     return
   }
 
-  const pointValue = getAxisValue(point)
+  const pointValue = getAxisValue(
+    point,
+    selectedAxis.value,
+  )
+
   const pointRatio = max === min
     ? 0
     : (pointValue - min) / (max - min)
@@ -233,7 +314,7 @@ function handlePointerMove(event) {
   pointerRatio.value = pointRatio
   hoveredPoint.value = point
 
-  emit('hover-point', point)
+  emit('hover', point)
 }
 
 function clearHover() {
@@ -245,35 +326,31 @@ function clearHover() {
 </script>
 
 <template>
-  <div class="route-timeline map-control">
-    <div class="timeline-header">
+  <div class="route-scrubber map-control">
+    <div class="scrubber-header">
       <div
-        class="timeline-mode"
+        class="axis-selector"
         role="group"
         aria-label="경로 탐색 기준"
       >
         <button
-          class="mode-button"
-          :class="{ active: mode === 'time' }"
+          v-for="axis in axes"
+          :key="axis.key"
+          class="axis-button"
+          :class="{
+            active:
+              selectedAxisKey === axis.key,
+          }"
           type="button"
-          @click="selectMode('time')"
+          @click="selectAxis(axis.key)"
         >
-          시간
-        </button>
-
-        <button
-          class="mode-button"
-          :class="{ active: mode === 'distance' }"
-          type="button"
-          @click="selectMode('distance')"
-        >
-          누적거리
+          {{ axis.label }}
         </button>
       </div>
     </div>
 
     <div
-      class="timeline-track"
+      class="scrubber-track"
       @pointermove="handlePointerMove"
       @pointerleave="clearHover"
     >
@@ -281,40 +358,25 @@ function clearHover() {
         v-if="hoveredPoint"
         class="route-details"
         :class="tooltipClass"
-        :style="indicatorStyle"
+        :style="[
+          indicatorStyle,
+          detailStyle,
+        ]"
       >
-        <div class="detail-item">
-          <span class="detail-label">위도</span>
-          <strong>
-            {{ hoveredPoint.latitude.toFixed(6) }}
-          </strong>
-        </div>
+        <div
+          v-for="field in fields"
+          :key="field.key"
+          class="detail-item"
+        >
+          <span class="detail-label">
+            {{ field.label }}
+          </span>
 
-        <div class="detail-item">
-          <span class="detail-label">경도</span>
           <strong>
-            {{ hoveredPoint.longitude.toFixed(6) }}
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span class="detail-label">시간</span>
-          <strong>
-            {{ formatTime(hoveredPoint.timestamp) }}
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span class="detail-label">속도</span>
-          <strong>
-            {{ formatSpeed(hoveredPoint.speed) }}
-          </strong>
-        </div>
-
-        <div class="detail-item">
-          <span class="detail-label">누적거리</span>
-          <strong>
-            {{ formatDistance(hoveredPoint.cumulativeDistance) }}
+            {{ formatField(
+              hoveredPoint,
+              field,
+            ) }}
           </strong>
         </div>
       </div>
@@ -323,15 +385,17 @@ function clearHover() {
 
       <div
         v-if="hoveredPoint"
-        class="timeline-indicator"
+        class="scrubber-indicator"
         :style="indicatorStyle"
       ></div>
 
       <div
         v-for="tick in ticks"
         :key="tick.value"
-        class="timeline-tick"
-        :style="{ left: `${tick.ratio * 100}%` }"
+        class="scrubber-tick"
+        :style="{
+          left: `${tick.ratio * 100}%`,
+        }"
       >
         <span class="tick-mark"></span>
         <span class="tick-label">
@@ -354,7 +418,7 @@ function clearHover() {
   font-size: var(--font-size-s);
 }
 
-.route-timeline {
+.route-scrubber {
   position: absolute;
   right: var(--space-m);
   bottom: var(--space-m);
@@ -367,14 +431,14 @@ function clearHover() {
     var(--space-m);
 }
 
-.timeline-header {
+.scrubber-header {
   display: flex;
   justify-content: flex-start;
 
   margin-bottom: var(--space-m);
 }
 
-.timeline-mode {
+.axis-selector {
   display: inline-flex;
 
   overflow: hidden;
@@ -383,7 +447,7 @@ function clearHover() {
   border-radius: var(--radius-s);
 }
 
-.mode-button {
+.axis-button {
   padding:
     calc(var(--space-s) / 2)
     var(--space-s);
@@ -399,16 +463,16 @@ function clearHover() {
   cursor: pointer;
 }
 
-.mode-button + .mode-button {
+.axis-button + .axis-button {
   border-left: var(--border-default);
 }
 
-.mode-button.active {
+.axis-button.active {
   background: #FEE500;
   color: #191919;
 }
 
-.timeline-track {
+.scrubber-track {
   position: relative;
 
   height: 34px;
@@ -430,7 +494,7 @@ function clearHover() {
   background: #333333;
 }
 
-.timeline-tick {
+.scrubber-tick {
   position: absolute;
   top: 4px;
 
@@ -459,7 +523,7 @@ function clearHover() {
   white-space: nowrap;
 }
 
-.timeline-indicator {
+.scrubber-indicator {
   position: absolute;
   top: -4px;
   bottom: 14px;
@@ -480,7 +544,11 @@ function clearHover() {
   z-index: 3;
 
   display: grid;
-  grid-template-columns: repeat(5, max-content);
+  grid-template-columns:
+    repeat(
+      var(--detail-columns),
+      max-content
+    );
   gap: var(--space-m);
 
   max-width:
@@ -531,7 +599,8 @@ function clearHover() {
 
 @media (max-width: 640px) {
   .route-details {
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns:
+      repeat(2, max-content);
     gap: var(--space-s) var(--space-m);
   }
 

@@ -1,14 +1,13 @@
 <script setup>
 import { onBeforeUnmount } from 'vue'
 
-import KakaoMap from '@/components/map/KakaoMap.vue'
-import { MapFrame } from '@/components/map/common'
+import {
+  RouteTimeline,
+} from '@/components/map/common'
 import { createRunPhotoData } from '@/data/article-media/kakao-friends-run-2026'
 import mapData from '@/data/map/map_data.json'
 
-import RouteTimeline from './RouteTimeline.vue'
 import { usePhotoMarkers } from './usePhotoMarkers'
-import { useRouteLayer } from './useRouteLayer'
 
 const STADIUM = {
   latitude: 37.4102555,
@@ -21,36 +20,108 @@ const photoData = createRunPhotoData(
   mapData.photos,
 )
 
-let mapInstance = null
-let mapsApi = null
+const routeAxes = [
+  {
+    key: 'timestamp',
+    label: '시간',
+    type: 'time',
+    formatter: formatTimeTick,
+  },
+  {
+    key: 'cumulativeDistance',
+    label: '누적거리',
+    type: 'number',
+    formatter: formatDistanceTick,
+  },
+]
 
-const routeLayer = useRouteLayer()
+const routeFields = [
+  {
+    key: 'latitude',
+    label: '위도',
+    formatter: formatCoordinate,
+  },
+  {
+    key: 'longitude',
+    label: '경도',
+    formatter: formatCoordinate,
+  },
+  {
+    key: 'timestamp',
+    label: '시간',
+    formatter: formatTime,
+  },
+  {
+    key: 'speed',
+    label: '속도',
+    formatter: formatSpeed,
+  },
+  {
+    key: 'cumulativeDistance',
+    label: '누적거리',
+    formatter: formatDistance,
+  },
+]
 
 let photoLayer = null
 
-function resetMapView() {
-  if (!mapInstance || !mapsApi) {
-    return
+function formatTimeTick(value) {
+  return new Date(value).toLocaleTimeString(
+    'ko-KR',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    },
+  )
+}
+
+function formatDistanceTick(value) {
+  return `${(value / 1000).toFixed(1)} km`
+}
+
+function formatCoordinate(value) {
+  if (!Number.isFinite(value)) {
+    return '-'
   }
 
-  const center = new mapsApi.LatLng(
-    STADIUM.latitude,
-    STADIUM.longitude,
-  )
+  return value.toFixed(6)
+}
 
-  mapInstance.setCenter(center)
-  mapInstance.setLevel(MAP_LEVEL)
+function formatTime(value) {
+  if (!value) {
+    return '-'
+  }
+
+  return new Date(value).toLocaleTimeString(
+    'ko-KR',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+    },
+  )
+}
+
+function formatSpeed(value) {
+  if (!Number.isFinite(value)) {
+    return '-'
+  }
+
+  return `${(value * 3.6).toFixed(1)} km/h`
+}
+
+function formatDistance(value) {
+  if (!Number.isFinite(value)) {
+    return '-'
+  }
+
+  return `${(value / 1000).toFixed(2)} km`
 }
 
 function handleMapReady({ map, maps }) {
-  mapInstance = map
-  mapsApi = maps
-
-  routeLayer.initialize({
-    map,
-    maps,
-    route: mapData.route,
-  })
+  photoLayer?.destroy()
 
   photoLayer = usePhotoMarkers({
     map,
@@ -59,119 +130,20 @@ function handleMapReady({ map, maps }) {
   })
 }
 
-function handleHoverPoint(point) {
-  routeLayer.showHoverPoint(point)
-}
-
-function handleTimelineLeave() {
-  routeLayer.hideHoverPoint()
-}
-
 onBeforeUnmount(() => {
-  routeLayer.destroy()
   photoLayer?.destroy()
 })
 </script>
 
 <template>
-  <MapFrame caption="카카오프렌즈 런 2026 코스">
-    <div class="map-visualization">
-      <KakaoMap
-        :latitude="STADIUM.latitude"
-        :longitude="STADIUM.longitude"
-        :level="MAP_LEVEL"
-        @ready="handleMapReady"
-      />
-
-      <div class="route-legend map-control">
-        <div class="legend-item">
-          <span class="legend-point legend-point-start"></span>
-          <span>시작</span>
-        </div>
-
-        <div class="legend-item">
-          <span class="legend-point legend-point-end"></span>
-          <span>끝</span>
-        </div>
-      </div>
-
-      <button
-        class="reset-map-button map-control"
-        type="button"
-        @click="resetMapView"
-      >
-        초기화
-      </button>
-
-      <RouteTimeline
-        :route="mapData.route"
-        @hover-point="handleHoverPoint"
-        @leave="handleTimelineLeave"
-      />
-    </div>
-  </MapFrame>
+  <RouteTimeline
+    :route="mapData.route"
+    :latitude="STADIUM.latitude"
+    :longitude="STADIUM.longitude"
+    :level="MAP_LEVEL"
+    :axes="routeAxes"
+    :fields="routeFields"
+    caption="카카오프렌즈 런 2026 코스"
+    @ready="handleMapReady"
+  />
 </template>
-
-<style scoped>
-.map-visualization {
-  position: relative;
-}
-
-.map-control {
-  position: absolute;
-  z-index: 10;
-
-  border: var(--border-default);
-  border-radius: var(--radius-m);
-
-  background: var(--color-background);
-
-  color: var(--color-text-content);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-s);
-  font-weight: var(--font-weight-semibold);
-}
-
-.route-legend {
-  top: var(--space-m);
-  right: var(--space-m);
-
-  display: flex;
-  gap: var(--space-m);
-
-  padding: var(--space-s) var(--space-m);
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: var(--space-s);
-}
-
-.legend-point {
-  width: 12px;
-  height: 12px;
-
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-
-  box-sizing: border-box;
-}
-
-.legend-point-start {
-  background: #22c55e;
-}
-
-.legend-point-end {
-  background: #ef4444;
-}
-
-.reset-map-button {
-  top: var(--space-m);
-  left: var(--space-m);
-
-  padding: var(--space-s) var(--space-m);
-
-  cursor: pointer;
-}
-</style>
