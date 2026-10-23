@@ -5,7 +5,8 @@ import {
   RouteTimeline,
 } from '@/components/map/common'
 import { createRunPhotoData } from '@/data/article-media/kakao-friends-run-2026'
-import mapData from '@/data/map/map_data.json'
+import photoMarkerData from '@/data/map/kakao-friends-run-2026/photo-markers.json'
+import routeData from '@/data/map/kakao-friends-run-2026/route.json'
 
 import { usePhotoMarkers } from './usePhotoMarkers'
 
@@ -17,7 +18,7 @@ const STADIUM = {
 const MAP_LEVEL = 4
 
 const photoData = createRunPhotoData(
-  mapData.photos,
+  photoMarkerData,
 )
 
 const routeAxes = [
@@ -137,7 +138,7 @@ onBeforeUnmount(() => {
 
 <template>
   <RouteTimeline
-    :route="mapData.route"
+    :route="routeData"
     :latitude="STADIUM.latitude"
     :longitude="STADIUM.longitude"
     :level="MAP_LEVEL"

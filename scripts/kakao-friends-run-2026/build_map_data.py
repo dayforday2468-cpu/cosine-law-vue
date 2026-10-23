@@ -9,7 +9,15 @@ from exif import Image
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PHOTO_DIR = SCRIPT_DIR / "photos"
-OUTPUT_PATH = SCRIPT_DIR / "map_data.json"
+DATA_DIR = (
+    SCRIPT_DIR.parents[1]
+    / "src"
+    / "data"
+    / "map"
+    / "kakao-friends-run-2026"
+)
+ROUTE_OUTPUT_PATH = DATA_DIR / "route.json"
+PHOTO_MARKERS_OUTPUT_PATH = DATA_DIR / "photo-markers.json"
 
 PHOTO_EXTENSIONS = {".jpg", ".jpeg"}
 EARTH_RADIUS_METERS = 6_371_000
@@ -193,27 +201,47 @@ def find_gpx_file() -> Path:
     return gpx_files[0]
 
 
-def main() -> None:
-    gpx_path = find_gpx_file()
-
-    map_data = {
-        "route": read_gpx(gpx_path),
-        "photos": read_photos(PHOTO_DIR),
-    }
-
-    OUTPUT_PATH.write_text(
+def write_json(
+    output_path: Path,
+    data: list[dict],
+) -> None:
+    output_path.write_text(
         json.dumps(
-            map_data,
+            data,
             ensure_ascii=False,
             indent=2,
         ),
         encoding="utf-8",
     )
 
+
+def main() -> None:
+    gpx_path = find_gpx_file()
+
+    route = read_gpx(gpx_path)
+    photo_markers = read_photos(PHOTO_DIR)
+
+    DATA_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    write_json(
+        ROUTE_OUTPUT_PATH,
+        route,
+    )
+    write_json(
+        PHOTO_MARKERS_OUTPUT_PATH,
+        photo_markers,
+    )
+
     print(
-        f"Created {OUTPUT_PATH.name}: "
-        f"{len(map_data['route'])} route points, "
-        f"{len(map_data['photos'])} photos."
+        f"Created {ROUTE_OUTPUT_PATH.name}: "
+        f"{len(route)} route points."
+    )
+    print(
+        f"Created {PHOTO_MARKERS_OUTPUT_PATH.name}: "
+        f"{len(photo_markers)} photo markers."
     )
 
 
