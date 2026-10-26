@@ -25,13 +25,12 @@ const routeAxes = [
   {
     key: 'timestamp',
     label: '시간',
-    type: 'time',
+    parser: parseTimeValue,
     formatter: formatTimeTick,
   },
   {
     key: 'cumulativeDistance',
     label: '누적거리',
-    type: 'number',
     formatter: formatDistanceTick,
   },
 ]
@@ -65,6 +64,14 @@ const routeFields = [
 ]
 
 let photoLayer = null
+
+function parseTimeValue(value) {
+  if (!value) {
+    return Number.NaN
+  }
+
+  return new Date(value).getTime()
+}
 
 function formatTimeTick(value) {
   return new Date(value).toLocaleTimeString(

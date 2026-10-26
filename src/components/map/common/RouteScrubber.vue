@@ -152,12 +152,8 @@ function getAxisValue(point, axis) {
     axis.key,
   )
 
-  if (axis.type === 'time') {
-    if (!rawValue) {
-      return Number.NaN
-    }
-
-    return new Date(rawValue).getTime()
+  if (axis.parser) {
+    return axis.parser(rawValue)
   }
 
   return Number(rawValue)
@@ -172,17 +168,6 @@ function formatAxisValue(value) {
 
   if (axis.formatter) {
     return axis.formatter(value)
-  }
-
-  if (axis.type === 'time') {
-    return new Date(value).toLocaleTimeString(
-      'ko-KR',
-      {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      },
-    )
   }
 
   return String(value)
