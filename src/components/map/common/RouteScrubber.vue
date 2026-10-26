@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 
 const props = defineProps({
   data: {
@@ -26,6 +26,9 @@ const selectedAxisKey = ref(
 )
 const hoveredPoint = ref(null)
 const pointerRatio = ref(null)
+const trackRef = ref(null)
+const detailsRef = ref(null)
+const detailLeft = ref(0)
 
 const selectedAxis = computed(() =>
   props.axes.find(
@@ -113,23 +116,8 @@ const indicatorStyle = computed(() => {
   }
 })
 
-const tooltipClass = computed(() => {
-  if (pointerRatio.value === null) {
-    return ''
-  }
-
-  if (pointerRatio.value < 0.2) {
-    return 'route-details-left'
-  }
-
-  if (pointerRatio.value > 0.8) {
-    return 'route-details-right'
-  }
-
-  return 'route-details-center'
-})
-
 const detailStyle = computed(() => ({
+  left: `${detailLeft.value}px`,
   '--detail-columns': Math.max(
     props.fields.length,
     1,
@@ -243,6 +231,35 @@ function findNearestPoint(target) {
     : previous
 }
 
+function updateDetailPosition() {
+  if (
+    !trackRef.value
+    || !detailsRef.value
+    || pointerRatio.value === null
+  ) {
+    return
+  }
+
+  const trackWidth =
+    trackRef.value.getBoundingClientRect().width
+  const detailWidth =
+    detailsRef.value.getBoundingClientRect().width
+  const pointerX =
+    trackWidth * pointerRatio.value
+  const maxLeft = Math.max(
+    trackWidth - detailWidth,
+    0,
+  )
+
+  detailLeft.value = Math.min(
+    Math.max(
+      pointerX - detailWidth / 2,
+      0,
+    ),
+    maxLeft,
+  )
+}
+
 function selectAxis(axisKey) {
   if (
     selectedAxisKey.value === axisKey
@@ -299,6 +316,8 @@ function handlePointerMove(event) {
   pointerRatio.value = pointRatio
   hoveredPoint.value = point
 
+  nextTick(updateDetailPosition)
+
   emit('hover', point)
 }
 
@@ -335,18 +354,16 @@ function clearHover() {
     </div>
 
     <div
+      ref="trackRef"
       class="scrubber-track"
       @pointermove="handlePointerMove"
       @pointerleave="clearHover"
     >
       <div
         v-if="hoveredPoint"
+        ref="detailsRef"
         class="route-details"
-        :class="tooltipClass"
-        :style="[
-          indicatorStyle,
-          detailStyle,
-        ]"
+        :style="detailStyle"
       >
         <div
           v-for="field in fields"
@@ -551,18 +568,6 @@ function clearHover() {
   white-space: nowrap;
 
   pointer-events: none;
-}
-
-.route-details-center {
-  transform: translateX(-50%);
-}
-
-.route-details-left {
-  transform: translateX(0);
-}
-
-.route-details-right {
-  transform: translateX(-100%);
 }
 
 .detail-item {
