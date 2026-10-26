@@ -27,7 +27,6 @@ const selectedAxisKey = ref(
 const hoveredPoint = ref(null)
 const pointerRatio = ref(null)
 const scrubberRef = ref(null)
-const trackRef = ref(null)
 const detailLeft = ref(0)
 const detailWidth = ref(0)
 const fieldWidths = ref([])
@@ -471,7 +470,6 @@ onMounted(() => {
     </div>
 
     <div
-      ref="trackRef"
       class="scrubber-track"
       @pointermove="handlePointerMove"
       @pointerleave="clearHover"
@@ -700,8 +698,6 @@ onMounted(() => {
 
 @media (max-width: 640px) {
   .route-details {
-    grid-template-columns:
-      repeat(2, max-content);
     gap: var(--space-s) var(--space-m);
   }
 
