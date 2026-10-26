@@ -92,60 +92,54 @@ onBeforeUnmount(() => {
 
 <template>
   <MapFrame :caption="caption">
-    <div class="map-visualization">
-      <KakaoMap
-        :latitude="latitude"
-        :longitude="longitude"
-        :level="level"
-        @ready="handleMapReady"
-      />
+    <KakaoMap
+      :latitude="latitude"
+      :longitude="longitude"
+      :level="level"
+      @ready="handleMapReady"
+    />
 
-      <div class="route-legend map-control">
-        <div class="legend-item">
-          <span
-            class="
-              legend-point
-              legend-point-start
-            "
-          ></span>
-          <span>시작</span>
-        </div>
-
-        <div class="legend-item">
-          <span
-            class="
-              legend-point
-              legend-point-end
-            "
-          ></span>
-          <span>끝</span>
-        </div>
+    <div class="route-legend map-control">
+      <div class="legend-item">
+        <span
+          class="
+            legend-point
+            legend-point-start
+          "
+        ></span>
+        <span>시작</span>
       </div>
 
-      <button
-        class="reset-map-button map-control"
-        type="button"
-        @click="resetMapView"
-      >
-        초기화
-      </button>
-
-      <RouteScrubber
-        :data="route"
-        :axes="axes"
-        :fields="fields"
-        @hover="handlePointHover"
-        @leave="handlePointLeave"
-      />
+      <div class="legend-item">
+        <span
+          class="
+            legend-point
+            legend-point-end
+          "
+        ></span>
+        <span>끝</span>
+      </div>
     </div>
+
+    <button
+      class="reset-map-button map-control"
+      type="button"
+      @click="resetMapView"
+    >
+      초기화
+    </button>
+
+    <RouteScrubber
+      :data="route"
+      :axes="axes"
+      :fields="fields"
+      @hover="handlePointHover"
+      @leave="handlePointLeave"
+    />
   </MapFrame>
 </template>
 
 <style scoped>
-.map-visualization {
-  position: relative;
-}
-
 .map-control {
   position: absolute;
   z-index: 10;
