@@ -1,5 +1,5 @@
 <script setup>
-import { computed, nextTick, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
   data: {
@@ -26,9 +26,11 @@ const selectedAxisKey = ref(
 )
 const hoveredPoint = ref(null)
 const pointerRatio = ref(null)
+const scrubberRef = ref(null)
 const trackRef = ref(null)
-const detailsRef = ref(null)
 const detailLeft = ref(0)
+const detailWidth = ref(0)
+const fieldWidths = ref([])
 
 const selectedAxis = computed(() =>
   props.axes.find(
@@ -118,10 +120,9 @@ const indicatorStyle = computed(() => {
 
 const detailStyle = computed(() => ({
   left: `${detailLeft.value}px`,
-  '--detail-columns': Math.max(
-    props.fields.length,
-    1,
-  ),
+  gridTemplateColumns: fieldWidths.value
+    .map((width) => `${width}px`)
+    .join(' '),
 }))
 
 function getValue(target, key) {
@@ -231,29 +232,138 @@ function findNearestPoint(target) {
     : previous
 }
 
-function updateDetailPosition() {
+function measureTextWidth(
+  context,
+  text,
+  font,
+) {
+  context.font = font
+
+  return context.measureText(text).width
+}
+
+function measureCssLength(value) {
   if (
-    !trackRef.value
-    || !detailsRef.value
-    || pointerRatio.value === null
+    !scrubberRef.value
+    || !value
+  ) {
+    return 0
+  }
+
+  const probe = document.createElement('div')
+
+  probe.style.position = 'absolute'
+  probe.style.visibility = 'hidden'
+  probe.style.width = value
+
+  scrubberRef.value.appendChild(probe)
+
+  const width =
+    probe.getBoundingClientRect().width
+
+  probe.remove()
+
+  return width
+}
+
+function initializeDetailLayout() {
+  if (!scrubberRef.value) {
+    return
+  }
+
+  const canvas =
+    document.createElement('canvas')
+  const context = canvas.getContext('2d')
+
+  if (!context) {
+    return
+  }
+
+  const style =
+    getComputedStyle(scrubberRef.value)
+  const rootStyle =
+    getComputedStyle(document.documentElement)
+
+  const rootFontSize =
+    Number.parseFloat(rootStyle.fontSize)
+    || 16
+  const fontFamily = style.fontFamily
+  const valueWeight =
+    style.getPropertyValue(
+      '--font-weight-semibold',
+    ).trim()
+    || '600'
+  const labelWeight =
+    style.getPropertyValue(
+      '--font-weight-regular',
+    ).trim()
+    || '400'
+
+  const valueFont =
+    `${valueWeight} ${style.fontSize} ${fontFamily}`
+  const labelFont =
+    `${labelWeight} ${rootFontSize * 0.75}px ${fontFamily}`
+
+  fieldWidths.value = props.fields.map(
+    (field) => {
+      let width = measureTextWidth(
+        context,
+        field.label,
+        labelFont,
+      )
+
+      for (const point of props.data) {
+        width = Math.max(
+          width,
+          measureTextWidth(
+            context,
+            formatField(point, field),
+            valueFont,
+          ),
+        )
+      }
+
+      return Math.ceil(width)
+    },
+  )
+
+  const gap = measureCssLength(
+    style.getPropertyValue('--space-m'),
+  )
+  const padding = gap
+  const borderWidth = 2
+
+  detailWidth.value =
+    fieldWidths.value.reduce(
+      (sum, width) => sum + width,
+      0,
+    )
+    + Math.max(
+      props.fields.length - 1,
+      0,
+    ) * gap
+    + padding * 2
+    + borderWidth
+}
+
+function updateDetailPosition(trackWidth) {
+  if (
+    pointerRatio.value === null
+    || detailWidth.value === 0
   ) {
     return
   }
 
-  const trackWidth =
-    trackRef.value.getBoundingClientRect().width
-  const detailWidth =
-    detailsRef.value.getBoundingClientRect().width
   const pointerX =
     trackWidth * pointerRatio.value
   const maxLeft = Math.max(
-    trackWidth - detailWidth,
+    trackWidth - detailWidth.value,
     0,
   )
 
   detailLeft.value = Math.min(
     Math.max(
-      pointerX - detailWidth / 2,
+      pointerX - detailWidth.value / 2,
       0,
     ),
     maxLeft,
@@ -316,7 +426,7 @@ function handlePointerMove(event) {
   pointerRatio.value = pointRatio
   hoveredPoint.value = point
 
-  nextTick(updateDetailPosition)
+  updateDetailPosition(bounds.width)
 
   emit('hover', point)
 }
@@ -327,10 +437,17 @@ function clearHover() {
 
   emit('leave')
 }
+
+onMounted(() => {
+  initializeDetailLayout()
+})
 </script>
 
 <template>
-  <div class="route-scrubber map-control">
+  <div
+    ref="scrubberRef"
+    class="route-scrubber map-control"
+  >
     <div class="scrubber-header">
       <div
         class="axis-selector"
@@ -361,7 +478,6 @@ function clearHover() {
     >
       <div
         v-if="hoveredPoint"
-        ref="detailsRef"
         class="route-details"
         :style="detailStyle"
       >
@@ -546,11 +662,6 @@ function clearHover() {
   z-index: 3;
 
   display: grid;
-  grid-template-columns:
-    repeat(
-      var(--detail-columns),
-      max-content
-    );
   gap: var(--space-m);
 
   max-width:
