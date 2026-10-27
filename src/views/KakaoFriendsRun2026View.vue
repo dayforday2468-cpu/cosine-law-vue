@@ -184,7 +184,7 @@ const article = articles.find(
             $$
 
             $$
-            d_i=2R\arctan2\left(\sqrt{a_i}, \sqrt{1-a_i}\right)
+            d_i=2R\arcsin\left(\sqrt{a_i}\right)
             $$
 
             여기서 $\Delta\phi_i=\phi_i-\phi_{i-1}$, $\Delta\lambda_i=\lambda_i-\lambda_{i-1}$이고, $R$은 지구의 반지름이다.
