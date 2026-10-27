@@ -291,6 +291,10 @@ const article = articles.find(
       <InverseTrigSensitivityFigure />
     </ArticleFigure>
 
+    <ArticleText>
+      아래 도식에서는 두 지점 사이의 거리가 매우 가까워질수록 $\arccos$를 사용하는 구면삼각형 코사인 법칙과 $\arcsin$을 사용하는 하버사인 공식의 수치적 민감도가 서로 다르게 나타나는 것을 확인할 수 있다. 이러한 차이는 실제 컴퓨터 연산에서 두 공식으로 계산한 대권거리의 오차 차이로 이어질 수 있다.
+    </ArticleText>
+
     <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
       <HaversineVisualizer />
     </ArticleFigure>
