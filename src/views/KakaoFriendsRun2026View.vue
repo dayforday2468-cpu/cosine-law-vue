@@ -163,6 +163,39 @@ const article = articles.find(
 
         <ArticleGallery :items="duringRunPhotos"/>
 
+        <ArticleText>
+            Strava로 측정한 GPX 데이터를 시각화한 것은 그로부터 2주쯤 흘러서이다. 식사를 하고, 설거지를 하는 것처럼 지난 대회의 기록을 다시 살펴봤다.
+            러닝을 하는 몇 분 동안 GPS 데이터가 무려 약 1600개가 수집되었다. 
+            스타트업 인턴 당시에 쓴 구글 타임라인 데이터가 하루에 약 400개인 것을 감안하면 놀라운 일이다.
+            물론 구글 타임라인을 무조건 욕할 수는 없다. 핸드폰 배터리 사용률과 데이터 수집 빈도가 상충 관계에 있기 때문이다.
+            핸드폰이 이유없이 뜨겁다면 백그라운드에서 앱이 데이터를 수집이나 기타 동작을 하고 있는 중일지도 모르니 확인해봐야한다.
+            아무튼, Strava의 데이터는 고도화된 데이터 파이프라인이 필요하지 않을 만큼 촘촘하고, 정확했다.
+            시간, 위도와 경도 뿐 아니라 고도까지 측정되었지만, 속도나 누적거리 같은 분석을 위한 유용한 정보는 포함되지 않았다. 
+            카카오프렌즈런에서 다양한 상품들을 PPL한 것처럼, 나도 내가 발견한 구면삼각형 코사인법칙을 홍보하자면, 이 정보들은 전부 하버사인 공식으로 구할 수 있다는 점이다.
+        </ArticleText>
+
+        <ArticleCallout title="GPS 궤적의 거리와 속도">
+            시간 순서대로 정렬된 GPS 궤적을 $(t_i, \phi_i, \lambda_i)$, $i=1,\dots,n$으로 나타내자. 여기서 $t_i$는 측정 시각, $\phi_i$와 $\lambda_i$는 각각 위도와 경도이다.
+
+            연속된 두 GPS 점 $(t_{i-1}, \phi_{i-1}, \lambda_{i-1})$, $(t_i, \phi_i, \lambda_i)$ 사이의 거리는 하버사인 공식으로 계산할 수 있다.
+
+            $$
+            a_i=\sin^2\left(\frac{\Delta\phi_i}{2}\right)+\cos\phi_{i-1}\cos\phi_i\sin^2\left(\frac{\Delta\lambda_i}{2}\right)
+            $$
+
+            $$
+            d_i=2R\arctan2\left(\sqrt{a_i}, \sqrt{1-a_i}\right)
+            $$
+
+            여기서 $\Delta\phi_i=\phi_i-\phi_{i-1}$, $\Delta\lambda_i=\lambda_i-\lambda_{i-1}$이고, $R$은 지구의 반지름이다.
+
+            $i$번째 GPS 점까지의 누적거리와 $i-1$번째 점에서 $i$번째 점까지의 평균 속도는 각각 다음과 같이 계산할 수 있다.
+
+            $$
+            D_i=\sum_{k=2}^{i}d_k,\quad \Delta t_i=t_i-t_{i-1},\quad v_i=\frac{d_i}{\Delta t_i}
+            $$
+        </ArticleCallout>
+
         <KakaoFriendsRunMap />
 
         <ArticleText>
