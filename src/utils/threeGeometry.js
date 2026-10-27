@@ -49,6 +49,16 @@ export function createLine(start, end, color, opacity = 1) {
   return new THREE.Line(geometry, material)
 }
 
+export function updateLine(line, start, end) {
+  const positions = line.geometry.getAttribute('position')
+
+  positions.setXYZ(0, start.x, start.y, start.z)
+  positions.setXYZ(1, end.x, end.y, end.z)
+  positions.needsUpdate = true
+
+  line.geometry.computeBoundingSphere()
+}
+
 // --------------------------------------
 // 삼각형 면 생성
 // --------------------------------------
@@ -280,6 +290,72 @@ export function createCircle2D(position, radius, color, segments = 64) {
 
 export function createPoint2D(position, color, radius = 0.065, segments = 32) {
   return createCircularShape2D(position, radius, color, true, segments)
+}
+
+// --------------------------------------
+// 2D 함수 곡선 생성
+// --------------------------------------
+
+export function createFunctionCurve2D(
+  fn,
+  xMin,
+  xMax,
+  color,
+  { segments = 128, xScale = 1, yScale = 1 } = {},
+) {
+  const points = []
+
+  for (let index = 0; index <= segments; index += 1) {
+    const ratio = index / segments
+    const x = THREE.MathUtils.lerp(xMin, xMax, ratio)
+    const y = fn(x)
+
+    points.push(new THREE.Vector3(x * xScale, y * yScale, 0))
+  }
+
+  const geometry = new THREE.BufferGeometry().setFromPoints(points)
+
+  const material = new THREE.LineBasicMaterial({
+    color,
+    depthTest: false,
+  })
+
+  return new THREE.Line(geometry, material)
+}
+
+// --------------------------------------
+// 2D 좌표축 생성
+// --------------------------------------
+
+export function createAxes2D({
+  xMin = 0,
+  xMax = 1,
+  yMin = 0,
+  yMax = 1,
+  xScale = 1,
+  yScale = 1,
+  color = 0x94a3b8,
+} = {}) {
+  const axes = new THREE.Group()
+
+  const xAxis = createLine(
+    new THREE.Vector3(xMin * xScale, 0, 0),
+    new THREE.Vector3(xMax * xScale, 0, 0),
+    color,
+  )
+
+  const yAxis = createLine(
+    new THREE.Vector3(0, yMin * yScale, 0),
+    new THREE.Vector3(0, yMax * yScale, 0),
+    color,
+  )
+
+  xAxis.material.depthTest = false
+  yAxis.material.depthTest = false
+
+  axes.add(xAxis, yAxis)
+
+  return axes
 }
 
 // --------------------------------------

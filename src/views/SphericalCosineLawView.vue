@@ -11,6 +11,7 @@ import {
 import {
   Problem1Figure,
   SphereNormalizationFigure,
+  InverseTrigSensitivityFigure,
   CosineLawVisualizer,
   AngleInvarianceVisualizer,
   HaversineVisualizer,
@@ -285,6 +286,10 @@ const article = articles.find(
       따라서 입력값에 작은 오차가 생겼을 때, $\arccos$를 이용한 중심각 계산에서는 그 오차가 더 크게 증폭될 수 있다.
     </ArticleText>
 
+
+    <ArticleFigure caption="역삼각함수에서 두 점이 가까워질 때의 기울기 변화">
+      <InverseTrigSensitivityFigure />
+    </ArticleFigure>
 
     <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
       <HaversineVisualizer />

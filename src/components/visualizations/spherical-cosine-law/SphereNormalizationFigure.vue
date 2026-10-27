@@ -16,6 +16,7 @@ import {
   createPoint,
   createSphere,
   getAngleLabelPosition,
+  updateLine,
 } from '@/utils/threeGeometry.js'
 
 import { invarianceGeometry } from './angle-invariance/invarianceGeometry.js'
@@ -168,16 +169,6 @@ function setGroupOpacity(group, factor) {
       material.opacity = material.userData.baseOpacity * factor
     })
   })
-}
-
-function updateLine(line, start, end) {
-  const positions = line.geometry.getAttribute('position')
-
-  positions.setXYZ(0, start.x, start.y, start.z)
-  positions.setXYZ(1, end.x, end.y, end.z)
-  positions.needsUpdate = true
-
-  line.geometry.computeBoundingSphere()
 }
 
 function updateFace(face, a, b, c) {
