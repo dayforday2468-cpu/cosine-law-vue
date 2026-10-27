@@ -287,7 +287,7 @@ const article = articles.find(
     </ArticleText>
 
 
-    <ArticleFigure caption="역삼각함수에서 두 점이 가까워질 때의 기울기 변화">
+    <ArticleFigure caption="역삼각함수에서 두 점이 가까워질 때의 기울기 변화" width="content">
       <InverseTrigSensitivityFigure />
     </ArticleFigure>
 

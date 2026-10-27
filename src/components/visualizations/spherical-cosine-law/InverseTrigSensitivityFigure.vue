@@ -119,7 +119,7 @@ function updateSecantLine(line, pointA, pointB) {
   direction.normalize()
 
   const midpoint = pointA.clone().add(pointB).multiplyScalar(0.5)
-  const halfLength = 1.15
+  const halfLength = 1.75
 
   const start = midpoint.clone().addScaledVector(direction, -halfLength)
   const end = midpoint.clone().addScaledVector(direction, halfLength)
