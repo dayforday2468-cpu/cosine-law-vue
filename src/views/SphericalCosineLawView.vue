@@ -230,8 +230,8 @@ const article = articles.find(
 
       오른쪽 값을 $a$라고 두면,
 
-      $$ \theta =
-      2\operatorname{atan2}\left(\sqrt{a},\sqrt{1-a}\right) $$
+      $ \theta =
+      2\arcsin\left(\sqrt{a}\right) $
 
       로 중심각을 구할 수 있고, 최종적으로 $d=R\theta$를 이용해 대권거리를 계산한다.
     </ArticleCallout>

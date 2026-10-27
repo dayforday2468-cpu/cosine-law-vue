@@ -53,7 +53,7 @@ const distanceDifference = computed(
     </div>
 
     <div class="formula">
-      d = R · 2atan2(√a, √(1-a))<br />
+      d = R · 2asin(√a)<br />
       a = sin²(Δφ/2) + cosφ₁cosφ₂sin²(Δλ/2)
     </div>
 

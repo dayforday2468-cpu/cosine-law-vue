@@ -100,7 +100,7 @@ export function calculateHaversineAngle(latitude1, longitude1, latitude2, longit
   // 부동소수점 오차로 [0, 1]을 벗어나는 경우 방지
   const clampedHaversine = THREE.MathUtils.clamp(haversine, 0, 1)
 
-  return 2 * Math.atan2(Math.sqrt(clampedHaversine), Math.sqrt(1 - clampedHaversine))
+  return 2 * Math.asin(Math.sqrt(clampedHaversine))
 }
 
 /**
