@@ -174,7 +174,7 @@ const article = articles.find(
             카카오프렌즈런에서 다양한 상품들을 PPL한 것처럼, 나도 내가 발견한 구면삼각형 코사인법칙을 홍보하자면, 이 정보들은 전부 하버사인 공식으로 구할 수 있다는 점이다.
         </ArticleText>
 
-        <ArticleCallout title="GPS 궤적의 거리와 속도">
+        <ArticleCallout title="Definition. GPS 궤적의 거리와 속도">
             시간 순서대로 정렬된 GPS 궤적을 $(t_i, \phi_i, \lambda_i)$, $i=1,\dots,n$으로 나타내자. 여기서 $t_i$는 측정 시각, $\phi_i$와 $\lambda_i$는 각각 위도와 경도이다.
 
             연속된 두 GPS 점 $(t_{i-1}, \phi_{i-1}, \lambda_{i-1})$, $(t_i, \phi_i, \lambda_i)$ 사이의 거리는 하버사인 공식으로 계산할 수 있다.

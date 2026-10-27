@@ -7,6 +7,7 @@ import {
   ArticleCallout,
   ArticleFigure,
   ArticleSources,
+  ArticleGallery,
 } from '@/components/article'
 import {
   Problem1Figure,
@@ -18,6 +19,7 @@ import {
   GreatCircleVisualizer,
 } from '@/components/visualizations/spherical-cosine-law'
 
+import { GeogebraGraph } from '@/data/article-media/spherical-cosine-law.js'
 import { sources } from '@/data/article-sources/spherical-cosine-law.js'
 import { articles } from '@/data/articles.js'
 
@@ -270,13 +272,23 @@ const article = articles.find(
       </ArticleText>
     </ArticleDisclosure>
     <ArticleText>
-      구면 삼각형 코사인 법칙과 하버사인 공식은 수학적으로 같은 대권거리를 계산하지만, 컴퓨터로
-      계산할 때는 차이가 생길 수 있다. 두 지점이 매우 가까우면 중심각 $\theta$가 작아져
-      $\cos(\theta)$가 1에 매우 가까워진다. 구면 삼각형 코사인 법칙은 이 값에 다시 $\arccos$를
-      적용해야 하므로, 부동소수점 계산 과정에서 작은 차이를 잃을 수 있다. 반면 하버사인 공식은
-      $\sin^2(\theta/2)$처럼 작은 각을 직접 0에 가까운 작은 값으로 표현하기 때문에 가까운 두 지점의
-      거리를 계산할 때 수치적으로 더 안정적이다.
+      구면삼각형 코사인 법칙과 하버사인 공식은 수학적으로 같은 대권거리를 계산하지만, 컴퓨터에서 계산하면 서로 다른 수치 오차가 발생할 수 있다. 
+      두 지점이 매우 가까우면 중심각 $\theta$는 0에 가까워지고, 이에 따라 $\cos\theta$는 1에, $\sin\theta$는 0에 가까워진다. 
+      따라서 중심각을 다시 구하는 과정에서 코사인 기반 계산은 $\arccos$의 $x=1$ 부근을, 사인 기반 계산은 $\arcsin$의 $x=0$ 부근을 사용하게 된다.
+
+      문제는 두 역함수의 이 구간에서의 민감도가 다르다는 점이다. $\arccos$는 $x=1$에 가까워질수록 기울기의 절댓값이 급격히 커지는 반면, $\arcsin$은 $x=0$ 부근에서 기울기가 1에 가깝다. 
+      $$
+      \frac{d}{dx}\arccos x=-\frac{1}{\sqrt{1-x^2}},\quad\lim_{x\to1^-}\frac{d}{dx}\arccos x=-\infty
+      $$
+
+      $$
+      \frac{d}{dx}\arcsin x=\frac{1}{\sqrt{1-x^2}},\quad\left.\frac{d}{dx}\arcsin x\right|_{x=0}=1
+      $$
+      따라서 입력값에 작은 오차가 생겼을 때, $\arccos$를 이용한 중심각 계산에서는 그 오차가 더 크게 증폭될 수 있다.
     </ArticleText>
+
+    <ArticleGallery :items="GeogebraGraph"/>
+
     <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
       <HaversineVisualizer />
     </ArticleFigure>
