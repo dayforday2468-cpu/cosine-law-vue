@@ -50,9 +50,20 @@ const distance = computed(() => {
     <div class="formula">d = Rθ</div>
 
     <p class="result-description visual-control">
-      R = {{ arc.radius.toFixed(2) }}, θ = {{ arc.theta.toFixed(0) }}° 일 때
+      R =
+      <span class="visual-control-output">
+        {{ arc.radius.toFixed(2) }}
+      </span>,
+      θ =
+      <span class="visual-control-output">
+        {{ arc.theta.toFixed(0) }}°
+      </span>
+      일 때
       <br />
-      d = {{ distance.toFixed(2) }}
+      d =
+      <span class="visual-control-output">
+        {{ distance.toFixed(2) }}
+      </span>
     </p>
   </VerificationCard>
 </template>
