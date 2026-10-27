@@ -7,7 +7,6 @@ import {
   ArticleCallout,
   ArticleFigure,
   ArticleSources,
-  ArticleGallery,
 } from '@/components/article'
 import {
   Problem1Figure,
@@ -19,7 +18,6 @@ import {
   GreatCircleVisualizer,
 } from '@/components/visualizations/spherical-cosine-law'
 
-import { GeogebraGraph } from '@/data/article-media/spherical-cosine-law.js'
 import { sources } from '@/data/article-sources/spherical-cosine-law.js'
 import { articles } from '@/data/articles.js'
 
@@ -287,7 +285,6 @@ const article = articles.find(
       따라서 입력값에 작은 오차가 생겼을 때, $\arccos$를 이용한 중심각 계산에서는 그 오차가 더 크게 증폭될 수 있다.
     </ArticleText>
 
-    <ArticleGallery :items="GeogebraGraph"/>
 
     <ArticleFigure caption="지표면 상의 두 점 사이의 거리">
       <HaversineVisualizer />

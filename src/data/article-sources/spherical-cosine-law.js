@@ -18,18 +18,6 @@ export const sources = [
     licenseUrl: 'https://creativecommons.org/licenses/by/4.0/',
   },
   {
-    title: '역삼각함수 그래프 제작',
-    contribution:
-      '역삼각함수 그래프 제작에 사용한 수학 시각화 도구입니다.',
-    source: 'GeoGebra',
-    links: [
-      {
-        label: 'GeoGebra',
-        url: 'https://www.geogebra.org/',
-      },
-    ],
-  },
-  {
     title: '3D 지구본 시각화',
     contribution:
       '지구본과 대권 경로를 시각화하고, example의 Blue Marble 이미지를 사용했습니다.',
