@@ -298,8 +298,14 @@ function initializeDetailLayout() {
     ).trim()
     || '400'
 
+  const valueFontSize =
+    measureCssLength(
+      style.getPropertyValue('--font-size-m'),
+    )
+    || rootFontSize
+
   const valueFont =
-    `${valueWeight} ${style.fontSize} ${fontFamily}`
+    `${valueWeight} ${valueFontSize}px ${fontFamily}`
   const labelFont =
     `${labelWeight} ${rootFontSize * 0.75}px ${fontFamily}`
 
