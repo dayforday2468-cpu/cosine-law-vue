@@ -287,21 +287,20 @@ function initializeDetailLayout() {
     Number.parseFloat(rootStyle.fontSize)
     || 16
   const fontFamily = style.fontFamily
-  const valueWeight =
+  const controlWeight =
     style.getPropertyValue(
       '--font-weight-semibold',
     ).trim()
     || '600'
-  const labelWeight =
-    style.getPropertyValue(
-      '--font-weight-regular',
-    ).trim()
-    || '400'
+  const controlFontSize =
+    measureCssLength(
+      style.getPropertyValue('--font-size-m'),
+    )
+    || rootFontSize
 
   const valueFont =
-    `${valueWeight} ${style.fontSize} ${fontFamily}`
-  const labelFont =
-    `${labelWeight} ${rootFontSize * 0.75}px ${fontFamily}`
+    `${controlWeight} ${controlFontSize}px ${fontFamily}`
+  const labelFont = valueFont
 
   fieldWidths.value = props.fields.map(
     (field) => {
@@ -484,16 +483,16 @@ onMounted(() => {
           :key="field.key"
           class="detail-item"
         >
-          <span class="detail-label visual-control-caption">
+          <span class="detail-label visual-control-label">
             {{ field.label }}
           </span>
 
-          <strong class="visual-control-output">
+          <span class="visual-control-output">
             {{ formatField(
               hoveredPoint,
               field,
             ) }}
-          </strong>
+          </span>
         </div>
       </div>
 

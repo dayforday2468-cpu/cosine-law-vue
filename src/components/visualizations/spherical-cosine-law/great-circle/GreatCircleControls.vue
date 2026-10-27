@@ -99,23 +99,23 @@ async function searchCity() {
 
 <template>
   <section class="great-circle-controls">
-    <div class="location-summary visual-control">
+    <div class="location-summary">
       <div class="location-heading">
-        <span class="location-label visual-control-caption">출발지</span>
-        <strong class="visual-control-label">
+        <span class="location-label visual-control-label">출발지</span>
+        <span class="visual-control-output">
           {{ origin.name }}
           <span v-if="origin.country" class="location-country visual-control-caption">· {{ origin.country }}</span>
-        </strong>
+        </span>
       </div>
 
       <dl class="coordinate-list">
         <div>
-          <dt class="visual-control-caption">위도</dt>
+          <dt class="visual-control-label">위도</dt>
           <dd class="visual-control-output">{{ origin.lat.toFixed(4) }}°</dd>
         </div>
 
         <div>
-          <dt class="visual-control-caption">경도</dt>
+          <dt class="visual-control-label">경도</dt>
           <dd class="visual-control-output">{{ origin.lng.toFixed(4) }}°</dd>
         </div>
       </dl>
@@ -144,25 +144,25 @@ async function searchCity() {
 
     <p v-if="searchError" class="search-message visual-control-caption">{{ searchError }}</p>
 
-    <div class="location-summary visual-control">
+    <div class="location-summary">
       <div class="location-heading">
-        <span class="location-label visual-control-caption">도착지</span>
-        <strong class="visual-control-label">
+        <span class="location-label visual-control-label">도착지</span>
+        <span class="visual-control-output">
           {{ destination.name }}
           <span v-if="destination.country" class="location-country visual-control-caption">
             · {{ destination.country }}
           </span>
-        </strong>
+        </span>
       </div>
 
       <dl class="coordinate-list">
         <div>
-          <dt class="visual-control-caption">위도</dt>
+          <dt class="visual-control-label">위도</dt>
           <dd class="visual-control-output">{{ destination.lat.toFixed(4) }}°</dd>
         </div>
 
         <div>
-          <dt class="visual-control-caption">경도</dt>
+          <dt class="visual-control-label">경도</dt>
           <dd class="visual-control-output">{{ destination.lng.toFixed(4) }}°</dd>
         </div>
       </dl>
@@ -208,7 +208,7 @@ async function searchCity() {
   flex: 0 0 auto;
 }
 
-.location-heading strong {
+.location-heading .visual-control-output {
   min-width: 0;
 
   text-align: right;

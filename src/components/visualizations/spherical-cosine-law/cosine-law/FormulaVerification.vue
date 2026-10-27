@@ -21,26 +21,26 @@ const geometry = computed(() => {
   <VerificationCard title="공식 검증">
     <div class="formula">cos∠CAB = cosθ₂cosθ₃ + sinθ₂sinθ₃cosθ₁</div>
 
-    <div class="calculation visual-control">
-      <span>좌변</span>
+    <div class="calculation">
+      <span class="visual-control-label">좌변</span>
 
-      <strong class="visual-control-output">
+      <span class="visual-control-output">
         {{ geometry.lhs.toFixed(6) }}
-      </strong>
+      </span>
     </div>
 
-    <div class="calculation visual-control">
-      <span>우변</span>
+    <div class="calculation">
+      <span class="visual-control-label">우변</span>
 
-      <strong class="visual-control-output">
+      <span class="visual-control-output">
         {{ geometry.rhs.toFixed(6) }}
-      </strong>
+      </span>
     </div>
 
-    <div class="calculation visual-control">
-      <span>∠CAB</span>
+    <div class="calculation">
+      <span class="visual-control-label">∠CAB</span>
 
-      <strong class="visual-control-output"> {{ geometry.angleCAB.toFixed(1) }}° </strong>
+      <span class="visual-control-output"> {{ geometry.angleCAB.toFixed(1) }}° </span>
     </div>
   </VerificationCard>
 </template>
@@ -78,7 +78,7 @@ const geometry = computed(() => {
 
 }
 
-.calculation strong {
+.calculation .visual-control-output {
   text-align: right;
 }
 </style>
