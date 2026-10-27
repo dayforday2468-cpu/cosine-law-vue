@@ -445,7 +445,7 @@ onMounted(() => {
 <template>
   <div
     ref="scrubberRef"
-    class="route-scrubber map-control"
+    class="route-scrubber map-control visual-control"
   >
     <div class="scrubber-header">
       <div
@@ -456,7 +456,7 @@ onMounted(() => {
         <button
           v-for="axis in axes"
           :key="axis.key"
-          class="axis-button"
+          class="axis-button visual-control"
           :class="{
             active:
               selectedAxisKey === axis.key,
@@ -484,11 +484,11 @@ onMounted(() => {
           :key="field.key"
           class="detail-item"
         >
-          <span class="detail-label">
+          <span class="detail-label visual-control-caption">
             {{ field.label }}
           </span>
 
-          <strong>
+          <strong class="visual-control-output">
             {{ formatField(
               hoveredPoint,
               field,
@@ -514,7 +514,7 @@ onMounted(() => {
         }"
       >
         <span class="tick-mark"></span>
-        <span class="tick-label">
+        <span class="tick-label visual-control-caption">
           {{ tick.label }}
         </span>
       </div>
@@ -528,10 +528,6 @@ onMounted(() => {
   border-radius: var(--radius-m);
 
   background: var(--color-background);
-
-  color: var(--color-text-content);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-s);
 }
 
 .route-scrubber {
@@ -571,10 +567,6 @@ onMounted(() => {
   border: 0;
 
   background: var(--color-background);
-
-  color: var(--color-text-sub);
-  font: inherit;
-  font-weight: var(--font-weight-semibold);
 
   cursor: pointer;
 }
@@ -633,9 +625,6 @@ onMounted(() => {
 .tick-label {
   margin-top: 4px;
 
-  color: var(--color-text-sub);
-  font-size: 0.75rem;
-  font-weight: var(--font-weight-semibold);
   white-space: nowrap;
 }
 
@@ -685,24 +674,11 @@ onMounted(() => {
   gap: 2px;
 }
 
-.detail-label {
-  color: var(--color-text-sub);
-  font-size: 0.75rem;
-  font-weight: var(--font-weight-regular);
-}
 
-.detail-item strong {
-  color: var(--color-text-content);
-  font-weight: var(--font-weight-semibold);
-}
 
 @media (max-width: 640px) {
   .route-details {
     gap: var(--space-s) var(--space-m);
-  }
-
-  .tick-label {
-    font-size: 0.6875rem;
   }
 }
 </style>

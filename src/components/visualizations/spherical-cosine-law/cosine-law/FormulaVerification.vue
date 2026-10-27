@@ -21,26 +21,26 @@ const geometry = computed(() => {
   <VerificationCard title="공식 검증">
     <div class="formula">cos∠CAB = cosθ₂cosθ₃ + sinθ₂sinθ₃cosθ₁</div>
 
-    <div class="calculation">
+    <div class="calculation visual-control">
       <span>좌변</span>
 
-      <strong>
+      <strong class="visual-control-output">
         {{ geometry.lhs.toFixed(6) }}
       </strong>
     </div>
 
-    <div class="calculation">
+    <div class="calculation visual-control">
       <span>우변</span>
 
-      <strong>
+      <strong class="visual-control-output">
         {{ geometry.rhs.toFixed(6) }}
       </strong>
     </div>
 
-    <div class="calculation">
+    <div class="calculation visual-control">
       <span>∠CAB</span>
 
-      <strong> {{ geometry.angleCAB.toFixed(1) }}° </strong>
+      <strong class="visual-control-output"> {{ geometry.angleCAB.toFixed(1) }}° </strong>
     </div>
   </VerificationCard>
 </template>
@@ -75,15 +75,10 @@ const geometry = computed(() => {
 
   margin-bottom: var(--space-s);
 
-  color: var(--color-text-content);
-  font-size: var(--font-size-s);
-  font-family: var(--font-family-content);
-  font-weight: var(--font-weight-regular);
+
 }
 
 .calculation strong {
-  font-variant-numeric: tabular-nums;
   text-align: right;
-  white-space: nowrap;
 }
 </style>

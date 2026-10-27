@@ -34,16 +34,30 @@
   line-height: 1.8;
 }
 
-.visualizer-control-label {
+.visual-control {
+  color: var(--color-text-content);
+  font-family: var(--font-family-content);
+  font-size: var(--font-size-s);
+  font-weight: var(--font-weight-regular);
+}
+
+.visual-control-label {
   color: var(--color-text-main);
   font-family: var(--font-family-content);
   font-size: var(--font-size-m);
   font-weight: var(--font-weight-semibold);
 }
 
-.visualizer-control-output {
+.visual-control-output {
   color: var(--color-main);
   font-family: var(--font-family-content);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.visual-control-caption {
+  color: var(--color-text-sub);
+  font-family: var(--font-family-content);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-regular);
 }

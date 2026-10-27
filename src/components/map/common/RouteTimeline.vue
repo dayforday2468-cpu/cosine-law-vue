@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
       @ready="handleMapReady"
     />
 
-    <div class="route-legend map-control">
+    <div class="route-legend map-control visual-control">
       <div class="legend-item">
         <span
           class="
@@ -122,7 +122,7 @@ onBeforeUnmount(() => {
     </div>
 
     <button
-      class="reset-map-button map-control"
+      class="reset-map-button map-control visual-control"
       type="button"
       @click="resetMapView"
     >
@@ -148,11 +148,6 @@ onBeforeUnmount(() => {
   border-radius: var(--radius-m);
 
   background: var(--color-background);
-
-  color: var(--color-text-content);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-s);
-  font-weight: var(--font-weight-semibold);
 }
 
 .route-legend {

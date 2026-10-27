@@ -22,9 +22,9 @@ const distance = computed(() => {
 <template>
   <section class="arc-length-controls">
     <div class="arc-length-control">
-      <label class="visualizer-control-label" for="arc-radius">
+      <label class="visual-control-label" for="arc-radius">
         <span>반지름 R</span>
-        <output class="visualizer-control-output">{{ arc.radius.toFixed(2) }}</output>
+        <output class="visual-control-output">{{ arc.radius.toFixed(2) }}</output>
       </label>
 
       <input
@@ -38,9 +38,9 @@ const distance = computed(() => {
     </div>
 
     <div class="arc-length-control">
-      <label class="visualizer-control-label" for="arc-theta">
+      <label class="visual-control-label" for="arc-theta">
         <span>중심각 θ</span>
-        <output class="visualizer-control-output">{{ arc.theta.toFixed(0) }}°</output>
+        <output class="visual-control-output">{{ arc.theta.toFixed(0) }}°</output>
       </label>
 
       <input id="arc-theta" v-model.number="arc.theta" type="range" min="10" max="180" step="1" />
@@ -49,7 +49,7 @@ const distance = computed(() => {
   <VerificationCard title="원호의 길이">
     <div class="formula">d = Rθ</div>
 
-    <p class="result-description">
+    <p class="result-description visual-control">
       R = {{ arc.radius.toFixed(2) }}, θ = {{ arc.theta.toFixed(0) }}° 일 때
       <br />
       d = {{ distance.toFixed(2) }}
@@ -129,10 +129,6 @@ const distance = computed(() => {
 .result-description {
   margin: 0;
 
-  color: var(--color-text-content);
-  font-size: var(--font-size-m);
-  font-family: var(--font-family-content);
-  font-weight: var(--font-weight-regular);
   line-height: 1.6;
   text-align: center;
 }

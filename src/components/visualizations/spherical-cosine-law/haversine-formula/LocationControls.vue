@@ -34,20 +34,22 @@ function adjustCoordinate(value, step, min, max) {
 <template>
   <section class="control-groups">
     <div class="control-group">
-      <label class="visualizer-control-label" for="latitude-1">
+      <label class="visual-control-label" for="latitude-1">
         <span>P₁ 위도(φ₁)</span>
 
         <div class="value-control">
           <button
+            class="visual-control"
             type="button"
             @click="latitude1 = adjustCoordinate(latitude1, -FINE_STEP, -90, 90)"
           >
             −
           </button>
 
-          <output class="visualizer-control-output">{{ latitude1.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visual-control-output">{{ latitude1.toFixed(FINE_DIGITS) }}°</output>
 
           <button
+            class="visual-control"
             type="button"
             @click="latitude1 = adjustCoordinate(latitude1, FINE_STEP, -90, 90)"
           >
@@ -60,20 +62,22 @@ function adjustCoordinate(value, step, min, max) {
     </div>
 
     <div class="control-group">
-      <label class="visualizer-control-label" for="longitude-1">
+      <label class="visual-control-label" for="longitude-1">
         <span>P₁ 경도(λ₁)</span>
 
         <div class="value-control">
           <button
+            class="visual-control"
             type="button"
             @click="longitude1 = adjustCoordinate(longitude1, -FINE_STEP, -180, 180)"
           >
             −
           </button>
 
-          <output class="visualizer-control-output">{{ longitude1.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visual-control-output">{{ longitude1.toFixed(FINE_DIGITS) }}°</output>
 
           <button
+            class="visual-control"
             type="button"
             @click="longitude1 = adjustCoordinate(longitude1, FINE_STEP, -180, 180)"
           >
@@ -93,20 +97,22 @@ function adjustCoordinate(value, step, min, max) {
     </div>
 
     <div class="control-group">
-      <label class="visualizer-control-label" for="latitude-2">
+      <label class="visual-control-label" for="latitude-2">
         <span>P₂ 위도(φ₂)</span>
 
         <div class="value-control">
           <button
+            class="visual-control"
             type="button"
             @click="latitude2 = adjustCoordinate(latitude2, -FINE_STEP, -90, 90)"
           >
             −
           </button>
 
-          <output class="visualizer-control-output">{{ latitude2.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visual-control-output">{{ latitude2.toFixed(FINE_DIGITS) }}°</output>
 
           <button
+            class="visual-control"
             type="button"
             @click="latitude2 = adjustCoordinate(latitude2, FINE_STEP, -90, 90)"
           >
@@ -119,20 +125,22 @@ function adjustCoordinate(value, step, min, max) {
     </div>
 
     <div class="control-group">
-      <label class="visualizer-control-label" for="longitude-2">
+      <label class="visual-control-label" for="longitude-2">
         <span>P₂ 경도(λ₂)</span>
 
         <div class="value-control">
           <button
+            class="visual-control"
             type="button"
             @click="longitude2 = adjustCoordinate(longitude2, -FINE_STEP, -180, 180)"
           >
             −
           </button>
 
-          <output class="visualizer-control-output">{{ longitude2.toFixed(FINE_DIGITS) }}°</output>
+          <output class="visual-control-output">{{ longitude2.toFixed(FINE_DIGITS) }}°</output>
 
           <button
+            class="visual-control"
             type="button"
             @click="longitude2 = adjustCoordinate(longitude2, FINE_STEP, -180, 180)"
           >
@@ -220,11 +228,7 @@ function adjustCoordinate(value, step, min, max) {
   border-radius: var(--radius-s);
 
   background: var(--color-background);
-  color: var(--color-main);
 
-  font-size: var(--font-size-m);
-  font-weight: var(--font-weight-semibold);
-  font-family: var(--font-family-content);
   line-height: 1;
 
   cursor: pointer;

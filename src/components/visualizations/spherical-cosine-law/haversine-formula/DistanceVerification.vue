@@ -47,9 +47,9 @@ const distanceDifference = computed(
 
 <template>
   <VerificationCard title="대권거리 계산">
-    <div class="result-row">
+    <div class="result-row visual-control">
       <span>Haversine 거리</span>
-      <strong>{{ haversineDistance.toFixed(12) }} km</strong>
+      <strong class="visual-control-output">{{ haversineDistance.toFixed(12) }} km</strong>
     </div>
 
     <div class="formula">
@@ -57,16 +57,16 @@ const distanceDifference = computed(
       a = sin²(Δφ/2) + cosφ₁cosφ₂sin²(Δλ/2)
     </div>
 
-    <div class="result-row">
+    <div class="result-row visual-control">
       <span>구면 코사인 거리</span>
-      <strong>{{ sphericalCosineDistance.toFixed(12) }} km</strong>
+      <strong class="visual-control-output">{{ sphericalCosineDistance.toFixed(12) }} km</strong>
     </div>
 
     <div class="formula">d = R · acos(sinφ₁sinφ₂ + cosφ₁cosφ₂cosΔλ)</div>
 
-    <div class="result-row difference">
+    <div class="result-row difference visual-control">
       <span>계산 결과 차이</span>
-      <strong>{{ distanceDifference.toFixed(9) }} m</strong>
+      <strong class="visual-control-output">{{ distanceDifference.toFixed(9) }} m</strong>
     </div>
   </VerificationCard>
 </template>
@@ -101,16 +101,11 @@ const distanceDifference = computed(
 
   margin-bottom: var(--space-s);
 
-  color: var(--color-text-content);
-  font-size: var(--font-size-s);
-  font-family: var(--font-family-content);
-  font-weight: var(--font-weight-regular);
+
 }
 
 .result-row strong {
-  font-variant-numeric: tabular-nums;
   text-align: right;
-  white-space: nowrap;
 }
 
 .result-row.difference {

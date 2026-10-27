@@ -1,5 +1,5 @@
 <template>
-  <p class="viewer-guide">
+  <p class="viewer-guide visual-control-caption">
     <slot />
   </p>
 </template>
@@ -19,11 +19,7 @@
   border-radius: var(--radius-m);
 
   background: var(--color-background-overlay);
-  color: var(--color-text-sub);
 
-  font-size: var(--font-size-s);
-  font-family: var(--font-family-content);
-  font-weight: var(--font-weight-regular);
   line-height: 1.4;
   white-space: nowrap;
 

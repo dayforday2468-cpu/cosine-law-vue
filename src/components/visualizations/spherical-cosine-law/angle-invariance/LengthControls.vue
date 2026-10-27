@@ -17,9 +17,9 @@ defineProps({
 <template>
   <section class="length-controls">
     <div class="length-control">
-      <label class="visualizer-control-label" for="length-ao">
+      <label class="visual-control-label" for="length-ao">
         <span>AO</span>
-        <output class="visualizer-control-output">{{ lengths.AO.toFixed(2) }}</output>
+        <output class="visual-control-output">{{ lengths.AO.toFixed(2) }}</output>
       </label>
 
       <input
@@ -33,9 +33,9 @@ defineProps({
     </div>
 
     <div class="length-control">
-      <label class="visualizer-control-label" for="length-ab">
+      <label class="visual-control-label" for="length-ab">
         <span>AB</span>
-        <output class="visualizer-control-output">{{ lengths.AB.toFixed(2) }}</output>
+        <output class="visual-control-output">{{ lengths.AB.toFixed(2) }}</output>
       </label>
 
       <input
@@ -49,9 +49,9 @@ defineProps({
     </div>
 
     <div class="length-control">
-      <label class="visualizer-control-label" for="length-ac">
+      <label class="visual-control-label" for="length-ac">
         <span>AC</span>
-        <output class="visualizer-control-output">{{ lengths.AC.toFixed(2) }}</output>
+        <output class="visual-control-output">{{ lengths.AC.toFixed(2) }}</output>
       </label>
 
       <input
@@ -65,7 +65,7 @@ defineProps({
     </div>
   </section>
   <VerificationCard title="✓ 각도 불변!">
-    <p class="result-description">
+    <p class="result-description visual-control">
       선분의 길이는 변하지만<br />
       표시된 각도의 크기는 변하지 않습니다.
     </p>
@@ -123,10 +123,6 @@ defineProps({
 .result-description {
   margin: 0;
 
-  color: var(--color-text-content);
-  font-size: var(--font-size-m);
-  font-family: var(--font-family-content);
-  font-weight: var(--font-weight-regular);
   line-height: 1.6;
   text-align: center;
 }

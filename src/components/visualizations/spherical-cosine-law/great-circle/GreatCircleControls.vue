@@ -99,35 +99,36 @@ async function searchCity() {
 
 <template>
   <section class="great-circle-controls">
-    <div class="location-summary">
+    <div class="location-summary visual-control">
       <div class="location-heading">
-        <span class="location-label">출발지</span>
-        <strong>
+        <span class="location-label visual-control-caption">출발지</span>
+        <strong class="visual-control-label">
           {{ origin.name }}
-          <span v-if="origin.country" class="location-country">· {{ origin.country }}</span>
+          <span v-if="origin.country" class="location-country visual-control-caption">· {{ origin.country }}</span>
         </strong>
       </div>
 
       <dl class="coordinate-list">
         <div>
-          <dt>위도</dt>
-          <dd>{{ origin.lat.toFixed(4) }}°</dd>
+          <dt class="visual-control-caption">위도</dt>
+          <dd class="visual-control-output">{{ origin.lat.toFixed(4) }}°</dd>
         </div>
 
         <div>
-          <dt>경도</dt>
-          <dd>{{ origin.lng.toFixed(4) }}°</dd>
+          <dt class="visual-control-caption">경도</dt>
+          <dd class="visual-control-output">{{ origin.lng.toFixed(4) }}°</dd>
         </div>
       </dl>
     </div>
 
     <form class="city-search" @submit.prevent="searchCity">
-      <label class="visualizer-control-label" for="destination-city">
+      <label class="visual-control-label" for="destination-city">
         <span>도착 도시 검색</span>
       </label>
 
       <div class="search-row">
         <input
+          class="visual-control"
           id="destination-city"
           v-model="query"
           type="search"
@@ -135,20 +136,20 @@ async function searchCity() {
           autocomplete="off"
         />
 
-        <button type="submit" :disabled="isSearching || !query.trim()">
+        <button class="visual-control" type="submit" :disabled="isSearching || !query.trim()">
           {{ isSearching ? '검색 중' : '검색' }}
         </button>
       </div>
     </form>
 
-    <p v-if="searchError" class="search-message">{{ searchError }}</p>
+    <p v-if="searchError" class="search-message visual-control-caption">{{ searchError }}</p>
 
-    <div class="location-summary">
+    <div class="location-summary visual-control">
       <div class="location-heading">
-        <span class="location-label">도착지</span>
-        <strong>
+        <span class="location-label visual-control-caption">도착지</span>
+        <strong class="visual-control-label">
           {{ destination.name }}
-          <span v-if="destination.country" class="location-country">
+          <span v-if="destination.country" class="location-country visual-control-caption">
             · {{ destination.country }}
           </span>
         </strong>
@@ -156,21 +157,21 @@ async function searchCity() {
 
       <dl class="coordinate-list">
         <div>
-          <dt>위도</dt>
-          <dd>{{ destination.lat.toFixed(4) }}°</dd>
+          <dt class="visual-control-caption">위도</dt>
+          <dd class="visual-control-output">{{ destination.lat.toFixed(4) }}°</dd>
         </div>
 
         <div>
-          <dt>경도</dt>
-          <dd>{{ destination.lng.toFixed(4) }}°</dd>
+          <dt class="visual-control-caption">경도</dt>
+          <dd class="visual-control-output">{{ destination.lng.toFixed(4) }}°</dd>
         </div>
       </dl>
     </div>
 
     <VerificationCard title="대권거리">
-      <div class="route-name">{{ origin.name }} → {{ destination.name }}</div>
+      <div class="route-name visual-control">{{ origin.name }} → {{ destination.name }}</div>
 
-      <p class="distance-result">
+      <p class="distance-result visual-control-output">
         약 {{ Math.round(distance).toLocaleString('ko-KR') }} km
       </p>
     </VerificationCard>
@@ -192,10 +193,6 @@ async function searchCity() {
   border-radius: var(--radius-m);
 
   background: var(--color-background-sub);
-  color: var(--color-text-content);
-
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-s);
 }
 
 .location-heading {
@@ -209,24 +206,15 @@ async function searchCity() {
 
 .location-label {
   flex: 0 0 auto;
-
-  color: var(--color-text-sub);
-  font-weight: var(--font-weight-semibold);
 }
 
 .location-heading strong {
   min-width: 0;
 
-  color: var(--color-text-main);
-  font-size: var(--font-size-m);
   text-align: right;
 }
 
-.location-country {
-  color: var(--color-text-sub);
-  font-size: var(--font-size-s);
-  font-weight: var(--font-weight-regular);
-}
+
 
 .coordinate-list {
   display: grid;
@@ -244,16 +232,10 @@ async function searchCity() {
   min-width: 0;
 }
 
-.coordinate-list dt {
-  color: var(--color-text-sub);
-  font-weight: var(--font-weight-semibold);
-}
+
 
 .coordinate-list dd {
   margin: 0;
-
-  color: var(--color-text-content);
-  font-variant-numeric: tabular-nums;
 }
 
 .city-search {
@@ -279,10 +261,6 @@ async function searchCity() {
   border-radius: var(--radius-s);
 
   background: var(--color-background);
-  color: var(--color-text-content);
-
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-m);
 }
 
 .search-row button {
@@ -292,11 +270,6 @@ async function searchCity() {
   border-radius: var(--radius-s);
 
   background: var(--color-background);
-  color: var(--color-main);
-
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-s);
-  font-weight: var(--font-weight-semibold);
 
   cursor: pointer;
 }
@@ -312,38 +285,18 @@ async function searchCity() {
 
 .search-message {
   margin: 0 0 var(--space-s);
-
-  color: var(--color-text-sub);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-s);
 }
 
 .route-name {
   margin-bottom: var(--space-s);
 
-  color: var(--color-text-content);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-m);
   text-align: center;
 }
 
 .distance-result {
   margin: 0;
 
-  color: var(--color-text-content);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-l);
-  font-weight: var(--font-weight-semibold);
   text-align: center;
 }
 
-.attribution {
-  margin: var(--space-s) 0 0;
-
-  color: var(--color-text-sub);
-  font-family: var(--font-family-content);
-  font-size: var(--font-size-xs);
-  line-height: 1.4;
-  text-align: right;
-}
 </style>

@@ -8,27 +8,27 @@ const angles = defineModel('angles', {
 <template>
   <section class="angle-controls">
     <div class="angle-control">
-      <label class="visualizer-control-label" for="theta1">
+      <label class="visual-control-label" for="theta1">
         <span>θ₁ = ∠BOC(이면각)</span>
-        <output class="visualizer-control-output">{{ angles.theta1 }}°</output>
+        <output class="visual-control-output">{{ angles.theta1 }}°</output>
       </label>
 
       <input id="theta1" v-model.number="angles.theta1" type="range" min="10" max="170" />
     </div>
 
     <div class="angle-control">
-      <label class="visualizer-control-label" for="theta2">
+      <label class="visual-control-label" for="theta2">
         <span>θ₂ = ∠OAB</span>
-        <output class="visualizer-control-output">{{ angles.theta2 }}°</output>
+        <output class="visual-control-output">{{ angles.theta2 }}°</output>
       </label>
 
       <input id="theta2" v-model.number="angles.theta2" type="range" min="10" max="80" />
     </div>
 
     <div class="angle-control">
-      <label class="visualizer-control-label" for="theta3">
+      <label class="visual-control-label" for="theta3">
         <span>θ₃ = ∠OAC</span>
-        <output class="visualizer-control-output">{{ angles.theta3 }}°</output>
+        <output class="visual-control-output">{{ angles.theta3 }}°</output>
       </label>
 
       <input id="theta3" v-model.number="angles.theta3" type="range" min="10" max="80" />
