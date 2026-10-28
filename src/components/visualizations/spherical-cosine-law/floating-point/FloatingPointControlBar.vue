@@ -38,7 +38,7 @@ defineProps({
       class="control-label visual-control-label"
       for="floating-point-value"
     >
-      <span>표현 가능한 값</span>
+      <span>현재 값</span>
       <output class="visual-control-output">
         {{ formatValue(currentValue) }}
       </output>
