@@ -17,6 +17,7 @@ import {
   HaversineVisualizer,
   ArcLengthVisualizer,
   GreatCircleVisualizer,
+  FloatingPointVisualizer,
 } from '@/components/visualizations/spherical-cosine-law'
 
 import { sources } from '@/data/article-sources/spherical-cosine-law.js'
@@ -358,6 +359,10 @@ const article = articles.find(
       여기서 $s$는 부호를 나타내고, $m$과 $e$는 모두 컴퓨터가 표현할 수 있는 이진수이다.
 
     </ArticleText>
+
+    <ArticleFigure caption="이진 부동소수점의 비트 표현" width="content">
+      <FloatingPointVisualizer />
+    </ArticleFigure>
 
     <ArticleSources :sources="sources" />
   </ArticleLayout>
