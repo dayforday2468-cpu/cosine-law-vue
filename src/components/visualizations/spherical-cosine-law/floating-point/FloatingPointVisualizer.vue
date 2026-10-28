@@ -56,22 +56,6 @@ const significandExpression = computed(() => {
   return `(${leadingBit}.${fractionBitString.value})₂`
 })
 
-const signExpression = computed(() =>
-  `(-1)^${floatingPoint.value.signBit} = ${floatingPoint.value.signBit === 1 ? '-1' : '1'}`,
-)
-
-const exponentExpression = computed(() => {
-  if (floatingPoint.value.kind === 'zero') {
-    return '사용하지 않음'
-  }
-
-  if (floatingPoint.value.kind === 'subnormal') {
-    return `2^(1 - ${BIAS}) = 2^${1 - BIAS}`
-  }
-
-  return `2^(${floatingPoint.value.rawExponent} - ${BIAS}) = 2^${floatingPoint.value.unbiasedExponent}`
-})
-
 const valueExpression = computed(() => {
   if (floatingPoint.value.kind === 'zero') {
     return '0'
@@ -117,27 +101,12 @@ const valueKind = computed(() => {
     />
 
     <VerificationCard title="실수 표현">
-      <div class="result-row">
-        <span class="visual-control-label">Sign</span>
-        <span class="visual-control-output">{{ signExpression }}</span>
-      </div>
-
-      <div class="result-row">
-        <span class="visual-control-label">Exponent</span>
-        <span class="visual-control-output">{{ exponentExpression }}</span>
-      </div>
-
-      <div class="result-row">
-        <span class="visual-control-label">Significand</span>
-        <span class="visual-control-output">{{ significandExpression }}</span>
-      </div>
-
       <div class="formula">
         {{ valueExpression }}
       </div>
 
       <div class="result-row result">
-        <span class="visual-control-label">Result</span>
+        <span class="visual-control-label">실수 표현</span>
         <span class="visual-control-output">
           {{ formatFloatingPointValue(floatingPoint.value) }}
         </span>
