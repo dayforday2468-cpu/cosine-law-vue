@@ -6,4 +6,4 @@ export { default as AngleInvarianceVisualizer } from './angle-invariance/AngleIn
 export { default as HaversineVisualizer } from './haversine-formula/HaversineVisualizer.vue'
 export { default as ArcLengthVisualizer } from './arc-length/ArcLengthVisualizer.vue'
 export { default as GreatCircleVisualizer } from './great-circle/GreatCircleVisualizer.vue'
-export { default as FloatingPointVisualizer } from './floating-point/FloatingPointVisualizer.vue'
+export { FloatingPointVisualizer, FloatingPointDistribution } from './floating-point'

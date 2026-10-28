@@ -1,1 +1,2 @@
-export { default as FloatingPointVisualizer } from './FloatingPointVisualizer.vue'
+export { FloatingPointVisualizer } from './representation'
+export { FloatingPointDistribution } from './distribution'

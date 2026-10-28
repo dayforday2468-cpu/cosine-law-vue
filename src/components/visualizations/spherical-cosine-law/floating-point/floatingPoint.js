@@ -131,6 +131,19 @@ export function indexToFloatingPoint(index, format) {
   }
 }
 
+export function getFiniteValues(format) {
+  const positiveFiniteCount = getPositiveFiniteCount(format)
+
+  return Array.from(
+    { length: positiveFiniteCount * 2 + 1 },
+    (_, offset) =>
+      indexToFloatingPoint(
+        offset - positiveFiniteCount,
+        format,
+      ).value,
+  )
+}
+
 export function formatFloatingPointValue(value) {
   if (Object.is(value, -0) || value === 0) {
     return '0'

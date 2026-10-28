@@ -13,7 +13,7 @@ import {
   getMinFiniteValue,
   getPositiveFiniteCount,
   indexToFloatingPoint,
-} from './floatingPoint.js'
+} from '../floatingPoint.js'
 
 // --------------------------------------
 // Custom floating-point format
