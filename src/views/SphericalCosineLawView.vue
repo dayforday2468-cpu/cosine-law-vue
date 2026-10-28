@@ -357,7 +357,19 @@ const article = articles.find(
       $$
 
       여기서 $s$는 부호를 나타내고, $m$과 $e$는 모두 컴퓨터가 표현할 수 있는 이진수이다.
+      IEEE 754 표준에서는 하나의 부동소수점을 부호(Sign), 지수(Exponent), 가수부(Fraction)의 세 영역으로 나누어 저장한다. 대표적으로 32비트 단정밀도(single precision)는 부호에 1비트, 지수에 8비트, 가수부에 23비트를 사용한다.
 
+      $$
+      \underbrace{s}_{1\text{ bit}}
+      \quad
+      \underbrace{eeeeeeee}_{8\text{ bits}}
+      \quad
+      \underbrace{fffffffffffffffffffffff}_{23\text{ bits}}
+      $$
+
+      64비트 배정밀도(double precision)에서는 같은 구조를 사용하되 지수에 11비트, 가수부에 52비트를 사용한다. 비트 수가 많아질수록 더 넓은 범위와 높은 정밀도로 수를 표현할 수 있다.
+
+      아래 시각화에서는 이러한 구조를 한눈에 살펴볼 수 있도록 실제 IEEE 754 단정밀도보다 해상도를 낮춘 부동소수점 형식을 사용했다. 부호는 동일하게 1비트를 사용하고, 지수는 4비트, 가수부는 5비트로 줄였다.
     </ArticleText>
 
     <ArticleFigure caption="이진 부동소수점의 비트 표현" width="content">

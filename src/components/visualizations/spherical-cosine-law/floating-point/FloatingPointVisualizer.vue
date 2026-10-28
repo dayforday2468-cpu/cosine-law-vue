@@ -106,7 +106,7 @@ const valueKind = computed(() => {
       </div>
 
       <div class="result-row result">
-        <span class="visual-control-label">실수 표현</span>
+        <span class="visual-control-label">실수 값</span>
         <span class="visual-control-output">
           {{ formatFloatingPointValue(floatingPoint.value) }}
         </span>
