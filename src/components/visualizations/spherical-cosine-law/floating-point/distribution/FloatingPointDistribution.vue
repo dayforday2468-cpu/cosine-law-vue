@@ -132,8 +132,7 @@ const zeroX = computed(() =>
 
     <VerificationCard title="부동소수점의 분포">
       <p class="distribution-summary visual-control">
-        부동소수점은 절댓값이 작은 영역에서 더 촘촘하게 분포하고,
-        절댓값이 커질수록 표현 가능한 값 사이의 간격이 넓어진다.
+        부동소수점은 절댓값이 작은 영역에서 더 촘촘하고, 절댓값이 커질수록 표현 가능한 값 사이의 간격이 넓어진다.
       </p>
     </VerificationCard>
   </section>

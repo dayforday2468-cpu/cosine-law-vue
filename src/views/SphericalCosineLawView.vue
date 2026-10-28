@@ -18,6 +18,7 @@ import {
   ArcLengthVisualizer,
   GreatCircleVisualizer,
   FloatingPointVisualizer,
+  FloatingPointDistribution,
 } from '@/components/visualizations/spherical-cosine-law'
 
 import { sources } from '@/data/article-sources/spherical-cosine-law.js'
@@ -374,6 +375,15 @@ const article = articles.find(
 
     <ArticleFigure caption="이진 부동소수점의 비트 표현" width="content">
       <FloatingPointVisualizer />
+    </ArticleFigure>
+
+    <ArticleText>
+      눈썰미가 좋은 사람이라면, 0에서 멀어질수록 표현가능한 수의 간격이 커진다는 점을 알 수 있다.
+      따라서 $x=1$ 부근을 사용하는 $\arccos$기반 구면삼각형 코사인 법칙은 $x=0$ 부근을 사용하는 $\arcsin$기반 하버사인 공식보다 큰 입력값 오차가 생길 가능성이 크다.
+    </ArticleText>
+
+    <ArticleFigure caption="이진 부동소수점의 분포" width="content">
+      <FloatingPointDistribution/>
     </ArticleFigure>
 
     <ArticleSources :sources="sources" />
