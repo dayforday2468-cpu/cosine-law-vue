@@ -112,9 +112,10 @@ const valueKind = computed(() => {
         </span>
       </div>
 
-      <p class="value-kind visual-control-caption">
-        {{ valueKind }}
-      </p>
+      <div class="result-row value-kind-row">
+        <span class="visual-control-label">값의 종류</span>
+        <span class="visual-control-output">{{ valueKind }}</span>
+      </div>
     </VerificationCard>
   </section>
 </template>
@@ -175,10 +176,9 @@ const valueKind = computed(() => {
   border-top: var(--border-default);
 }
 
-.value-kind {
-  margin: var(--space-s) 0 0;
-
-  text-align: right;
+.value-kind-row {
+  margin-top: var(--space-s);
+  margin-bottom: 0;
 }
 
 @media (max-width: 640px) {
