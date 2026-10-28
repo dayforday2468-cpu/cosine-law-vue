@@ -275,19 +275,45 @@ const article = articles.find(
       두 지점이 매우 가까우면 중심각 $\theta$는 0에 가까워지고, 이에 따라 $\cos\theta$는 1에, $\sin\theta$는 0에 가까워진다. 
       따라서 중심각을 다시 구하는 과정에서 코사인 기반 계산은 $\arccos$의 $x=1$ 부근을, 사인 기반 계산은 $\arcsin$의 $x=0$ 부근을 사용하게 된다.
 
-      문제는 두 역함수의 이 구간에서의 민감도가 다르다는 점이다. $\arccos$는 $x=1$에 가까워질수록 기울기의 절댓값이 급격히 커지는 반면, $\arcsin$은 $x=0$ 부근에서 기울기가 1에 가깝다. 
-      $$
-      \frac{d}{dx}\arccos x=-\frac{1}{\sqrt{1-x^2}},\quad\lim_{x\to1^-}\frac{d}{dx}\arccos x=-\infty
-      $$
-
-      $$
-      \frac{d}{dx}\arcsin x=\frac{1}{\sqrt{1-x^2}},\quad\left.\frac{d}{dx}\arcsin x\right|_{x=0}=1
-      $$
-      따라서 입력값에 작은 오차가 생겼을 때, $\arccos$를 이용한 중심각 계산에서는 그 오차가 더 크게 증폭될 수 있다.
+      문제는 두 역함수의 이 구간에서의 민감도가 다르다는 점이다.  
+      아래 도식은 두 그래프에 같은 크기의 입력 변화량 $\Delta x$를 주었을 때 출력 변화량 $\Delta y$가 얼마나 달라지는지를 비교한다.
+      $\arccos$는 $x=1$ 부근에서 같은 $\Delta x$에 대해 더 큰 $\Delta y$를 만드는 반면, $\arcsin$은 $x=0$ 부근에서 $\Delta y$가 비교적 일정하게 감소한다. 
+      즉, 같은 크기의 입력 오차가 발생하더라도 $\arccos$를 이용한 계산에서는 그 오차가 출력값에 더 크게 반영될 수 있다.
     </ArticleText>
 
+    <ArticleDisclosure title="역삼각함수 기울기 유도">
+      <ArticleText>
+        역함수가 존재하는 일대일 대응 함수에서 역함수에 원래함수를 취하면 함수의 변수가 나온다.
+        $$
+        y=\arcsin(x),\quad\sin(y)=\sin(\arcsin(x)),\quad\sin(y)=x
+        $$
+        그 다음 양변을 $x$에 대해 미분하면 다음을 얻는다.
+        $$
+        \cos(y)\frac{dy}{dx}=1,\quad\frac{dy}{dx}=\frac{1}{\cos(y)}
+        $$
+        이 때, $\sin^2(x)+\cos^2(x)=1$인 점을 이용하여 $\arcsin$의 도함수를 구할 수 있다.
+        $$
+        \frac{dy}{dx}=\frac{1}{\sqrt{1-\sin^2(y)}}=\frac{1}{\sqrt{1-x^2}}
+        $$
+        같은 방법으로 $\arccos$의 도함수는 다음과 같다.
+        $$
+        \frac{dy}{dx}=-\frac{1}{\sqrt{1-x^2}}
+        $$
+        따라서, 다음과 같이 기울기를 구할 수 있다.
+        $$
+        \frac{d}{dx}\arccos x=-\frac{1}{\sqrt{1-x^2}},\quad\lim_{x\to1^-}\frac{d}{dx}\arccos x=-\infty
+        $$
 
-    <ArticleFigure caption="역삼각함수에서 두 점이 가까워질 때의 기울기 변화" width="content">
+        $$
+        \frac{d}{dx}\arcsin x=\frac{1}{\sqrt{1-x^2}},\quad\left.\frac{d}{dx}\arcsin x\right|_{x=0}=1
+        $$
+        $\arccos$는 $x=1$에 가까워질수록 기울기의 절댓값이 급격히 커지는 반면, $\arcsin$은 $x=0$ 부근에서 기울기가 1에 가깝다.
+        따라서, $\arccos$은 $x=1$ 부근에서 오차에 민감하고, $\arcsin$은 $x=0$ 부근에서 오차에 둔감하다.
+      </ArticleText>
+    </ArticleDisclosure>
+
+
+    <ArticleFigure caption="역삼각함수의 기울기와 수치적 민감도" width="content">
       <InverseTrigSensitivityFigure />
     </ArticleFigure>
 
