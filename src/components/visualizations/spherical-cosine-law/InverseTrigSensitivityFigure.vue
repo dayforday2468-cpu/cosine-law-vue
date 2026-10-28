@@ -37,6 +37,8 @@ const AXIS_COLOR = 0x94a3b8
 const MOVING_POINT_COLOR = 0xd97706
 const FIXED_POINT_COLOR = 0x0f172a
 const SECANT_COLOR = 0x7c3aed
+const DELTA_X_COLOR = 0x059669
+const DELTA_Y_COLOR = 0xdc2626
 
 /*
  * 두 점이 완전히 겹치면 할선의 방향을 계산할 수 없다.
@@ -67,9 +69,17 @@ let arcsinGroup = null
 
 let arccosMovingPoint = null
 let arccosSecantLine = null
+let arccosDeltaXLine = null
+let arccosDeltaYLine = null
+let arccosDeltaXLabel = null
+let arccosDeltaYLabel = null
 
 let arcsinMovingPoint = null
 let arcsinSecantLine = null
+let arcsinDeltaXLine = null
+let arcsinDeltaYLine = null
+let arcsinDeltaXLabel = null
+let arcsinDeltaYLabel = null
 
 // --------------------------------------
 // 좌표 변환
@@ -127,6 +137,36 @@ function updateSecantLine(line, pointA, pointB) {
   updateLine(line, start, end)
 }
 
+function updateDeltaGuides(
+  deltaXLine,
+  deltaYLine,
+  deltaXLabel,
+  deltaYLabel,
+  moving,
+  fixed,
+) {
+  const corner = new THREE.Vector3(
+    fixed.x,
+    moving.y,
+    0,
+  )
+
+  updateLine(deltaXLine, moving, corner)
+  updateLine(deltaYLine, corner, fixed)
+
+  deltaXLabel.position.copy(
+    moving.clone().add(corner).multiplyScalar(0.5).add(
+      new THREE.Vector3(0, 0.13, 0),
+    ),
+  )
+
+  deltaYLabel.position.copy(
+    corner.clone().add(fixed).multiplyScalar(0.5).add(
+      new THREE.Vector3(0.13, 0, 0),
+    ),
+  )
+}
+
 // --------------------------------------
 // 동적 기하 업데이트
 // --------------------------------------
@@ -143,6 +183,14 @@ function updateArccosGeometry(progress) {
 
   arccosMovingPoint.position.copy(moving)
   updateSecantLine(arccosSecantLine, moving, fixed)
+  updateDeltaGuides(
+    arccosDeltaXLine,
+    arccosDeltaYLine,
+    arccosDeltaXLabel,
+    arccosDeltaYLabel,
+    moving,
+    fixed,
+  )
 }
 
 function updateArcsinGeometry(progress) {
@@ -157,6 +205,14 @@ function updateArcsinGeometry(progress) {
 
   arcsinMovingPoint.position.copy(moving)
   updateSecantLine(arcsinSecantLine, moving, fixed)
+  updateDeltaGuides(
+    arcsinDeltaXLine,
+    arcsinDeltaYLine,
+    arcsinDeltaXLabel,
+    arcsinDeltaYLabel,
+    moving,
+    fixed,
+  )
 }
 
 // --------------------------------------
@@ -169,8 +225,16 @@ function updateAnimation(timestamp) {
     !arcsinGroup ||
     !arccosMovingPoint ||
     !arccosSecantLine ||
+    !arccosDeltaXLine ||
+    !arccosDeltaYLine ||
+    !arccosDeltaXLabel ||
+    !arccosDeltaYLabel ||
     !arcsinMovingPoint ||
-    !arcsinSecantLine
+    !arcsinSecantLine ||
+    !arcsinDeltaXLine ||
+    !arcsinDeltaYLine ||
+    !arcsinDeltaXLabel ||
+    !arcsinDeltaYLabel
   ) {
     return
   }
@@ -312,8 +376,45 @@ function createModel() {
   arccosSecantLine.material.depthTest = false
   arccosSecantLine.renderOrder = 5
 
+  arccosDeltaXLine = createLine(
+    arccosMovingStart,
+    new THREE.Vector3(arccosFixed.x, arccosMovingStart.y, 0),
+    DELTA_X_COLOR,
+  )
+  arccosDeltaYLine = createLine(
+    new THREE.Vector3(arccosFixed.x, arccosMovingStart.y, 0),
+    arccosFixed,
+    DELTA_Y_COLOR,
+  )
+
+  arccosDeltaXLine.material.depthTest = false
+  arccosDeltaYLine.material.depthTest = false
+  arccosDeltaXLine.renderOrder = 6
+  arccosDeltaYLine.renderOrder = 6
+
+  arccosDeltaXLabel = createLabel(
+    'Δx',
+    new THREE.Vector3(0, 0, 0),
+    {
+      textColor: '#059669',
+      scale: 0.18,
+    },
+  )
+  arccosDeltaYLabel = createLabel(
+    'Δy',
+    new THREE.Vector3(0, 0, 0),
+    {
+      textColor: '#dc2626',
+      scale: 0.18,
+    },
+  )
+
   arccosGroup.add(
     arccosSecantLine,
+    arccosDeltaXLine,
+    arccosDeltaYLine,
+    arccosDeltaXLabel,
+    arccosDeltaYLabel,
     arccosMovingPoint,
     arccosFixedPoint,
   )
@@ -347,8 +448,45 @@ function createModel() {
   arcsinSecantLine.material.depthTest = false
   arcsinSecantLine.renderOrder = 5
 
+  arcsinDeltaXLine = createLine(
+    arcsinMovingStart,
+    new THREE.Vector3(arcsinFixed.x, arcsinMovingStart.y, 0),
+    DELTA_X_COLOR,
+  )
+  arcsinDeltaYLine = createLine(
+    new THREE.Vector3(arcsinFixed.x, arcsinMovingStart.y, 0),
+    arcsinFixed,
+    DELTA_Y_COLOR,
+  )
+
+  arcsinDeltaXLine.material.depthTest = false
+  arcsinDeltaYLine.material.depthTest = false
+  arcsinDeltaXLine.renderOrder = 6
+  arcsinDeltaYLine.renderOrder = 6
+
+  arcsinDeltaXLabel = createLabel(
+    'Δx',
+    new THREE.Vector3(0, 0, 0),
+    {
+      textColor: '#059669',
+      scale: 0.18,
+    },
+  )
+  arcsinDeltaYLabel = createLabel(
+    'Δy',
+    new THREE.Vector3(0, 0, 0),
+    {
+      textColor: '#dc2626',
+      scale: 0.18,
+    },
+  )
+
   arcsinGroup.add(
     arcsinSecantLine,
+    arcsinDeltaXLine,
+    arcsinDeltaYLine,
+    arcsinDeltaXLabel,
+    arcsinDeltaYLabel,
     arcsinMovingPoint,
     arcsinFixedPoint,
   )
