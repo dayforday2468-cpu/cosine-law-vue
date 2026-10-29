@@ -4,7 +4,7 @@ export const articles = [
     title: '계산 실수로 발견한 구면삼각형 코사인 법칙',
     description: '6년 묵은 오답노트, 커리어의 핵심이 되다.',
     date: '2026-08-05',
-    tags: ['Spherical-cosine-law', 'Haversine-formula', 'Great-circle', 'Geospatial Analysis'],
+    tags: ['Spherical-cosine-law', 'Haversine-formula', 'Great-circle', 'Floating-point', 'Geospatial Analysis'],
   },
   {
     slug: 'kakao-friends-run-2026',
