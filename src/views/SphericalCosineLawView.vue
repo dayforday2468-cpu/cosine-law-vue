@@ -2,6 +2,7 @@
 import {
   ArticleLayout,
   ArticleHeader,
+  ArticleSection,
   ArticleText,
   ArticleDisclosure,
   ArticleCallout,
@@ -36,6 +37,9 @@ const article = articles.find(
       :description="article.description"
       :date="article.date"
     />
+
+    <ArticleSection id="mistake-to-theorem" title="오답이 법칙으로 확장되다."/>
+
     <ArticleText>
       실수는 누구나 피하고 싶은 것이다. 2017년 고등학교 시절, 쉬운 시험문제를 잘못 계산해서 틀렸다.
       처음 느낀 감정은 당혹스러움이었다. 당연히 맞았을 것이라 생각했던 예상이 빗나간 탓이다. 곧이어
@@ -139,6 +143,9 @@ const article = articles.find(
     <ArticleFigure caption="세 각에 따른 사면체의 각도 관계">
       <CosineLawVisualizer />
     </ArticleFigure>
+
+    <ArticleSection id="theorem-to-useage" title="법칙이 쓸모로 확장되다."/>
+
     <ArticleText>
       한가지 놀라운 사실은 각 변 $\overline{AO}, \overline{AB}, \overline{AC}$의 길이가 변수로 쓰인
       모든 각도와 무관하다는 점이다. 아래 도식화에서 각 변의 길이를 바꾸더라도 변수로 쓰인 각도들은
@@ -213,6 +220,9 @@ const article = articles.find(
         \theta & \text{두 지점 사이의 중심각} \end{array} $$
       </ArticleText>
     </ArticleFigure>
+
+    <ArticleSection id="haversine-formula" title="라이벌 등장: 하버사인 공식"/>
+
     <ArticleText>
       보통 인터넷에 대권거리 계산을 검색하면 구면 삼각형 코사인 법칙이 나오진 않는다. 대신 하버사인
       공식이 나오는데, 그 이유는 컴퓨터가 계산할 때 오차가 더 적게 나오기 때문이다.
@@ -274,7 +284,8 @@ const article = articles.find(
     </ArticleDisclosure>
     <ArticleText>
       구면삼각형 코사인 법칙과 하버사인 공식은 수학적으로 값이 동일한 대권거리를 계산한다.
-      그런데, 왜 내가 발견한 구면삼각형 코사인 법칙은 찬밥신세인지 화가 났다. 천천히 그 이유를 살펴보니, 컴퓨터가 실수를 표현하는 능력의 한계 때문이었다.
+      그런데, 왜 구면삼각형 코사인 법칙은 찬밥신세인지 화가 났다. 계산과정이 더 복잡한데, 하버사인 공식을 주로 쓰는 이유가 궁금했다. 
+      천천히 알아보니, 컴퓨터가 실수를 표현하는 능력의 한계 때문이었다.
       두 지점이 매우 가까우면 중심각 $\theta$는 0에 가까워지고, 이에 따라 $\cos\theta$는 1에, $\sin\theta$는 0에 가까워진다. 
       중심각을 구하기 위해 역함수를 취하는 과정에서 구면삼각형 코사인 법칙은 $\arccos$의 $x=1$ 부근을, 하버사인 공식은 $\arcsin$의 $x=0$ 부근을 사용한다.
       문제는 $\arccos$의 $x=1$ 부근은 기울기가 매우 가팔라서, 작은 입력 오차에도 출력값이 크게 달라질 수 있다는 점이다.
@@ -322,6 +333,7 @@ const article = articles.find(
       <HaversineVisualizer />
     </ArticleFigure>
 
+    <ArticleSection id="floating-point" title="Mistake is Real number."/>
 
     <ArticleText>
       대부분 사람들은 컴퓨터가 표현하는 실수가 충분히 부드럽고 유용하게 쓰는데 문제가 없다고 생각한다.
