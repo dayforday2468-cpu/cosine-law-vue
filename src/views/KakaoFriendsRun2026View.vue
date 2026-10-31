@@ -2,8 +2,8 @@
 import {
   ArticleLayout,
   ArticleHeader,
+  ArticleSection,
   ArticleText,
-  ArticleDisclosure,
   ArticleCallout,
   ArticleFigure,
   ArticleGallery,
@@ -30,6 +30,9 @@ const article = articles.find(
         :description="article.description"
         :date="article.date"
         />
+
+        <ArticleSection id="exit-bootcamp" title="원점으로 돌아가다."/>
+
         <ArticleText>
             SKALA 부트캠프에서 나오며 선택과 집중의 시간을 가지려 했다.
             지난 상반기, 취준 기간을 집에서 보내기가 부모님께 죄송스러워서, 부트캠프 입과를 계획했다.
@@ -126,6 +129,8 @@ const article = articles.find(
             하지만, 리프레시도 하고, Strava로 러닝 GPS 데이터도 만들어 게시물을 쓰면 된다고 스스로를 설득했다.
         </ArticleText>
 
+        <ArticleSection id="before-run" title="달리러 가는 길"/>
+
         <ArticleText>
             새벽 4시에 기상했다. 가는 데 1시간 40분이 걸렸기 때문이다.
             처음엔 발걸음이 무거웠지만, 출발하고 짊어진 고민들과 헤어지며 가볍게 변했다.
@@ -142,6 +147,8 @@ const article = articles.find(
         </ArticleText>
 
         <ArticleGallery :items="beforeRunPhotos" />
+
+        <ArticleSection id="during-run" title="다 잊고, 힘껏 뛰다."/>
 
         <ArticleText>
             러닝 대회가 인생 처음이라 긴장이 되었다. 이런 마음을 익살스런 악단이 풀어줬다. 혼자 온 사람은 많지 않은 것 같아 머쓱했다.
@@ -162,6 +169,8 @@ const article = articles.find(
         </ArticleText>
 
         <ArticleGallery :items="duringRunPhotos"/>
+
+        <ArticleSection id="running-data-visualization" title="러닝데이터 시각화"/>
 
         <ArticleText>
             Strava로 측정한 GPX 데이터를 시각화한 것은 그로부터 2주쯤 흘러서이다.  지난 대회의 기록을 다시 살펴봤다.
@@ -200,6 +209,8 @@ const article = articles.find(
 
         <KakaoFriendsRunMap />
 
+        <ArticleSection id="after-run" title="완주했습니다."/>
+
         <ArticleText>
             25분 37초. IT 회사답게 결승점을 지나자 배번표 태그를 인식해서 기록을 확정하고, 핸드폰으로 결과를 전송해 준다.
             스태프가 참가 번호를 입력하자, 단상 아래 전광판에 기록이 올라왔다. 긍정적 의미로 데이터 파이프라인을 통과하는 데이터가 된 기분이었다.
@@ -226,6 +237,8 @@ const article = articles.find(
         </ArticleText>
 
         <ArticleGallery :items="afterRunPhotos"/>
+
+        <ArticleSection id="concert" title="예상외의 축하공연"/>
 
         <ArticleText>
             어느 정도 시간이 지났을 때, 무대에서 진행자가 축하 공연으로 온 가수의 라인업을 알렸다.
