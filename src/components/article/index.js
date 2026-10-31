@@ -1,5 +1,7 @@
 export { default as ArticleLayout } from './ArticleLayout.vue'
 export { default as ArticleHeader } from './ArticleHeader.vue'
+export { default as ArticleSection } from './ArticleSection.vue'
+export { default as ArticleTableOfContents } from './ArticleTableOfContents.vue'
 export { default as ArticleText } from './ArticleText.vue'
 export { default as ArticleDisclosure } from './ArticleDisclosure.vue'
 export { default as ArticleCallout } from './ArticleCallout.vue'
