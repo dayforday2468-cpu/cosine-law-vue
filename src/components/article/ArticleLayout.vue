@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
   align-self: stretch;
 
   width: 13rem;
-  margin-right: var(--space-xl);
+  margin-right: var(--space-l);
 }
 
 @media (max-width: 1280px) {

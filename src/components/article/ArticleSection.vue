@@ -50,7 +50,7 @@ onBeforeUnmount(() => {
   width: 100%;
   max-width: var(--article-content-width);
 
-  margin: var(--space-xl) auto var(--space-m);
+  margin: calc(var(--space-l) * 2) auto var(--space-m);
   padding-bottom: var(--space-s);
 
   border-bottom: var(--border-default);

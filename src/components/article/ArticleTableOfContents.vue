@@ -58,7 +58,7 @@ function scrollToSection(id) {
 .toc-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: calc(var(--space-s) / 2);
 
   margin: 0;
   padding: 0;
@@ -69,7 +69,11 @@ function scrollToSection(id) {
 .toc-link {
   width: 100%;
 
-  padding: var(--space-xs) 0 var(--space-xs) var(--space-s);
+  padding:
+    calc(var(--space-s) / 2)
+    0
+    calc(var(--space-s) / 2)
+    var(--space-s);
 
   border: 0;
   border-left: 2px solid transparent;
